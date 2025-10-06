@@ -1,82 +1,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Alien Abduction Simulator</title>
+  <title>Snake Game</title>
   <style>
-    body { background: #000; color: lime; font-family: monospace; text-align: center; }
-    video { border: 2px solid lime; width: 400px; height: 300px; }
-    #photo { display: none; width: 200px; height: 150px; }
-    button { background: lime; color: black; padding: 10px 20px; font-size: 16px; margin: 10px; }
-    #message { font-size: 18px; margin: 20px; }
+    body { background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; position: relative; }
+    canvas { border: 1px solid white; }
+    #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; font-size: 16px; }
+    .controls { display: flex; flex-direction: column; align-items: center; margin-top: 5px; }
+    .row { display: flex; gap: 5px; }
+    .button { width: 50px; height: 50px; background: gray; border: none; color: white; font-size: 20px; touch-action: manipulation; }
   </style>
 </head>
 <body>
-  <h1>Alien Abduction Simulator</h1>
-  <p>Grant camera/mic access to scan for extraterrestrials!</p>
-  <video id="video" autoplay></video>
-  <canvas id="canvas" style="display: none;"></canvas>
-  <img id="photo" alt="Abducted!">
-  <br>
-  <button id="startScan">Start Alien Scan</button>
-  <div id="message">Waiting for signal...</div>
-
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <button id="startButton">Start</button>
+  <div class="controls">
+    <div class="row"><button class="button" onclick="move('up')">↑</button></div>
+    <div class="row">
+      <button class="button" onclick="move('left')">←</button>
+      <button class="button" onclick="move('down')">↓</button>
+      <button class="button" onclick="move('right')">→</button>
+    </div>
+  </div>
   <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
+    const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const photo = document.getElementById('photo');
-    const message = document.getElementById('message');
-    const startBtn = document.getElementById('startScan');
+    const gridSize = 20;
+    const tileCount = canvas.width / gridSize;
+    let snake = [{x: 10, y: 10}];
+    let food = {x: 15, y: 15};
+    let dx = 0, dy = 0;
+    let score = 0;
+    let gameStarted = false;
+    let lastMoveTime = 0;
 
-    // Log IP (visible in console; replace with real endpoint if needed)
-    fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => {
-      console.log('Alien transmission from IP:', data.ip); // Tracks IP in console
+    // Initial draw
+    ctx.fillStyle = 'red';
+    ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+    document.getElementById('startButton').addEventListener('click', () => {
+      gameStarted = true;
+      document.getElementById('startButton').style.display = 'none';
     });
 
-    startBtn.addEventListener('click', async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
-        video.srcObject = stream;
-        startBtn.style.display = 'none';
-        message.textContent = 'Scanning for aliens... Speak to detect signals!';
-        // Funny mic analysis (simple volume check)
-        const audioContext = new AudioContext();
-        const source = audioContext.createMediaStreamSource(stream);
-        const analyser = audioContext.createAnalyser();
-        source.connect(analyser);
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
-        setInterval(() => {
-          analyser.getByteFrequencyData(dataArray);
-          const volume = dataArray.reduce((a, b) => a + b) / dataArray.length;
-          if (volume > 50) { // "Signal detected"
-            message.textContent = 'Alien signal! Abducting...';
-            capturePhoto();
-            // Funny random messages
-            const aliens = ['You look like a probe candidate!', 'Beam me up... wait, wrong direction!', 'Your face is now in the mothership gallery!'];
-            setTimeout(() => message.textContent = aliens[Math.floor(Math.random() * aliens.length)], 1000);
-          }
-        }, 100);
-      } catch (err) {
-        message.textContent = 'Access denied. Aliens won\'t visit without permission!';
-      }
-    });
-
-    function capturePhoto() {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0);
-      // Funny overlay: UFO hat
-      ctx.fillStyle = 'gray';
-      ctx.beginPath();
-      ctx.arc(video.videoWidth / 2, 50, 100, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = 'yellow';
-      ctx.fillRect(video.videoWidth / 2 - 20, 50, 40, 20);
-      photo.src = canvas.toDataURL('image/png');
-      photo.style.display = 'block';
-      // Log photo in console (base64)
-      console.log('Abducted photo:', photo.src);
+    function move(direction) {
+      if (!gameStarted || Date.now() - lastMoveTime < 50) return;
+      lastMoveTime = Date.now();
+      if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
+      if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
+      if (direction === 'left' && dx !== 1) { dx = -1; dy = 0; }
+      if (direction === 'right' && dx !== -1) { dx = 1; dy = 0; }
     }
+
+    document.addEventListener('keydown', e => {
+      if (!gameStarted || Date.now() - lastMoveTime < 50) return;
+      lastMoveTime = Date.now();
+      if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
+      if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
+      if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
+      if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
+    });
+
+    function drawGame() {
+      if (!gameStarted) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+      // Loop around walls
+      head.x = (head.x + tileCount) % tileCount;
+      head.y = (head.y + tileCount) % tileCount;
+
+      snake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        // Vibrate with pattern for iOS compatibility
+        if ('vibrate' in navigator) {
+          navigator.vibrate([200, 100, 200]); // Pattern: 200ms on, 100ms off, 200ms on
+        }
+        do {
+          food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
+        } while (snake.some(s => s.x === food.x && s.y === food.y));
+      } else {
+        snake.pop();
+      }
+
+      ctx.fillStyle = 'red';
+      snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+      ctx.fillStyle = 'yellow';
+      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+    }
+
+    setInterval(drawGame, 100);
   </script>
 </body>
 </html>
