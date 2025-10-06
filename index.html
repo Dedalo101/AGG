@@ -8,7 +8,7 @@
     #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; font-size: 16px; }
     .controls { display: flex; flex-direction: column; align-items: center; margin-top: 5px; }
     .row { display: flex; gap: 5px; }
-    .button { width: 50px; height: 50px; background: gray; border: none; color: white; font-size: 20px; }
+    .button { width: 50px; height: 50px; background: gray; border: none; color: white; font-size: 20px; touch-action: manipulation; }
   </style>
 </head>
 <body>
@@ -32,6 +32,7 @@
     let dx = 0, dy = 0;
     let score = 0;
     let gameStarted = false;
+    let lastMoveTime = 0;
 
     // Initial draw
     ctx.fillStyle = 'red';
@@ -45,7 +46,8 @@
     });
 
     function move(direction) {
-      if (!gameStarted) { gameStarted = true; }
+      if (!gameStarted || Date.now() - lastMoveTime < 50) return; // Debounce for responsiveness
+      lastMoveTime = Date.now();
       if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
       if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
       if (direction === 'left' && dx !== 1) { dx = -1; dy = 0; }
@@ -53,7 +55,8 @@
     }
 
     document.addEventListener('keydown', e => {
-      if (!gameStarted) { gameStarted = true; }
+      if (!gameStarted || Date.now() - lastMoveTime < 50) return; // Debounce for responsiveness
+      lastMoveTime = Date.now();
       if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
       if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
       if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
