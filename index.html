@@ -4,15 +4,15 @@
   <title>Snake Game</title>
   <style>
     body { background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; position: relative; }
-    canvas { border: 1px solid white; }
-    #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; font-size: 16px; }
-    .controls { display: flex; flex-direction: column; align-items: center; margin-top: 5px; }
-    .row { display: flex; gap: 5px; }
-    .button { width: 50px; height: 50px; background: gray; border: none; color: white; font-size: 20px; touch-action: manipulation; }
+    canvas { border: 1px solid white; width: 1200px; height: 1200px; }
+    #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 30px 60px; font-size: 48px; }
+    .controls { display: flex; flex-direction: column; align-items: center; margin-top: 15px; }
+    .row { display: flex; gap: 15px; }
+    .button { width: 150px; height: 150px; background: gray; border: none; color: white; font-size: 60px; touch-action: manipulation; }
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <canvas id="gameCanvas" width="1200" height="1200"></canvas>
   <button id="startButton">Start</button>
   <div class="controls">
     <div class="row"><button class="button" onclick="move('up')">↑</button></div>
@@ -25,7 +25,7 @@
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const gridSize = 20;
+    const gridSize = 60; // Adjusted for larger canvas
     const tileCount = canvas.width / gridSize;
     let snake = [{x: 10, y: 10}];
     let food = {x: 15, y: 15};
@@ -40,9 +40,15 @@
     ctx.fillStyle = 'yellow';
     ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
 
+    // Audio elements
+    const startSound = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+    const eatSound = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQcAAAA=');
+
     document.getElementById('startButton').addEventListener('click', () => {
       gameStarted = true;
       document.getElementById('startButton').style.display = 'none';
+      if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+      startSound.play().catch(() => {}); // Play start sound
     });
 
     function move(direction) {
@@ -65,9 +71,9 @@
 
     function vibrate() {
       if ('vibrate' in navigator) {
-        navigator.vibrate([200, 100, 200]); // Pattern for vibration
+        navigator.vibrate([200, 100, 200]);
       } else if ('webkit' in navigator && 'vibrate' in navigator.webkit) {
-        navigator.webkit.vibrate([200, 100, 200]); // Webkit fallback for iOS
+        navigator.webkit.vibrate([200, 100, 200]);
       }
     }
 
@@ -84,7 +90,8 @@
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         score++;
-        vibrate(); // Trigger vibration
+        vibrate();
+        eatSound.play().catch(() => {}); // Play eat sound
         do {
           food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
         } while (snake.some(s => s.x === food.x && s.y === food.y));
