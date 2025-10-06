@@ -3,157 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AGG.homes - Your trusted real estate agency for finding dream homes, apartments, condos, and land. Expert agents ready to assist.">
-    <meta name="keywords" content="real estate, homes for sale, apartments, condos, land, property search">
-    <title>AGG.homes - Find Your Dream Home</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- SEO-friendly meta tags -->
-    <meta property="og:title" content="AGG.homes - Real Estate Agency">
-    <meta property="og:description" content="Discover your perfect property with AGG.homes.">
-    <meta property="og:image" content="images/hero-image.jpg"> <!-- Placeholder for OG image -->
-    <meta property="og:url" content="https://yourusername.github.io/agg-homes/">
+    <title>Real Estate Leads - Find Your Dream Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 50px 20px;
+            background-color: white;
+            margin: -50px auto 0;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 2rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                height: 300px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .form-section {
+                margin: -30px 10px 0;
+                padding: 30px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header" role="banner">
-        <nav class="navbar" aria-label="Main Navigation">
-            <div class="navbar-container">
-                <a href="#home" class="logo">AGG.homes</a>
-                <button class="hamburger" aria-expanded="false" aria-controls="menu" aria-label="Toggle Navigation">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul class="menu" id="menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#featured">Featured</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
-        <div class="hero" id="home">
-            <div class="hero-content">
-                <h1>Find Your Dream Home Today</h1>
-                <p>Get personalized real estate listings and connect with our expert agents.</p>
-                <!-- Property search form -->
-                <form class="search-form" aria-label="Property Search Form">
-                    <input type="text" placeholder="Enter city or zip code" aria-label="Location">
-                    <select aria-label="Property Type">
-                        <option value="">Property Type</option>
-                        <option value="house">House</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="condo">Condo</option>
-                        <option value="land">Land</option>
-                    </select>
-                    <select aria-label="Budget Range">
-                        <option value="">Budget Range</option>
-                        <option value="under-200k">Under $200,000</option>
-                        <option value="200k-400k">$200,000 - $400,000</option>
-                        <option value="400k-600k">$400,000 - $600,000</option>
-                        <option value="600k-plus">$600,000+</option>
-                    </select>
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </header>
-
-    <section class="featured-listings" id="featured">
-        <h2>Featured Listings</h2>
-        <div class="listings-grid">
-            <!-- Placeholder listings with Unsplash images via CDN -->
-            <div class="listing-card">
-                <img src="https://source.unsplash.com/random/400x300/?house" alt="Featured House 1" loading="lazy">
-                <h3>Cozy Family House</h3>
-                <p>$350,000 - 3 beds, 2 baths</p>
-                <button>View Details</button>
-            </div>
-            <div class="listing-card">
-                <img src="https://source.unsplash.com/random/400x300/?apartment" alt="Featured Apartment 1" loading="lazy">
-                <h3>Modern Apartment</h3>
-                <p>$250,000 - 2 beds, 1 bath</p>
-                <button>View Details</button>
-            </div>
-            <div class="listing-card">
-                <img src="https://source.unsplash.com/random/400x300/?condo" alt="Featured Condo 1" loading="lazy">
-                <h3>Luxury Condo</h3>
-                <p>$450,000 - 3 beds, 2 baths</p>
-                <button>View Details</button>
-            </div>
-            <div class="listing-card">
-                <img src="https://source.unsplash.com/random/400x300/?land" alt="Featured Land 1" loading="lazy">
-                <h3>Spacious Land Plot</h3>
-                <p>$150,000 - 1 acre</p>
-                <button>View Details</button>
-            </div>
-            <div class="listing-card">
-                <img src="https://source.unsplash.com/random/400x300/?house2" alt="Featured House 2" loading="lazy">
-                <h3>Suburban Home</h3>
-                <p>$500,000 - 4 beds, 3 baths</p>
-                <button>View Details</button>
-            </div>
-            <div class="listing-card">
-                <img src="https://source.unsplash.com/random/400x300/?apartment2" alt="Featured Apartment 2" loading="lazy">
-                <h3>Urban Loft</h3>
-                <p>$300,000 - 1 bed, 1 bath</p>
-                <button>View Details</button>
-            </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Dream Home Today</h1>
+            <p>Get personalized real estate listings and connect with our expert agents.</p>
+            <a href="#contact-form" class="cta-button">Get Started</a>
         </div>
     </section>
 
-    <section class="about-us" id="about">
-        <h2>About Us</h2>
-        <p>AGG.homes is a leading real estate agency dedicated to helping you find the perfect property. With years of experience and a team of expert agents, we provide personalized service to meet your needs.</p>
-        <!-- Google Maps iframe for agency location -->
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.9147703055!2d-74.119763973046!3d40.69740344223377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sus!4v1547829276753" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" aria-label="Map of AGG.homes location"></iframe>
-    </section>
-
-    <section class="testimonials" id="testimonials">
-        <h2>What Our Clients Say</h2>
-        <div class="testimonial-grid">
-            <blockquote>
-                <p>"AGG.homes made finding our dream home effortless. Highly recommend!"</p>
-                <cite>- John Doe</cite>
-            </blockquote>
-            <blockquote>
-                <p>"Professional and attentive service from start to finish."</p>
-                <cite>- Jane Smith</cite>
-            </blockquote>
-            <blockquote>
-                <p>"The best real estate agency we've worked with."</p>
-                <cite>- Emily Johnson</cite>
-            </blockquote>
-            <blockquote>
-                <p>"Expert advice and great listings."</p>
-                <cite>- Michael Brown</cite>
-            </blockquote>
-        </div>
-    </section>
-
-    <section class="contact" id="contact">
+    <!-- Form Section -->
+    <section class="form-section" id="contact-form">
         <h2>Contact Us for Exclusive Listings</h2>
-        <!-- Contact form using Formspree -->
-        <form id="contact-form" action="https://formspree.io/f/mjkeqevn" method="POST" aria-label="Contact Form">
-            <!-- To set up: Replace 'mjkeqevn' with your actual Formspree form ID if different. Sign up at formspree.io and create a form. -->
-            <!-- For Airtable integration: In Formspree dashboard, add a webhook to Airtable's API. Use Airtable's API docs to create a base with fields: Name, Email, Phone, InterestedIn, Budget, Message. Webhook URL: https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME with API key in headers. -->
-            <!-- For Zapier/HubSpot: Set up a Zap in Zapier: Trigger on new Formspree submission, action to create HubSpot contact. Requires Zapier account, Formspree premium for webhooks, HubSpot API key. -->
+        <form action="https://formspree.io/f/myznekjk" method="POST">
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required aria-required="true">
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
             </div>
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required aria-required="true">
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required aria-required="true">
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
             </div>
             <div class="form-group">
-                <label for="interested">Interested In</label>
-                <select id="interested" name="interested" required aria-required="true">
-                    <option value="">Select property type</option>
+                <label for="property-type">Interested In</label>
+                <select id="property-type" name="property-type" required>
+                    <option value="" disabled selected>Select property type</option>
                     <option value="house">House</option>
                     <option value="apartment">Apartment</option>
                     <option value="condo">Condo</option>
@@ -162,26 +185,21 @@
             </div>
             <div class="form-group">
                 <label for="budget">Budget Range</label>
-                <select id="budget" name="budget" required aria-required="true">
-                    <option value="">Select budget range</option>
+                <select id="budget" name="budget" required>
+                    <option value="" disabled selected>Select budget range</option>
                     <option value="under-200k">Under $200,000</option>
                     <option value="200k-400k">$200,000 - $400,000</option>
                     <option value="400k-600k">$400,000 - $600,000</option>
-                    <option value="600k-plus">$600,000+</option>
+                    <option value="600k+">$600,000+</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="4" aria-required="true"></textarea>
-            </div>
-            <button type="submit">Submit Inquiry</button>
+            <button type="submit" class="submit-button">Submit Inquiry</button>
         </form>
     </section>
 
-    <footer role="contentinfo">
-        <p>&copy; <span id="current-year"></span> AGG.homes. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Your Real Estate Agency. All rights reserved.</p>
     </footer>
-
-    <script src="js/script.js"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a3c9baabca2145',t:'MTc1OTczOTMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
