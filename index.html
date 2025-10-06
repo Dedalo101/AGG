@@ -5,10 +5,12 @@
   <style>
     body { background: black; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
     canvas { border: 1px solid white; }
+    #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; font-size: 16px; }
   </style>
 </head>
 <body>
   <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <button id="startButton">Start</button>
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -21,13 +23,18 @@
     let gameStarted = false;
 
     // Initial draw
-    ctx.fillStyle = 'lime';
-    ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
     ctx.fillStyle = 'red';
+    ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
+    ctx.fillStyle = 'yellow';
     ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
 
+    document.getElementById('startButton').addEventListener('click', () => {
+      gameStarted = true;
+      document.getElementById('startButton').style.display = 'none';
+    });
+
     document.addEventListener('keydown', e => {
-      if (!gameStarted) { gameStarted = true; }
+      if (!gameStarted) return;
       if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
       if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
       if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
@@ -40,16 +47,9 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       let head = {x: snake[0].x + dx, y: snake[0].y + dy};
 
-      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
-        alert('Game Over! Score: ' + score);
-        snake = [{x: 10, y: 10}];
-        food = {x: 15, y: 15};
-        dx = dy = 0;
-        score = 0;
-        gameStarted = false;
-        drawGame(); // Redraw initial state
-        return;
-      }
+      // Loop around walls instead of dying
+      head.x = (head.x + tileCount) % tileCount;
+      head.y = (head.y + tileCount) % tileCount;
 
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
@@ -61,9 +61,9 @@
         snake.pop();
       }
 
-      ctx.fillStyle = 'lime';
-      snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
       ctx.fillStyle = 'red';
+      snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+      ctx.fillStyle = 'yellow';
       ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
     }
 
