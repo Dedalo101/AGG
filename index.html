@@ -15,13 +15,19 @@
     const gridSize = 20;
     const tileCount = canvas.width / gridSize;
     let snake = [{x: 10, y: 10}];
-    let food = {x: 15, y: 15}; // Fixed food position to avoid overlap
+    let food = {x: 15, y: 15};
     let dx = 0, dy = 0;
     let score = 0;
-    let gameOver = false;
+    let gameStarted = false;
+
+    // Initial draw
+    ctx.fillStyle = 'lime';
+    ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
 
     document.addEventListener('keydown', e => {
-      if (gameOver) return; // Ignore input during game over
+      if (!gameStarted) { gameStarted = true; }
       if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
       if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
       if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
@@ -29,27 +35,25 @@
     });
 
     function drawGame() {
-      if (gameOver) return;
+      if (!gameStarted) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       let head = {x: snake[0].x + dx, y: snake[0].y + dy};
 
-      // Check for collision with walls or self
       if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
         alert('Game Over! Score: ' + score);
-        gameOver = true;
         snake = [{x: 10, y: 10}];
         food = {x: 15, y: 15};
         dx = dy = 0;
         score = 0;
-        gameOver = false; // Reset for next game
+        gameStarted = false;
+        drawGame(); // Redraw initial state
         return;
       }
 
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         score++;
-        // Ensure new food doesn't spawn on snake
         do {
           food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
         } while (snake.some(s => s.x === food.x && s.y === food.y));
@@ -57,10 +61,8 @@
         snake.pop();
       }
 
-      // Draw snake
       ctx.fillStyle = 'lime';
       snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
-      // Draw food
       ctx.fillStyle = 'red';
       ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
     }
