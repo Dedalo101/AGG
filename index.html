@@ -63,6 +63,14 @@
       if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
     });
 
+    function vibrate() {
+      if ('vibrate' in navigator) {
+        navigator.vibrate([200, 100, 200]); // Pattern for vibration
+      } else if ('webkit' in navigator && 'vibrate' in navigator.webkit) {
+        navigator.webkit.vibrate([200, 100, 200]); // Webkit fallback for iOS
+      }
+    }
+
     function drawGame() {
       if (!gameStarted) return;
 
@@ -76,10 +84,7 @@
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         score++;
-        // Vibrate with pattern for iOS compatibility
-        if ('vibrate' in navigator) {
-          navigator.vibrate([200, 100, 200]); // Pattern: 200ms on, 100ms off, 200ms on
-        }
+        vibrate(); // Trigger vibration
         do {
           food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
         } while (snake.some(s => s.x === food.x && s.y === food.y));
