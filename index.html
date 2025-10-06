@@ -3,11 +3,11 @@
 <head>
   <title>Snake Game</title>
   <style>
-    body { background: black; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; position: relative; }
+    body { background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; position: relative; }
     canvas { border: 1px solid white; }
     #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; font-size: 16px; }
-    .controls { position: absolute; bottom: 20px; left: 20px; }
-    .button { width: 50px; height: 50px; margin: 5px; background: gray; border: none; color: white; font-size: 20px; }
+    .controls { display: flex; justify-content: center; gap: 5px; margin-top: 10px; }
+    .button { width: 50px; height: 50px; background: gray; border: none; color: white; font-size: 20px; }
   </style>
 </head>
 <body>
