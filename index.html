@@ -76,9 +76,9 @@
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         score++;
-        // Vibrate for 200ms when food is eaten
+        // Vibrate with pattern for iOS compatibility
         if ('vibrate' in navigator) {
-          navigator.vibrate(200);
+          navigator.vibrate([200, 100, 200]); // Pattern: 200ms on, 100ms off, 200ms on
         }
         do {
           food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
