@@ -46,7 +46,7 @@
     });
 
     function move(direction) {
-      if (!gameStarted || Date.now() - lastMoveTime < 50) return; // Debounce for responsiveness
+      if (!gameStarted || Date.now() - lastMoveTime < 50) return;
       lastMoveTime = Date.now();
       if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
       if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
@@ -55,7 +55,7 @@
     }
 
     document.addEventListener('keydown', e => {
-      if (!gameStarted || Date.now() - lastMoveTime < 50) return; // Debounce for responsiveness
+      if (!gameStarted || Date.now() - lastMoveTime < 50) return;
       lastMoveTime = Date.now();
       if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
       if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
@@ -76,6 +76,10 @@
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         score++;
+        // Vibrate for 200ms when food is eaten
+        if ('vibrate' in navigator) {
+          navigator.vibrate(200);
+        }
         do {
           food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
         } while (snake.some(s => s.x === food.x && s.y === food.y));
