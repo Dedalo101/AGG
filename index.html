@@ -1,99 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Snake Game</title>
-  <style>
-    body { background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; position: relative; }
-    canvas { border: 1px solid white; }
-    #startButton { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; font-size: 16px; }
-    .controls { display: flex; flex-direction: column; align-items: center; margin-top: 5px; }
-    .row { display: flex; gap: 5px; }
-    .button { width: 50px; height: 50px; background: gray; border: none; color: white; font-size: 20px; touch-action: manipulation; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AGG.homes - Your dedicated buyer's agent. Get the best deal on your new property.">
+    <meta name="keywords" content="real estate, property, buyer's agent, AGG.homes">
+    <meta name="author" content="AGG.homes">
+    <title>AGG.homes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 </head>
 <body>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <button id="startButton">Start</button>
-  <div class="controls">
-    <div class="row"><button class="button" onclick="move('up')">↑</button></div>
-    <div class="row">
-      <button class="button" onclick="move('left')">←</button>
-      <button class="button" onclick="move('down')">↓</button>
-      <button class="button" onclick="move('right')">→</button>
-    </div>
-  </div>
-  <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const gridSize = 20;
-    const tileCount = canvas.width / gridSize;
-    let snake = [{x: 10, y: 10}];
-    let food = {x: 15, y: 15};
-    let dx = 0, dy = 0;
-    let score = 0;
-    let gameStarted = false;
-    let lastMoveTime = 0;
+    <header>
+        <nav>
+            <ul>
+                <li>Team</li>
+                <li>About Us</li>
+                <li>Services</li>
+                <li>Properties</li>
+                <li>Partners</li>
+                <li>Blog</li>
+                <li>Reviews</li>
+            </ul>
+        </nav>
+        <div class="contact-button">Contact See how we help you</div>
+        <img src="https://marketplace.canva.com/EAGPY6N4UG4/1/0/1600w/canva-dark-blue-and-gold-luxury-modern-real-estate-property-logo-GjUSig8LBVo.jpg" alt="AGG.homes Logo" class="logo">
+    </header>
 
-    // Initial draw
-    ctx.fillStyle = 'red';
-    ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
-    ctx.fillStyle = 'yellow';
-    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+    <section class="hero" style="background-image: url('https://img.freepik.com/premium-vector/real-estate-landing-page-design-hero-section-real-estate-business-hero-banner-website_755018-471.jpg');">
+        <h1>Your dedicated buyer's agent</h1>
+        <p>Get the best deal on your new property</p>
+        <p>Ready to buy your dream home? We work primarily for you as the buyer. We know the local market inside out and help you get the best property at the best price. We speak your language and protect your interests every step of the way.</p>
+        <button>Schedule meeting</button>
+        <button>See properties</button>
+        <img src="https://maps.gstatic.com/mapfiles/embed/images/google_maps_gray.svg" alt="Google Maps" aria-hidden="true">
+        <p>4.7</p>
+    </section>
 
-    document.getElementById('startButton').addEventListener('click', () => {
-      gameStarted = true;
-      document.getElementById('startButton').style.display = 'none';
-    });
+    <section class="advantages">
+        <h2>The insider's advantage</h2>
+        <p>Get your ideal property with an expert on your side</p>
+        <p>You deserve more than just property tours. We focus on working for you as the buyer. We know which properties are worth buying and help you avoid expensive mistakes. Our local knowledge and smart approach help you make the right choice in this busy market.</p>
+        <ul>
+            <li>Your interests come first</li>
+            <li>We know the market inside out</li>
+            <li>We speak your language</li>
+        </ul>
+        <button>See how we help you</button>
+        <button>How we protect you</button>
+    </section>
 
-    function move(direction) {
-      if (!gameStarted || Date.now() - lastMoveTime < 50) return;
-      lastMoveTime = Date.now();
-      if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
-      if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
-      if (direction === 'left' && dx !== 1) { dx = -1; dy = 0; }
-      if (direction === 'right' && dx !== -1) { dx = 1; dy = 0; }
-    }
+    <section class="how-we-help">
+        <h2>How we help you buy</h2>
+        <p>Get your property with expert help</p>
+        <ol>
+            <li>Learn what you want</li>
+            <li>Find the best opportunities</li>
+            <li>Expert property checks</li>
+            <li>Smart negotiation</li>
+            <li>Safe completion</li>
+        </ol>
+        <button>Get your free consultation</button>
+    </section>
 
-    document.addEventListener('keydown', e => {
-      if (!gameStarted || Date.now() - lastMoveTime < 50) return;
-      lastMoveTime = Date.now();
-      if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
-      if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
-      if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
-      if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
-    });
+    <section class="expertise">
+        <h2>Expertise</h2>
+        <p>We know every area</p>
+        <p>Our deep knowledge helps you find opportunities others miss. From luxury areas to up-and-coming neighborhoods with great potential, we help you find the perfect location for your lifestyle and investment goals.</p>
+        <button>Get your free consultation</button>
+        <button>Learn about our expertise</button>
+    </section>
 
-    function drawGame() {
-      if (!gameStarted) return;
+    <section class="reviews">
+        <h2>Client success stories</h2>
+        <p>Smart buyers choose us</p>
+        <!-- Repeat similar review blocks -->
+        <div class="review">
+            <p>JS</p>
+            <p>Jan S.</p>
+            <p>Warmest recommendations to AGG.homes. Works constructively to meet your needs and helped us find the perfect property.</p>
+        </div>
+        <!-- More reviews -->
+        <button>Get your free consultation</button>
+        <button>See how we help you</button>
+        <button>Meet your experts</button>
+        <p>4.7</p>
+    </section>
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    <section class="properties">
+        <h2>Hand-picked opportunities</h2>
+        <p>Find your ideal property</p>
+        <div class="property-type">
+            <h3>Villas</h3>
+            <button>See All Properties</button>
+            <div class="property">
+                <img src="https://res.cloudinary.com/dw4e01qx8/f_auto,q_auto/images/crdx0arfe9pja9aivsyy" alt="Detached Villa">
+                <p>Detached Villa €4.975.000</p>
+            </div>
+            <!-- More villas with images from [image:4], [image:5], [image:6] -->
+        </div>
+        <!-- Similar for Apartments, Townhouses, New Developments using respective images -->
+    </section>
 
-      // Loop around walls
-      head.x = (head.x + tileCount) % tileCount;
-      head.y = (head.y + tileCount) % tileCount;
+    <section class="blog">
+        <h2>Expert market knowledge</h2>
+        <p>Learn the property market</p>
+        <button>Get expert insights</button>
+        <button>Meet your experts</button>
+        <!-- Blog posts with thumbnails from [image:10], [image:11], [image:12] -->
+    </section>
 
-      snake.unshift(head);
-      if (head.x === food.x && head.y === food.y) {
-        score++;
-        // Vibrate with pattern for iOS compatibility
-        if ('vibrate' in navigator) {
-          navigator.vibrate([200, 100, 200]); // Pattern: 200ms on, 100ms off, 200ms on
-        }
-        do {
-          food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
-        } while (snake.some(s => s.x === food.x && s.y === food.y));
-      } else {
-        snake.pop();
-      }
+    <section class="faq">
+        <h2>Your questions answered</h2>
+        <p>Get your property with confidence</p>
+        <!-- Accordion or list of FAQs similar to example -->
+    </section>
 
-      ctx.fillStyle = 'red';
-      snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
-      ctx.fillStyle = 'yellow';
-      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-    }
+    <section class="team">
+        <h2>Your experts</h2>
+        <p>Get your ideal property with expert help</p>
+        <img src="https://images.squarespace-cdn.com/content/v1/62c4d634208d921367934ec2/43d4f42f-087b-4c7d-8322-b8c2efbfbeb6/Kawela-Home-Team-Real-Estate-Headshots-009.jpg" alt="Team Photo">
+        <!-- More team photos from [image:16], [image:17], [image:18] -->
+        <button>Get your free consultation</button>
+        <button>See how we help you</button>
+    </section>
 
-    setInterval(drawGame, 100);
-  </script>
+    <footer>
+        <h2>Get insider market news</h2>
+        <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="tel" name="phone" placeholder="Phone" required>
+            <select name="property-type" required>
+                <option value="">Property Type</option>
+                <option value="Villa">Villa</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Townhouse">Townhouse</option>
+                <option value="New Development">New Development</option>
+            </select>
+            <select name="budget" required>
+                <option value="">Budget Range</option>
+                <option value="Under €1M">Under €1M</option>
+                <option value="€1M - €2M">€1M - €2M</option>
+                <option value="€2M - €3M">€2M - €3M</option>
+                <option value="€3M+">€3M+</option>
+            </select>
+            <textarea name="message" placeholder="Message"></textarea>
+            <button type="submit">Get insider access</button>
+        </form>
+        <p>© 2025 AGG.homes. All rights reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
