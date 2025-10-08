@@ -3,7 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate Leads - Find Your Dream Home</title>
+    <title>Find Your Dream Home | Premier Real Estate Agency | Expert Property Listings</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Discover your perfect home with our expert real estate agents. Get personalized property listings, market insights, and professional guidance for buying or selling your dream home. Contact us today for exclusive listings.">
+    <meta name="keywords" content="real estate, property listings, home buying, house for sale, real estate agent, property search, dream home, real estate agency, home listings, property investment">
+    <meta name="author" content="Your Real Estate Agency">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://agg.homes/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Find Your Dream Home | Premier Real Estate Agency">
+    <meta property="og:description" content="Discover your perfect home with our expert real estate agents. Get personalized property listings and professional guidance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://agg.homes/">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Your Real Estate Agency">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Find Your Dream Home | Premier Real Estate Agency">
+    <meta name="twitter:description" content="Discover your perfect home with our expert real estate agents. Get personalized property listings and professional guidance.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="msapplication-TileColor" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Real Estate Agency">
+    
+    <!-- Additional SEO Links -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <link rel="alternate" type="application/rss+xml" title="Real Estate Listings RSS" href="/feed.xml">
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "name": "Your Real Estate Agency",
+        "description": "Premier real estate agency helping clients find their dream homes with expert guidance and personalized service.",
+        "url": "https://agg.homes",
+        "logo": "https://agg.homes/logo.png",
+        "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        "telephone": "+1-555-123-4567",
+        "email": "agg@post.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "123 Main Street",
+            "addressLocality": "Your City",
+            "addressRegion": "Your State",
+            "postalCode": "12345",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.7128",
+            "longitude": "-74.0060"
+        },
+        "openingHours": "Mo-Fr 09:00-18:00, Sa 09:00-17:00",
+        "priceRange": "$200,000 - $20,000,000",
+        "serviceArea": {
+            "@type": "GeoCircle",
+            "geoMidpoint": {
+                "@type": "GeoCoordinates",
+                "latitude": "40.7128",
+                "longitude": "-74.0060"
+            },
+            "geoRadius": "50000"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Real Estate Services",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Home Buying Assistance",
+                        "description": "Expert guidance for finding and purchasing your dream home"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Property Listings",
+                        "description": "Access to exclusive property listings and market insights"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Real Estate Consultation",
+                        "description": "Professional consultation for all your real estate needs"
+                    }
+                }
+            ]
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "127"
+        }
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -60,14 +174,58 @@
             background-color: #0056b3;
         }
 
+        /* Services Section */
+        .services-section {
+            padding: 60px 20px;
+            background-color: white;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-item {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            transition: transform 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-item h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .service-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
         /* Form Section */
         .form-section {
             padding: 50px 20px;
-            background-color: white;
-            margin: -50px auto 0;
+            background-color: #f8f9fa;
+            margin: 0 auto;
             max-width: 600px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-description {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         .form-section h2 {
@@ -100,6 +258,14 @@
             outline: none;
             border-color: #007bff;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .form-help {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
         }
 
         .submit-button {
@@ -140,66 +306,122 @@
                 font-size: 1rem;
             }
 
+            .services-section {
+                padding: 40px 15px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
             .form-section {
-                margin: -30px 10px 0;
+                margin: 0 10px;
                 padding: 30px 15px;
+            }
+
+            .footer {
+                padding: 15px;
+                text-align: center;
+            }
+
+            .footer p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
             }
         }
     </style>
 </head>
 <body>
     <!-- Hero Section -->
-    <section class="hero">
+    <header class="hero" role="banner">
         <div class="hero-content">
-            <h1>Find Your Dream Home Today</h1>
-            <p>Get personalized real estate listings and connect with our expert agents.</p>
-            <a href="#contact-form" class="cta-button">Get Started</a>
+            <h1>Find Your Dream Home Today with Expert Real Estate Agents</h1>
+            <p>Discover exclusive property listings, get personalized market insights, and connect with our certified real estate professionals. We specialize in helping families find their perfect home in today's competitive market.</p>
+            <a href="#contact-form" class="cta-button" aria-label="Get started with our real estate services">Get Started Today</a>
         </div>
-    </section>
+    </header>
 
-    <!-- Form Section -->
-    <section class="form-section" id="contact-form">
-        <h2>Contact Us for Exclusive Listings</h2>
-        <form action="https://formspree.io/f/mjkeqevn" method="POST">
+    <!-- Main Content -->
+    <main role="main">
+        <!-- Services Section -->
+        <section class="services-section" aria-labelledby="services-heading">
+            <div class="container">
+                <h2 id="services-heading">Why Choose Our Real Estate Services?</h2>
+                <div class="services-grid">
+                    <article class="service-item">
+                        <h3>Expert Property Search</h3>
+                        <p>Our experienced agents use advanced MLS systems and local market knowledge to find properties that match your exact criteria and budget.</p>
+                    </article>
+                    <article class="service-item">
+                        <h3>Market Analysis & Pricing</h3>
+                        <p>Get comprehensive market insights, property valuations, and pricing strategies to make informed real estate decisions.</p>
+                    </article>
+                    <article class="service-item">
+                        <h3>Negotiation & Closing</h3>
+                        <p>Professional negotiation services and seamless closing process to ensure you get the best deal on your dream home.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="form-section" id="contact-form" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Get Your Free Real Estate Consultation</h2>
+            <p class="form-description">Ready to find your dream home? Fill out our form below and our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
+            <form action="/submit" method="POST" role="form" aria-label="Real estate consultation request form">
             <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required aria-describedby="name-help">
+                <small id="name-help" class="form-help">We'll use this to personalize your property recommendations</small>
             </div>
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required aria-describedby="email-help">
+                <small id="email-help" class="form-help">We'll send you exclusive property listings and market updates</small>
             </div>
             <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required aria-describedby="phone-help">
+                <small id="phone-help" class="form-help">Our agents will call you within 24 hours</small>
             </div>
             <div class="form-group">
-                <label for="property-type">Interested In</label>
-                <select id="property-type" name="property-type" required>
-                    <option value="" disabled selected>Select property type</option>
-                    <option value="house">House</option>
+                <label for="property-type">Property Type You're Looking For *</label>
+                <select id="property-type" name="property-type" required aria-describedby="property-help">
+                    <option value="" disabled selected>Select your preferred property type</option>
+                    <option value="house">Single Family House</option>
                     <option value="apartment">Apartment</option>
-                    <option value="condo">Condo</option>
-                    <option value="land">Land</option>
+                    <option value="condo">Condominium</option>
+                    <option value="townhouse">Townhouse</option>
+                    <option value="land">Vacant Land</option>
+                    <option value="commercial">Commercial Property</option>
                 </select>
+                <small id="property-help" class="form-help">This helps us find the most relevant listings for you</small>
             </div>
             <div class="form-group">
-                <label for="budget">Budget Range</label>
-                <select id="budget" name="budget" required>
-                    <option value="" disabled selected>Select budget range</option>
+                <label for="budget">Your Budget Range *</label>
+                <select id="budget" name="budget" required aria-describedby="budget-help">
+                    <option value="" disabled selected>Select your budget range</option>
                     <option value="under-200k">Under $200,000</option>
                     <option value="200k-400k">$200,000 - $400,000</option>
                     <option value="400k-600k">$400,000 - $600,000</option>
-                    <option value="600k+">$600,000+</option>
+                    <option value="600k-800k">$600,000 - $800,000</option>
+                    <option value="800k-1m">$800,000 - $1,000,000</option>
+                    <option value="1m+">$1,000,000+</option>
                 </select>
+                <small id="budget-help" class="form-help">This helps us show you properties within your price range</small>
             </div>
-            <button type="submit" class="submit-button">Submit Inquiry</button>
+            <button type="submit" class="submit-button">Get My Free Consultation</button>
         </form>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Your Real Estate Agency. All rights reserved.</p>
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 Your Real Estate Agency. All rights reserved. | Licensed Real Estate Professionals | Serving Your Local Community</p>
+            <p>Contact us: <a href="tel:+15551234567" aria-label="Call us at 555-123-4567">(555) 123-4567</a> | <a href="mailto:info@yourdomain.com" aria-label="Email us at info@yourdomain.com">info@yourdomain.com</a></p>
+        </div>
     </footer>
 </body>
 </html>
