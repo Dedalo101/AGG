@@ -3,155 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AGG.homes - Your dedicated buyer's agent. Get the best deal on your new property.">
-    <meta name="keywords" content="real estate, property, buyer's agent, AGG.homes">
-    <meta name="author" content="AGG.homes">
-    <title>AGG.homes</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <title>Real Estate Leads - Find Your Dream Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 50px 20px;
+            background-color: white;
+            margin: -50px auto 0;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 2rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                height: 300px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .form-section {
+                margin: -30px 10px 0;
+                padding: 30px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li>Team</li>
-                <li>About Us</li>
-                <li>Services</li>
-                <li>Properties</li>
-                <li>Partners</li>
-                <li>Blog</li>
-                <li>Reviews</li>
-            </ul>
-        </nav>
-        <div class="contact-button">Contact See how we help you</div>
-        <img src="https://marketplace.canva.com/EAGPY6N4UG4/1/0/1600w/canva-dark-blue-and-gold-luxury-modern-real-estate-property-logo-GjUSig8LBVo.jpg" alt="AGG.homes Logo" class="logo">
-    </header>
-
-    <section class="hero" style="background-image: url('https://img.freepik.com/premium-vector/real-estate-landing-page-design-hero-section-real-estate-business-hero-banner-website_755018-471.jpg');">
-        <h1>Your dedicated buyer's agent</h1>
-        <p>Get the best deal on your new property</p>
-        <p>Ready to buy your dream home? We work primarily for you as the buyer. We know the local market inside out and help you get the best property at the best price. We speak your language and protect your interests every step of the way.</p>
-        <button>Schedule meeting</button>
-        <button>See properties</button>
-        <img src="https://maps.gstatic.com/mapfiles/embed/images/google_maps_gray.svg" alt="Google Maps" aria-hidden="true">
-        <p>4.7</p>
-    </section>
-
-    <section class="advantages">
-        <h2>The insider's advantage</h2>
-        <p>Get your ideal property with an expert on your side</p>
-        <p>You deserve more than just property tours. We focus on working for you as the buyer. We know which properties are worth buying and help you avoid expensive mistakes. Our local knowledge and smart approach help you make the right choice in this busy market.</p>
-        <ul>
-            <li>Your interests come first</li>
-            <li>We know the market inside out</li>
-            <li>We speak your language</li>
-        </ul>
-        <button>See how we help you</button>
-        <button>How we protect you</button>
-    </section>
-
-    <section class="how-we-help">
-        <h2>How we help you buy</h2>
-        <p>Get your property with expert help</p>
-        <ol>
-            <li>Learn what you want</li>
-            <li>Find the best opportunities</li>
-            <li>Expert property checks</li>
-            <li>Smart negotiation</li>
-            <li>Safe completion</li>
-        </ol>
-        <button>Get your free consultation</button>
-    </section>
-
-    <section class="expertise">
-        <h2>Expertise</h2>
-        <p>We know every area</p>
-        <p>Our deep knowledge helps you find opportunities others miss. From luxury areas to up-and-coming neighborhoods with great potential, we help you find the perfect location for your lifestyle and investment goals.</p>
-        <button>Get your free consultation</button>
-        <button>Learn about our expertise</button>
-    </section>
-
-    <section class="reviews">
-        <h2>Client success stories</h2>
-        <p>Smart buyers choose us</p>
-        <!-- Repeat similar review blocks -->
-        <div class="review">
-            <p>JS</p>
-            <p>Jan S.</p>
-            <p>Warmest recommendations to AGG.homes. Works constructively to meet your needs and helped us find the perfect property.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Dream Home Today</h1>
+            <p>Get personalized real estate listings and connect with our expert agents.</p>
+            <a href="#contact-form" class="cta-button">Get Started</a>
         </div>
-        <!-- More reviews -->
-        <button>Get your free consultation</button>
-        <button>See how we help you</button>
-        <button>Meet your experts</button>
-        <p>4.7</p>
     </section>
 
-    <section class="properties">
-        <h2>Hand-picked opportunities</h2>
-        <p>Find your ideal property</p>
-        <div class="property-type">
-            <h3>Villas</h3>
-            <button>See All Properties</button>
-            <div class="property">
-                <img src="https://res.cloudinary.com/dw4e01qx8/f_auto,q_auto/images/crdx0arfe9pja9aivsyy" alt="Detached Villa">
-                <p>Detached Villa €4.975.000</p>
+    <!-- Form Section -->
+    <section class="form-section" id="contact-form">
+        <h2>Contact Us for Exclusive Listings</h2>
+        <form action="https://formspree.io/f/mjkeqevn" method="POST">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
             </div>
-            <!-- More villas with images from [image:4], [image:5], [image:6] -->
-        </div>
-        <!-- Similar for Apartments, Townhouses, New Developments using respective images -->
-    </section>
-
-    <section class="blog">
-        <h2>Expert market knowledge</h2>
-        <p>Learn the property market</p>
-        <button>Get expert insights</button>
-        <button>Meet your experts</button>
-        <!-- Blog posts with thumbnails from [image:10], [image:11], [image:12] -->
-    </section>
-
-    <section class="faq">
-        <h2>Your questions answered</h2>
-        <p>Get your property with confidence</p>
-        <!-- Accordion or list of FAQs similar to example -->
-    </section>
-
-    <section class="team">
-        <h2>Your experts</h2>
-        <p>Get your ideal property with expert help</p>
-        <img src="https://images.squarespace-cdn.com/content/v1/62c4d634208d921367934ec2/43d4f42f-087b-4c7d-8322-b8c2efbfbeb6/Kawela-Home-Team-Real-Estate-Headshots-009.jpg" alt="Team Photo">
-        <!-- More team photos from [image:16], [image:17], [image:18] -->
-        <button>Get your free consultation</button>
-        <button>See how we help you</button>
-    </section>
-
-    <footer>
-        <h2>Get insider market news</h2>
-        <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="tel" name="phone" placeholder="Phone" required>
-            <select name="property-type" required>
-                <option value="">Property Type</option>
-                <option value="Villa">Villa</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Townhouse">Townhouse</option>
-                <option value="New Development">New Development</option>
-            </select>
-            <select name="budget" required>
-                <option value="">Budget Range</option>
-                <option value="Under €1M">Under €1M</option>
-                <option value="€1M - €2M">€1M - €2M</option>
-                <option value="€2M - €3M">€2M - €3M</option>
-                <option value="€3M+">€3M+</option>
-            </select>
-            <textarea name="message" placeholder="Message"></textarea>
-            <button type="submit">Get insider access</button>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="property-type">Interested In</label>
+                <select id="property-type" name="property-type" required>
+                    <option value="" disabled selected>Select property type</option>
+                    <option value="house">House</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="condo">Condo</option>
+                    <option value="land">Land</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="budget">Budget Range</label>
+                <select id="budget" name="budget" required>
+                    <option value="" disabled selected>Select budget range</option>
+                    <option value="under-200k">Under $200,000</option>
+                    <option value="200k-400k">$200,000 - $400,000</option>
+                    <option value="400k-600k">$400,000 - $600,000</option>
+                    <option value="600k+">$600,000+</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-button">Submit Inquiry</button>
         </form>
-        <p>© 2025 AGG.homes. All rights reserved.</p>
-    </footer>
+    </section>
 
-    <script src="js/script.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Your Real Estate Agency. All rights reserved.</p>
+    </footer>
 </body>
 </html>
