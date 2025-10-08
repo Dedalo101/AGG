@@ -1,19 +1,16 @@
 // Form validation
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-  const name = this.querySelector('input[name="name"]') .value.trim();
-  const email = this.querySelector('input[name="email"]').value.trim();
-  const phone = this.querySelector('input[name="phone"]').value.trim();
-  const propertyType = this.querySelector('select[name="property-type"]').value;
-  const budget = this.querySelector('select[name="budget"]').value;
-
-  if (!name || !email || !phone || !propertyType || !budget) {
-    e.preventDefault();
-    alert('Please fill all required fields.');
-  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-    e.preventDefault();
-    alert('Invalid email.');
-  } else if (!/^\d{10}$/.test(phone.replace(/\D/g, ''))) {
-    e.preventDefault();
-    alert('Invalid phone number.');
-  }
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (e) => {
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        if (!name || !email) {
+            alert('Please fill required fields.');
+            e.preventDefault();
+        }
+    });
 });
+// Integration Notes:
+// 1. Formspree: Replace action URL with your form endpoint (sign up at formspree.io, get ID).
+// 2. Airtable: In Formspree dashboard, add Airtable plugin; enter API key, base ID, table name, map fields (e.g., name to "Name").
+// 3. Zapier/HubSpot: Create Zap with Formspree trigger > Airtable action (optional) > HubSpot "Create Contact" action (use API key in Zapier).
