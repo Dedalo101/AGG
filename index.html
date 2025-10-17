@@ -221,10 +221,14 @@
             border-radius: 10px;
             background-color: #f8f9fa;
             transition: transform 0.3s ease;
+            text-decoration: none; /* Remove link underline */
+            color: inherit; /* Keep original text color */
+            display: block; /* Make entire area clickable */
         }
 
         .service-item:hover {
             transform: translateY(-5px);
+            background-color: #e9ecef;
         }
 
         .service-item h3 {
@@ -581,24 +585,30 @@
     <main role="main">
         <!-- Services Section -->
         <section class="services-section" aria-labelledby="services-heading">
-            <div class="container">
-                <h2 id="services-heading">Why Choose Our Real Estate Services?</h2>
-                <div class="services-grid">
-                    <article class="service-item">
-                        <h3>Expert Property Search</h3>
-                        <p>Our experienced agents use advanced MLS systems and local market knowledge to find properties that match your exact criteria and budget.</p>
-                    </article>
-                    <article class="service-item">
-                        <h3>Market Analysis & Pricing</h3>
-                        <p>Get comprehensive market insights, property valuations, and pricing strategies to make informed real estate decisions.</p>
-                    </article>
-                    <article class="service-item">
-                        <h3>Negotiation & Closing</h3>
-                        <p>Professional negotiation services and seamless closing process to ensure you get the best deal on your dream home.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
+    <div class="container">
+        <h2 id="services-heading">Why Choose Our Real Estate Services?</h2>
+        <div class="services-grid">
+            <a href="/experts" class="service-item">
+                <article>
+                    <h3>Expert Property Search</h3>
+                    <p>Our experienced agents use advanced MLS systems and local market knowledge to find properties that match your exact criteria and budget.</p>
+                </article>
+            </a>
+            <a href="/market" class="service-item">
+                <article>
+                    <h3>Market Analysis & Pricing</h3>
+                    <p>Get comprehensive market insights, property valuations, and pricing strategies to make informed real estate decisions.</p>
+                </article>
+            </a>
+            <a href="/negotiation" class="service-item">
+                <article>
+                    <h3>Negotiation & Closing</h3>
+                    <p>Professional negotiation services and seamless closing process to ensure you get the best deal on your dream home.</p>
+                </article>
+            </a>
+        </div>
+    </div>
+</section>
 
         <!-- Consultation Section -->
         <section id="consultation">
