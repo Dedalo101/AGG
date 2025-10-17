@@ -5,28 +5,12 @@ RewriteBase /
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Game selection routing
+# Game routing
 RewriteRule ^play/?$ /play/index.html [L]
 RewriteRule ^play/snake/?$ /play/snake/index.html [L]
 RewriteRule ^play/aliens/?$ /play/aliens/index.html [L]
 
-# Other security headers
+# Security headers
 Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
-
-Header always set Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https:; img-src 'self' https: data:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval';"
-
-RewriteCond %{REQUEST_URI} ^/consultation/?$
-RewriteRule ^.*$ https://formspree.io/f/mjkeqevn [R=302,L]
-
-<a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play';">
-    Get Started Now
-</a>
-
-#!/bin/bash
-# Update files and deploy changes
-cd /workspaces/AGG && \
-git add index.html css/styles.css .htaccess && \
-git commit -m "Fix routing: Separate game and consultation links" && \
-git push origin main
