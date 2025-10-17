@@ -13,6 +13,9 @@ RewriteRule ^play/aliens/?$ /play/aliens/index.html [L]
 # Experts routing
 RewriteRule ^experts/?$ /experts/index.html [L]
 
+# Market analysis routing
+RewriteRule ^market/?$ /market/index.html [L]
+
 # Security headers
 Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 Header set X-Content-Type-Options "nosniff"
