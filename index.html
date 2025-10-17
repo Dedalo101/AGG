@@ -724,6 +724,95 @@
             transform: scale(1.3);
             filter: brightness(1.2);
         }
+        /* Compact Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 9999;
+        }
+
+        .lang-toggle {
+            background-color: #1e7e34;
+            color: white;
+            border: 2px solid #0d4d1f;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .lang-toggle:hover {
+            background-color: #0d4d1f;
+            transform: scale(1.05);
+        }
+
+        .lang-arrow {
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .lang-toggle.active .lang-arrow {
+            transform: rotate(180deg);
+        }
+
+        .lang-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background-color: white;
+            border: 2px solid #1e7e34;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 150px;
+            display: none;
+            flex-direction: column;
+        }
+
+        .lang-menu.active {
+            display: flex;
+        }
+
+        .lang-option {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        .lang-option:hover {
+            background-color: #f0f8f4;
+            color: #1e7e34;
+            padding-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .lang-toggle {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+            
+            .lang-menu {
+                min-width: 130px;
+            }
+        }
     </style>
     <!-- load cookie consent assets (no query string so far-future cache can apply) -->
     <link rel="stylesheet" href="css/cookie-consent.min.css" media="print" onload="this.media='all'">
@@ -731,9 +820,15 @@
 </head>
 <body>
     <div class="language-switcher">
-        <a href="/" title="English">🇺🇸</a>
-        <a href="/es/" title="Español">🇪🇸</a>
-        <a href="/nl/" title="Nederlands">🇳🇱</a>
+        <button class="lang-toggle" aria-label="Toggle language menu" title="Language">
+            <span class="lang-flag">EN</span>
+            <span class="lang-arrow">▼</span>
+        </button>
+        <div class="lang-menu">
+            <a href="/" class="lang-option" data-lang="en">🇺🇸 English</a>
+            <a href="/es/" class="lang-option" data-lang="es">🇪🇸 Español</a>
+            <a href="/nl/" class="lang-option" data-lang="nl">🇳🇱 Nederlands</a>
+        </div>
     </div>
     <!-- Hero Section -->
     <header class="hero" role="banner">
