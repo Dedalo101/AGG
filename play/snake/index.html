@@ -16,6 +16,7 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            touch-action: none;
         }
         
         h1 {
@@ -27,6 +28,7 @@
             position: relative;
             border: 2px solid #333;
             background-color: #000;
+            display: inline-block;
         }
         
         #game-canvas {
@@ -57,7 +59,7 @@
             border-radius: 4px;
         }
         
-        button:hover {
+        button:hover:not(:disabled) {
             background-color: #45a049;
         }
         
@@ -83,13 +85,43 @@
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
+            z-index: 10;
         }
         
         .back-link:hover {
             background-color: #0d4d1f;
         }
         
+        /* Touch controls for mobile */
+        #touch-controls {
+            display: none;
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+            border: 2px solid #333;
+        }
+        
+        #touch-stick {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s;
+            pointer-events: none;
+        }
+        
         @media (max-width: 600px) {
+            #touch-controls {
+                display: block;
+            }
+            
             #game-canvas {
                 width: 100%;
                 max-width: 400px;
@@ -115,8 +147,13 @@
         <button id="reset-btn">Reset</button>
     </div>
     
+    <!-- Touch controls for mobile -->
+    <div id="touch-controls">
+        <div id="touch-stick"></div>
+    </div>
+    
     <div id="instructions">
-        <p>Use arrow keys or WASD to control the snake. Eat the red food to grow and increase your score!</p>
+        <p>Desktop: Use arrow keys or WASD. Mobile: Use the touch circle below.</p>
     </div>
 
     <script>
@@ -132,6 +169,8 @@
             const startBtn = document.getElementById('start-btn');
             const pauseBtn = document.getElementById('pause-btn');
             const resetBtn = document.getElementById('reset-btn');
+            const touchControls = document.getElementById('touch-controls');
+            const touchStick = document.getElementById('touch-stick');
 
             // Game variables
             let snake = [{x: 200, y: 200}];
@@ -142,6 +181,36 @@
             let gameRunning = false;
             let gamePaused = false;
             let gameLoop;
+            let gameSpeed = 150; // Initial speed (ms)
+            let baseSpeed = 150;
+            let maxSpeed = 50; // Minimum interval
+
+            // Audio context for sounds
+            let audioContext;
+            function initAudio() {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            function playEatSound() {
+                if (!audioContext) return;
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            }
 
             // Grid size
             const gridSize = 20;
@@ -176,6 +245,12 @@
                 ctx.fillRect(food.x, food.y, gridSize - 2, gridSize - 2);
             }
 
+            // Update game speed based on snake length
+            function updateSpeed() {
+                const speedIncrease = Math.floor(snake.length / 5); // Increase speed every 5 segments
+                gameSpeed = Math.max(maxSpeed, baseSpeed - (speedIncrease * 10));
+            }
+
             // Update game state
             function update() {
                 if (!gameRunning || gamePaused) return;
@@ -206,7 +281,9 @@
                 if (head.x === food.x && head.y === food.y) {
                     score += 10;
                     scoreElement.textContent = `Score: ${score}`;
+                    playEatSound();
                     randomFood();
+                    updateSpeed(); // Increase speed when eating
                 } else {
                     snake.pop();
                 }
@@ -225,6 +302,8 @@
             function startGame() {
                 if (gameRunning) return;
                 
+                initAudio(); // Initialize audio on user interaction
+                
                 gameRunning = true;
                 gamePaused = false;
                 score = 0;
@@ -232,6 +311,7 @@
                 snake = [{x: 200, y: 200}];
                 direction = {x: gridSize, y: 0};
                 nextDirection = {x: gridSize, y: 0};
+                gameSpeed = baseSpeed;
                 randomFood();
                 
                 startBtn.disabled = true;
@@ -240,7 +320,7 @@
                 gameLoop = setInterval(() => {
                     update();
                     draw();
-                }, 150);
+                }, gameSpeed);
             }
 
             // Pause/Resume game
@@ -261,6 +341,7 @@
                 snake = [{x: 200, y: 200}];
                 direction = {x: 0, y: 0};
                 nextDirection = {x: 0, y: 0};
+                gameSpeed = baseSpeed;
                 draw();
                 
                 startBtn.disabled = false;
@@ -284,6 +365,60 @@
                 } else if ((key === 'arrowdown' || key === 's') && direction.y === 0) {
                     nextDirection = {x: 0, y: gridSize};
                 }
+            });
+
+            // Touch controls
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let isDragging = false;
+
+            touchControls.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                isDragging = true;
+            });
+
+            touchControls.addEventListener('touchmove', (e) => {
+                if (!isDragging || !gameRunning || gamePaused) return;
+                
+                e.preventDefault();
+                const touch = e.touches[0];
+                const deltaX = touch.clientX - touchStartX;
+                const deltaY = touch.clientY - touchStartY;
+                
+                // Update touch stick position
+                const maxDistance = 50;
+                const distance = Math.min(maxDistance, Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+                const angle = Math.atan2(deltaY, deltaX);
+                
+                touchStick.style.transform = `translate(${Math.cos(angle) * distance - 20}px, ${Math.sin(angle) * distance - 20}px)`;
+                
+                // Determine direction based on touch
+                if (distance > 20) {
+                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                        // Horizontal movement
+                        if (deltaX > 0 && direction.x === 0) {
+                            nextDirection = {x: gridSize, y: 0};
+                        } else if (deltaX < 0 && direction.x === 0) {
+                            nextDirection = {x: -gridSize, y: 0};
+                        }
+                    } else {
+                        // Vertical movement
+                        if (deltaY > 0 && direction.y === 0) {
+                            nextDirection = {x: 0, y: gridSize};
+                        } else if (deltaY < 0 && direction.y === 0) {
+                            nextDirection = {x: 0, y: -gridSize};
+                        }
+                    }
+                }
+            });
+
+            touchControls.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                isDragging = false;
+                touchStick.style.transform = 'translate(-50%, -50%)';
             });
 
             // Event listeners
