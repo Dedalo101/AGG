@@ -474,6 +474,28 @@
             transform: translateY(-3px);
         }
 
+        .bubble {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .bubble:hover {
+            transform: scale(1.05);
+        }
+        
+        .bubble span {
+            display: block;
+            font-size: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        
+        .bubble p {
+            margin: 0;
+            opacity: 0.8;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero {
@@ -632,6 +654,11 @@
         <a href="/negotiation" class="bubble negotiation">
             <span>Negotiation & Closing</span>
             <p>Professional negotiation services and seamless closing process to ensure you get the best deal on your dream home.</p>
+        </a>
+        
+        <a href="/market" class="bubble market">
+            <span>Market Analysis & Pricing</span>
+            <p>Current market insights and precise property valuations to help you make informed decisions.</p>
         </a>
     </div>
     </main>

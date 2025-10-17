@@ -132,8 +132,63 @@
             controlDot.style.transform = 'translate(-50%, -50%)';
         });
 
-        // Game loop
+        // Add mouse/touch tracking
+        let mouseX = 0, mouseY = 0;
+        let lastMouseX = 0, lastMouseY = 0;
+        
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+        
+        // Update movement logic
+        function updateDirection() {
+            // Mouse/touch movement
+            if (mouseX !== lastMouseX || mouseY !== lastMouseY) {
+                const deltaX = mouseX - snake[0].x * gridSize;
+                const deltaY = mouseY - snake[0].y * gridSize;
+                
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    dx = deltaX > 0 ? 1 : -1;
+                    dy = 0;
+                } else {
+                    dx = 0;
+                    dy = deltaY > 0 ? 1 : -1;
+                }
+                
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+            }
+        }
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (Date.now() - lastMoveTime < 50) return;
+            lastMoveTime = Date.now();
+            
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'w':
+                    if (dy !== 1) { dx = 0; dy = -1; }
+                    break;
+                case 'ArrowDown':
+                case 's':
+                    if (dy !== -1) { dx = 0; dy = 1; }
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                    if (dx !== 1) { dx = -1; dy = 0; }
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                    if (dx !== -1) { dx = 1; dy = 0; }
+                    break;
+            }
+        });
+        
         function drawGame() {
+            updateDirection(); // Add direction update
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             let head = {x: snake[0].x + dx, y: snake[0].y + dy};
             head.x = (head.x + gridSize) % gridSize;
