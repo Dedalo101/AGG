@@ -69,72 +69,91 @@
     {
         "@context": "https://schema.org",
         "@type": "RealEstateAgent",
-        "name": "Your Real Estate Agency",
-        "description": "Premier real estate agency helping clients find their dream homes with expert guidance and personalized service.",
+        "@id": "https://agg.homes",
+        "name": "AGG Homes",
+        "image": "https://agg.homes/images/logo.png",
         "url": "https://agg.homes",
-        "logo": "https://agg.homes/logo.png",
-        "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
         "telephone": "+31617622375",
         "email": "agg@post.com",
+        "description": "Luxury real estate agency specializing in Costa del Sol properties, offering expert property search and market analysis services in Marbella and surrounding areas.",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "123 Main Street",
-            "addressLocality": "Your City",
-            "addressRegion": "Your State",
-            "postalCode": "12345",
-            "addressCountry": "US"
+            "streetAddress": "Nueva Andalucia",
+            "addressLocality": "Marbella",
+            "addressRegion": "Málaga",
+            "postalCode": "29660",
+            "addressCountry": "ES"
         },
         "geo": {
             "@type": "GeoCoordinates",
-            "latitude": "40.7128",
-            "longitude": "-74.0060"
+            "latitude": "36.5092",
+            "longitude": "-4.8854"
         },
-        "openingHours": "Mo-Fr 09:00-18:00, Sa 09:00-17:00",
-        "priceRange": "$200,000 - $20,000,000",
-        "serviceArea": {
+        "areaServed": {
             "@type": "GeoCircle",
             "geoMidpoint": {
                 "@type": "GeoCoordinates",
-                "latitude": "40.7128",
-                "longitude": "-74.0060"
+                "latitude": "36.5092",
+                "longitude": "-4.8854"
             },
-            "geoRadius": "50000"
+            "geoRadius": "30000"
         },
+        "priceRange": "€€€€",
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "18:00"
+        },
+        "sameAs": [
+            "https://www.facebook.com/agghomes",
+            "https://www.instagram.com/agghomes",
+            "https://www.linkedin.com/company/agghomes"
+        ],
         "hasOfferCatalog": {
             "@type": "OfferCatalog",
-            "name": "Real Estate Services",
+            "name": "Costa del Sol Properties",
             "itemListElement": [
                 {
                     "@type": "Offer",
                     "itemOffered": {
                         "@type": "Service",
-                        "name": "Home Buying Assistance",
-                        "description": "Expert guidance for finding and purchasing your dream home"
+                        "name": "Expert Property Search",
+                        "description": "Personalized property search using advanced MLS systems and local market knowledge"
                     }
                 },
                 {
                     "@type": "Offer",
                     "itemOffered": {
                         "@type": "Service",
-                        "name": "Property Listings",
-                        "description": "Access to exclusive property listings and market insights"
+                        "name": "Market Analysis",
+                        "description": "Comprehensive market insights and property valuations"
                     }
                 },
                 {
                     "@type": "Offer",
                     "itemOffered": {
                         "@type": "Service",
-                        "name": "Real Estate Consultation",
-                        "description": "Professional consultation for all your real estate needs"
+                        "name": "Negotiation & Closing",
+                        "description": "Professional negotiation services and seamless closing process"
                     }
                 }
             ]
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "127"
-        }
+        "knowsLanguage": [
+            "en",
+            "es",
+            "de",
+            "fr",
+            "ru",
+            "nl"
+        ]
     }
     </script>
     <style>
