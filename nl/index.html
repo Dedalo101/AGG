@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https:;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Vind je droomhuis met onze expert vastgoed diensten. Krijg gepersonaliseerde woningaanbevelingen en marktinzichten.">
     <meta name="keywords" content="vastgoed, woningen, huizen, huis kopen, huis verkopen, makelaar">
     <meta name="author" content="AGG.homes - Vastgoedmakelaar">
     <meta name="robots" content="index, follow">
+    <!-- Self-referential canonical for nl version -->
     <link rel="canonical" href="https://agg.homes/nl/">
+    <!-- Correct hreflang implementation -->
     <link rel="alternate" hreflang="en" href="https://agg.homes/">
     <link rel="alternate" hreflang="es" href="https://agg.homes/es/">
     <link rel="alternate" hreflang="nl" href="https://agg.homes/nl/">
+    <link rel="alternate" hreflang="x-default" href="https://agg.homes/">
     <title>Vind Je Droomhuis | Premier Vastgoedmakelaar</title>
     <script type="application/ld+json">
 {
@@ -249,5 +251,35 @@
         <p>&copy; 2025 Je Vastgoedmakelaar. Alle rechten voorbehouden. | Gecertificeerde Vastgoedprofessionals</p>
         <p>Neem contact op: <a href="tel:+31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com">agg@post.com</a></p>
     </footer>
+
+    <script>
+        // Playwright script to automate form submission
+        const { chromium } = require('playwright');
+
+        (async () => {
+            const browser = await chromium.launch();
+            const context = await browser.newContext();
+            const page = await context.newPage();
+
+            // Navigate to the page
+            await page.goto('https://agg.homes/nl/');
+
+            // Fill in the form
+            await page.fill('input[name="name"]', 'John Doe');
+            await page.fill('input[name="email"]', 'john.doe@example.com');
+            await page.fill('input[name="phone"]', '+31612345678');
+            await page.selectOption('select[name="property-type"]', 'villa');
+            await page.selectOption('select[name="budget"]', '500k-750k');
+
+            // Submit the form
+            await page.click('button[type="submit"]');
+
+            // Wait for the confirmation message
+            await page.waitForSelector('text=Bedankt voor je aanvraag');
+
+            // Close the browser
+            await browser.close();
+        })();
+    </script>
 </body>
 </html>
