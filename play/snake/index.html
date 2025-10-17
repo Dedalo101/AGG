@@ -158,24 +158,45 @@
     </div>
 
     <script>
-        (function() {
-            console.log('Snake game script loading...');
-            
+        console.log('Snake game script starting...');
+        
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing game...');
+            initGame();
+        });
+        
+        function initGame() {
             const canvas = document.getElementById('game-canvas');
             if (!canvas) {
                 console.error('Canvas element not found!');
+                alert('Canvas not found!');
                 return;
             }
             
-            console.log('Canvas found, initializing game...');
+            console.log('Canvas found, setting up game...');
             
             const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error('Canvas context not available!');
+                alert('Canvas context not available!');
+                return;
+            }
+            
             const scoreElement = document.getElementById('score');
             const startBtn = document.getElementById('start-btn');
             const pauseBtn = document.getElementById('pause-btn');
             const resetBtn = document.getElementById('reset-btn');
             const touchControls = document.getElementById('touch-controls');
             const touchStick = document.getElementById('touch-stick');
+
+            if (!startBtn || !pauseBtn || !resetBtn) {
+                console.error('Button elements not found!');
+                alert('Buttons not found!');
+                return;
+            }
+
+            console.log('All elements found, setting up variables...');
 
             // Game variables
             let snake = [{x: 200, y: 200}];
@@ -318,7 +339,7 @@
 
             // Start game
             function startGame() {
-                console.log('Starting game...');
+                console.log('Start button clicked!');
                 if (gameRunning) return;
                 
                 initAudio();
@@ -350,11 +371,12 @@
                 
                 gamePaused = !gamePaused;
                 pauseBtn.textContent = gamePaused ? 'Resume' : 'Pause';
+                console.log('Game paused:', gamePaused);
             }
 
             // Reset game
             function resetGame() {
-                console.log('Resetting game...');
+                console.log('Reset button clicked!');
                 gameRunning = false;
                 gamePaused = false;
                 clearInterval(gameLoop);
@@ -369,22 +391,28 @@
                 startBtn.disabled = false;
                 pauseBtn.disabled = true;
                 pauseBtn.textContent = 'Pause';
+                console.log('Game reset');
             }
 
             // Handle keyboard input
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', function(e) {
+                console.log('Key pressed:', e.key);
                 if (!gameRunning || gamePaused) return;
                 
                 const key = e.key.toLowerCase();
                 
                 if ((key === 'arrowleft' || key === 'a') && direction.x === 0) {
                     nextDirection = {x: -gridSize, y: 0};
+                    console.log('Moving left');
                 } else if ((key === 'arrowup' || key === 'w') && direction.y === 0) {
                     nextDirection = {x: 0, y: -gridSize};
+                    console.log('Moving up');
                 } else if ((key === 'arrowright' || key === 'd') && direction.x === 0) {
                     nextDirection = {x: gridSize, y: 0};
+                    console.log('Moving right');
                 } else if ((key === 'arrowdown' || key === 's') && direction.y === 0) {
                     nextDirection = {x: 0, y: gridSize};
+                    console.log('Moving down');
                 }
             });
 
@@ -393,7 +421,7 @@
             let touchStartY = 0;
             let isDragging = false;
 
-            touchControls.addEventListener('touchstart', (e) => {
+            touchControls.addEventListener('touchstart', function(e) {
                 e.preventDefault();
                 const touch = e.touches[0];
                 touchStartX = touch.clientX;
@@ -401,7 +429,7 @@
                 isDragging = true;
             });
 
-            touchControls.addEventListener('touchmove', (e) => {
+            touchControls.addEventListener('touchmove', function(e) {
                 if (!isDragging || !gameRunning || gamePaused) return;
                 
                 e.preventDefault();
@@ -432,7 +460,7 @@
                 }
             });
 
-            touchControls.addEventListener('touchend', (e) => {
+            touchControls.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 isDragging = false;
                 touchStick.style.transform = 'translate(-50%, -50%)';
@@ -445,8 +473,8 @@
 
             // Initial draw
             draw();
-            console.log('Snake game initialized successfully');
-        })();
+            console.log('Snake game initialized successfully - buttons should be visible and keyboard should work');
+        }
     </script>
 </body>
 </html>
