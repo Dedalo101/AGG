@@ -40,7 +40,17 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.cta-button { background-color: #001340; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1rem; transition: background-color 0.3s; display: inline-block; opacity: 1; }
+.cta-button {
+    background-color: #001340; /* Very dark blue for WCAG AAA contrast (~11.2:1 with white) */
+    color: #ffffff;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+    display: inline-block;
+    opacity: 1; /* Ensure no transparency affects contrast */
+}
 
 .cta-button:hover {
     background-color: #000c26; /* Darker blue for hover (~14.5:1) */
@@ -198,7 +208,18 @@ body {
     box-shadow: 0 0 5px rgba(0, 19, 64, 0.3);
 }
 
-.submit-button { width: 100%; padding: 12px; background-color: #0e3c1a; color: #ffffff; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s; opacity: 1; }
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0e3c1a; /* Very dark green for WCAG AAA contrast (~12.5:1 with white) */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    opacity: 1; /* Ensure no transparency affects contrast */
+}
 
 .submit-button:hover {
     background-color: #092b12; /* Darker green for hover (~15.8:1) */
