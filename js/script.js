@@ -1,113 +1,147 @@
-// filepath: /workspaces/AGG/js/script.js
-// Consolidated site JS: form submit, CTA->#name focus, header link fix, inject Play/Run buttons
-
-(function () {
+/* filepath: /workspaces/AGG/js/script.js */
+/* Single-file behavior:
+   - Remove/ignore other buttons (index.html contains only Get Started Today)
+   - When Get Started is clicked, open an in-browser modal and run a simple canvas Snake game
+   - Modal includes a Close button that stops the game
+*/
+(function(){
   'use strict';
 
-  // Form submit: POST via fetch, include readable cookies, then focus #question1
-  function initFormHandler() {
+  /* Create modal DOM (idempotent) */
+  function ensureModal() {
+    if (document.getElementById('snake-modal') && document.getElementById('snake-canvas')) return;
+    var modal = document.getElementById('snake-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'snake-modal';
+      modal.style.display = 'none';
+      document.body.appendChild(modal);
+    }
+    modal.style.display = 'none';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.innerHTML = '\
+      <div id="snake-wrap">\
+        <canvas id="snake-canvas" width="400" height="300" tabindex="0"></canvas>\
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">\
+          <button id="snake-close">Close</button>\
+          <div>Score: <span id="snake-score">0</span></div>\
+        </div>\
+      </div>';
+  }
+
+  /* Simple canvas Snake game */
+  function SnakeGame(canvas, scoreEl) {
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var cell = 20, cols = Math.floor(W/cell), rows = Math.floor(H/cell);
+    var snake = [{x: Math.floor(cols/2), y: Math.floor(rows/2)}];
+    var dir = {x:1,y:0};
+    var food = randomFood();
+    var running = false;
+    var tick = null;
+    var score = 0;
+
+    function randomFood(){
+      var p;
+      do { p = {x: Math.floor(Math.random()*cols), y: Math.floor(Math.random()*rows)}; }
+      while (snake.some(function(s){ return s.x===p.x && s.y===p.y; }));
+      return p;
+    }
+    function draw(){
+      ctx.fillStyle = '#000'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = '#0f0';
+      snake.forEach(function(s){ ctx.fillRect(s.x*cell, s.y*cell, cell-1, cell-1); });
+      ctx.fillStyle = '#f00';
+      ctx.fillRect(food.x*cell, food.y*cell, cell-1, cell-1);
+      if (scoreEl) scoreEl.textContent = score;
+    }
+    function step(){
+      var head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+      if (head.x<0 || head.x>=cols || head.y<0 || head.y>=rows) return stop();
+      if (snake.some(function(s){ return s.x===head.x && s.y===head.y; })) return stop();
+      snake.unshift(head);
+      if (head.x===food.x && head.y===food.y){ score++; food=randomFood(); }
+      else snake.pop();
+      draw();
+    }
+    function start(){
+      if (running) return;
+      running = true;
+      tick = setInterval(step, 100);
+      draw();
+    }
+    function stop(){
+      running = false;
+      if (tick) { clearInterval(tick); tick = null; }
+    }
+    function setDir(d){
+      // ignore reverse direction
+      if (d.x === -dir.x && d.y === -dir.y) return;
+      dir = d;
+    }
+    function onKey(e){
+      if (e.key === 'ArrowUp') setDir({x:0,y:-1});
+      if (e.key === 'ArrowDown') setDir({x:0,y:1});
+      if (e.key === 'ArrowLeft') setDir({x:-1,y:0});
+      if (e.key === 'ArrowRight') setDir({x:1,y:0});
+    }
+    canvas.addEventListener('keydown', onKey);
+    return {
+      start: start,
+      stop: stop,
+      reset: function(){ stop(); snake=[{x:Math.floor(cols/2),y:Math.floor(rows/2)}]; dir={x:1,y:0}; food=randomFood(); score=0; draw(); },
+      focus: function(){ canvas.focus(); }
+    };
+  }
+
+  /* Open modal and run game */
+  function openGameModal() {
+    ensureModal();
+    var modal = document.getElementById('snake-modal');
+    var canvas = document.getElementById('snake-canvas');
+    var scoreEl = document.getElementById('snake-score');
+    var closeBtn = document.getElementById('snake-close');
+    // create game instance
+    var game = SnakeGame(canvas, scoreEl);
+    function close() {
+      try { game.stop(); } catch(e) {}
+      modal.style.display = 'none';
+    }
+    // attach handlers (idempotent)
+    closeBtn.onclick = function(){ close(); };
+    modal.onclick = function(ev){ if (ev.target === modal) close(); };
+    // show modal and start
+    modal.style.display = 'flex';
+    game.reset();
+    // allow slight delay before focus/start
+    setTimeout(function(){ try { game.start(); game.focus(); } catch(e){} }, 100);
+  }
+
+  /* Remove other buttons (defensive) and attach to the single CTA */
+  function attachToCTA() {
+    // remove any other elements that look like CTA buttons except the main one
     try {
-      var form = document.querySelector('form');
-      if (!form) return;
-      if (!form.getAttribute('method')) form.setAttribute('method', 'POST');
-      form.addEventListener('submit', function (ev) {
+      var all = Array.prototype.slice.call(document.querySelectorAll('a.cta-button, button.cta-button, .cta-button'));
+      var main = document.getElementById('get-started') || (all.length? all[0] : null);
+      // remove all except main
+      all.forEach(function(el){
+        if (el !== main) {
+          try { el.parentNode && el.parentNode.removeChild(el); } catch(e){}
+        }
+      });
+      if (!main) return;
+      main.addEventListener('click', function(ev){
         ev.preventDefault();
-        var fd = new FormData(form);
-        try { fd.append('cookie_info', document.cookie || ''); } catch (e) {}
-        var action = form.getAttribute('action') || window.location.href;
-        if (window.fetch) {
-          fetch(action, { method: 'POST', body: fd, credentials: 'include', headers: { 'Accept': 'application/json' } })
-            .finally(function () {
-              try { location.hash = '#question1'; var a = document.getElementById('question1'); if (a && typeof a.focus === 'function') a.focus(); } catch (e) {}
-            });
-        } else {
-          form.submit();
-        }
+        openGameModal();
       }, { passive: false });
-    } catch (e) { /* non-fatal */ }
+    } catch(e) { /* non-fatal */ }
   }
 
-  // Delegated click handler: when CTA links to #name, scroll & focus the name input
-  function initCtaToName() {
-    try {
-      document.addEventListener('click', function (ev) {
-        try {
-          var el = ev.target && ev.target.closest ? ev.target.closest('a.cta-button') : null;
-          if (!el) return;
-          var href = el.getAttribute('href') || '';
-          if (href === '#name' || href.endsWith('#name')) {
-            ev.preventDefault();
-            var target = document.getElementById('name');
-            if (target) {
-              if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
-              target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              setTimeout(function () { try { target.focus(); } catch (e) { } }, 300);
-            }
-          }
-        } catch (e) { /* ignore */ }
-      }, false);
-    } catch (e) { /* non-fatal */ }
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachToCTA);
+  } else {
+    attachToCTA();
   }
-
-  // Header link fix: ensure header anchor opens blank.html in new tab
-  function initHeaderLinkFix() {
-    try {
-      var a = document.querySelector('body > header > div > a');
-      if (!a) return;
-      a.setAttribute('href', '/blank.html');
-      a.setAttribute('target', '_blank');
-      a.setAttribute('rel', 'noopener noreferrer');
-    } catch (e) { /* non-fatal */ }
-  }
-
-  // Inject Play/Run buttons under the first CTA. Play opens /game/; Run copies run command and opens /game/.
-  function injectGameButtons() {
-    try {
-      var firstCTA = document.querySelector('a.cta-button, button.cta-button');
-      if (!firstCTA || firstCTA._gameButtonsInjected) return;
-      // create container
-      var group = document.createElement('div');
-      group.className = 'cta-game-group';
-      group.style.display = 'inline-flex';
-      group.style.gap = '8px';
-      group.style.marginLeft = '8px';
-      // Play Snake link
-      var play = document.createElement('a');
-      play.className = 'cta-button small';
-      play.href = '/game/';
-      play.target = '_blank';
-      play.rel = 'noopener noreferrer';
-      play.textContent = 'Play Snake';
-      group.appendChild(play);
-      // Run Game button (copies run command and opens /game/)
-      var run = document.createElement('button');
-      run.type = 'button';
-      run.className = 'cta-button tiny';
-      run.id = 'run-local-game';
-      run.textContent = 'Run Game';
-      run.addEventListener('click', function () {
-        var cmd = 'pip install pygame && python3 /workspaces/AGG/game/snake.py';
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(cmd).then(function () {
-            try { alert('Run command copied to clipboard:\\n\\n' + cmd); } catch (e) {}
-          }, function () {
-            try { prompt('Run command (copy manually):', cmd); } catch (e) {}
-          });
-        } else {
-          try { prompt('Run command (copy manually):', cmd); } catch (e) {}
-        }
-        try { window.open('/game/', '_blank', 'noopener'); } catch (e) {}
-      }, false);
-      group.appendChild(run);
-      firstCTA.parentNode.insertBefore(group, firstCTA.nextSibling);
-      firstCTA._gameButtonsInjected = true;
-    } catch (e) { /* non-fatal */ }
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    initFormHandler();
-    initCtaToName();
-    initHeaderLinkFix();
-    injectGameButtons();
-  });
 })();
