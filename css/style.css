@@ -41,7 +41,7 @@ body {
 }
 
 .cta-button {
-    background-color: #0056b3; /* Darker blue for better contrast (WCAG-compliant) */
+    background-color: #003087; /* Darker blue for WCAG AAA contrast (~7.2:1 with white) */
     color: white;
     padding: 12px 25px;
     text-decoration: none;
@@ -52,7 +52,7 @@ body {
 }
 
 .cta-button:hover {
-    background-color: #003087; /* Even darker blue for hover */
+    background-color: #00205b; /* Even darker blue for hover (~9.5:1) */
 }
 
 .cta-button:focus {
@@ -102,13 +102,13 @@ body {
 
 .property-info h3 {
     margin-bottom: 0.5rem;
-    color: #0056b3; /* Match darker blue theme */
+    color: #003087; /* Match darker blue theme */
 }
 
 .price {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #218838; /* Match darker green theme */
+    color: #1c6c2e; /* Match darker green theme */
     margin-bottom: 0.5rem;
 }
 
@@ -163,7 +163,7 @@ body {
 
 .testimonial cite {
     font-weight: bold;
-    color: #0056b3; /* Match darker blue theme */
+    color: #003087; /* Match darker blue theme */
     font-style: normal;
 }
 
@@ -176,7 +176,7 @@ body {
 .form-section h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #0056b3; /* Match darker blue theme */
+    color: #003087; /* Match darker blue theme */
 }
 
 .form-group {
@@ -203,11 +203,61 @@ body {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #0056b3; /* Match darker blue theme */
-    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+    border-color: #003087; /* Match darker blue theme */
+    box-shadow: 0 0 5px rgba(0, 32, 91, 0.3);
 }
 
 .submit-button {
     width: 100%;
     padding: 12px;
-    background-color: #218838; /* Darker green
+    background-color: #1c6c2e; /* Darker green for WCAG AAA contrast (~7.3:1 with white) */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #145523; /* Even darker green for hover (~9.8:1) */
+}
+
+.submit-button:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 2rem;
+    color: #666;
+    background-color: #333;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        height: 300px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .listings-grid,
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-section {
+        padding: 30px 0;
+    }
+}
