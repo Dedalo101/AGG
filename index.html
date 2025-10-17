@@ -198,344 +198,418 @@
             margin-bottom: 1.5rem;
         }
 
-        .cta-button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            transition: background-color 0.3s;
-        }
+        /* Update color variables for better contrast */
+:root {
+    --primary: #0056b3;        /* Darker blue for better contrast */
+    --secondary: #156428;      /* Darker green for better contrast */
+    --text-light: #ffffff;     /* White text */
+    --text-dark: #333333;      /* Dark text */
+    --background-light: #f8f9fa;
+}
 
-        .cta-button:hover {
-            background-color: #0056b3;
-        }
+/* Update CTA button styles */
+.cta-button {
+    background-color: var(--secondary);
+    color: var(--text-light);
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
 
-        /* Services Section */
-        .services-section {
-            padding: 60px 20px;
-            background-color: white;
-        }
+.cta-button:hover,
+.cta-button:focus {
+    background-color: #0d4d1f;
+    text-decoration: underline;
+}
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
+/* Update consultation section */
+#consultation {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--primary);
+    color: var(--text-light);
+    margin-top: 40px;
+    border-radius: 10px;
+}
 
-        .service-item {
-            text-align: center;
-            padding: 30px 20px;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            transition: transform 0.3s ease;
-            text-decoration: none; /* Remove link underline */
-            color: inherit; /* Keep original text color */
-            display: block; /* Make entire area clickable */
-        }
+/* Update contact button styles */
+.contact-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: var(--secondary);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
 
-        .service-item:hover {
-            transform: translateY(-5px);
-            background-color: #e9ecef;
-        }
+.contact-button:hover,
+.contact-button:focus {
+    background-color: #0d4d1f;
+    text-decoration: underline;
+}
 
-        .service-item h3 {
-            color: #007bff;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
+/* Update submit button styles */
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--secondary);
+    color: var(--text-light);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
 
-        .service-item p {
-            color: #666;
-            line-height: 1.6;
-        }
+.submit-button:hover,
+.submit-button:focus {
+    background-color: #0d4d1f;
+}
 
-        /* Form Section */
-        .form-section {
-            padding: 50px 20px;
-            background-color: #f8f9fa;
-            margin: 0 auto;
-            max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+/* Ensure form text is readable */
+.form-description,
+#consultation p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-        .form-description {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
+/* Add focus styles for accessibility */
+.cta-button:focus,
+.contact-button:focus,
+.submit-button:focus {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+}
 
-        .form-section h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: #007bff;
-        }
+/* Add ARIA labels */
+[aria-label] {
+    position: relative;
+}
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+/* Services Section */
+.services-section {
+    padding: 60px 20px;
+    background-color: white;
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
+.service-item {
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    transition: transform 0.3s ease;
+    text-decoration: none; /* Remove link underline */
+    color: inherit; /* Keep original text color */
+    display: block; /* Make entire area clickable */
+}
 
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        }
+.service-item:hover {
+    transform: translateY(-5px);
+    background-color: #e9ecef;
+}
 
-        .form-help {
-            display: block;
-            margin-top: 5px;
-            font-size: 0.85rem;
-            color: #666;
-            font-style: italic;
-        }
+.service-item h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
 
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.service-item p {
+    color: #666;
+    line-height: 1.6;
+}
 
-        .submit-button:hover {
-            background-color: #218838;
-        }
+/* Form Section */
+.form-section {
+    padding: 50px 20px;
+    background-color: #f8f9fa;
+    margin: 0 auto;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 2rem;
-            color: #666;
-        }
+.form-description {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
 
-        /* Consultation Section */
-        #consultation {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: #007bff;
-            color: white;
-            margin-top: 40px;
-            border-radius: 10px;
-        }
+.form-section h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #007bff;
+}
 
-        #consultation h2 {
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
+.form-group {
+    margin-bottom: 1.5rem;
+}
 
-        #consultation p {
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
 
-        .contact-button {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            transition: background-color 0.3s;
-        }
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
 
-        .contact-button:hover {
-            background-color: #218838;
-        }
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
 
-        /* Contact Form Section */
-        .contact-section {
-            padding: 60px 20px;
-            background-color: #f8f9fa;
-            margin-top: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+.form-help {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+}
 
-        .contact-inner {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--secondary);
+    color: var(--text-light);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
 
-        .contact-inner h2 {
-            margin-bottom: 1.5rem;
-            color: #007bff;
-            font-size: 2rem;
-        }
+.submit-button:hover,
+.submit-button:focus {
+    background-color: #0d4d1f;
+}
 
-        .contact-inner p {
-            margin-bottom: 2rem;
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 2rem;
+    color: #666;
+}
 
-        .contact-form {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
+/* Consultation Section */
+#consultation {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--primary);
+    color: var(--text-light);
+    margin-top: 40px;
+    border-radius: 10px;
+}
 
-        .form-row {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
+#consultation h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
 
-        .form-row label {
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
+#consultation p {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
 
-        .form-row input,
-        .form-row textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
+/* Contact Form Section */
+.contact-section {
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    margin-top: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .form-row input:focus,
-        .form-row textarea:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        }
+.contact-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
 
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-        }
+.contact-inner h2 {
+    margin-bottom: 1.5rem;
+    color: #007bff;
+    font-size: 2rem;
+}
 
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            flex: 1;
-            margin-right: 10px;
-        }
+.contact-inner p {
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
+.contact-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
 
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            flex: 1;
-        }
+.form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
+.form-row label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero {
-                height: 300px;
-            }
+.form-row input,
+.form-row textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
 
-            .hero-content h1 {
-                font-size: 1.8rem;
-            }
+.form-row input:focus,
+.form-row textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
 
-            .hero-content p {
-                font-size: 1rem;
-            }
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
 
-            .services-section {
-                padding: 40px 15px;
-            }
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1;
+    margin-right: 10px;
+}
 
-            .services-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+.btn-primary:hover {
+    background-color: #0056b3;
+}
 
-            .form-section {
-                margin: 0 10px;
-                padding: 30px 15px;
-            }
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1;
+}
 
-            .footer {
-                padding: 15px;
-                text-align: center;
-            }
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
 
-            .footer p {
-                font-size: 0.9rem;
-                margin-bottom: 10px;
-            }
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        height: 300px;
+    }
 
-            .contact-section {
-                padding: 40px 15px;
-            }
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
 
-            .contact-inner h2 {
-                font-size: 1.5rem;
-            }
+    .hero-content p {
+        font-size: 1rem;
+    }
 
-            .contact-inner p {
-                font-size: 1rem;
-            }
+    .services-section {
+        padding: 40px 15px;
+    }
 
-            .contact-form {
-                grid-template-columns: 1fr;
-            }
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 
-            .actions {
-                flex-direction: column;
-            }
+    .form-section {
+        margin: 0 10px;
+        padding: 30px 15px;
+    }
 
-            .btn-primary,
-            .btn-secondary {
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
-        }
+    .footer {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .footer p {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .contact-section {
+        padding: 40px 15px;
+    }
+
+    .contact-inner h2 {
+        font-size: 1.5rem;
+    }
+
+    .contact-inner p {
+        font-size: 1rem;
+    }
+
+    .contact-form {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
     </style>
-    <link rel="stylesheet" href="css/cookie-consent.css" rel="preload" as="style">
+    <link rel="stylesheet" href="css/cookie-consent.min.css?v=1.0.0" media="print" onload="this.media='all'">
+    <script src="js/cookie-consent.min.js?v=1.0.0" defer></script>
 </head>
 <body>
     <!-- Hero Section -->
@@ -543,8 +617,12 @@
         <div class="hero-content">
             <h1>Find Your Dream Home Today with Expert Real Estate Agents</h1>
             <p>Discover exclusive property listings, get personalized market insights, and connect with our certified real estate professionals. We specialize in helping families find their perfect home in today's competitive market.</p>
-            <!-- Change the CTA button from form to game link -->
-<a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play/';">
+            <!-- Update CTA button -->
+<a href="/play" 
+   class="cta-button" 
+   onclick="event.preventDefault(); window.location.href='https://agg.homes/play/';"
+   role="button"
+   aria-label="Get Started Now - Begin your property search">
     Get Started Now
 </a>
         </div>
@@ -580,10 +658,13 @@
 </section>
 
         <!-- Consultation Section -->
-        <section id="consultation">
-            <h2>Get Your Free Real Estate Consultation</h2>
-            <p>Ready to find your dream home? Fill out our form below and our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
-            <a href="https://formspree.io/f/mjkeqevn" class="contact-button">
+        <section id="consultation" aria-labelledby="consultation-heading">
+            <h2 id="consultation-heading">Get Your Free Real Estate Consultation</h2>
+            <p>Ready to find your dream home? Our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
+            <a href="https://formspree.io/f/mjkeqevn" 
+               class="contact-button"
+               role="button"
+               aria-label="Get Free Consultation - Open contact form">
         Get Free Consultation
     </a>
         </section>
@@ -656,7 +737,12 @@
                 <small id="location-help" class="form-help">This helps us focus on your preferred areas</small>
             </div>
 
-            <button type="submit" class="submit-button">Get My Free Consultation</button>
+            <!-- Update submit button -->
+<button type="submit" 
+        class="submit-button"
+        aria-label="Submit consultation request form">
+    Get My Free Consultation
+</button>
         </form>
     </section>
 
@@ -668,7 +754,6 @@
             <p>Contact us: <a href="tel:+31617622375" aria-label="Call us at +31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com" aria-label="Email us at agg@post.com">agg@post.com</a></p>
         </div>
     </footer>
-    <script src="js/cookie-consent.js" defer></script>
 </body>
 
 </html>
