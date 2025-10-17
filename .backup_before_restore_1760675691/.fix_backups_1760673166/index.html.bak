@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preload" href="css/styles.css" as="style">
+<link rel="preload" href="js/main.js" as="script">
+<link rel="preload" href="images/hero.webp" as="image" type="image/webp">
+    <meta name="description" content="Find your dream home with our expert real estate services. Get personalized property recommendations and market insights.">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Dream Home | Premier Real Estate Agency | Expert Property Listings</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Unlock your dream home in Costa del Sol with AGG.homes—premier alternative to Drumelia, Mojo Estates, Homerun Brokers, and CDS Property. Expert Marbella/Malaga listings, insights, and guidance for buying/selling. Exclusive deals beyond Panorama, Strand Properties, or Engel & Völkers.">
+    <meta name="keywords" content="real estate Costa del Sol, Marbella real estate agency, Malaga property listings, home buying Marbella, house for sale Costa del Sol, real estate agent Malaga, property search Marbella, dream home Costa del Sol, real estate agency Malaga, home listings Marbella, property investment Costa del Sol, luxury villas Marbella, apartments for sale Malaga, beachfront properties Costa del Sol, realtor Marbella, estate agents Malaga, buy property Costa del Sol, sell home Marbella, rental properties Malaga, investment real estate Costa del Sol, Drumelia Marbella alternative, Mojo Estates Costa del Sol, Homerun Brokers Malaga competitor, CDS Property Marbella, Panorama alternative, Strand Properties competitor, Engel Völkers Marbella, Hi Homes Malaga, M21 Marbella, Right Casa Estates, Diana Morales Properties, Kristina Szekely International Realty, Smartmove Marbella, Estate Agents Marbella, Marina Banus Marbella, The Agency Marbella, Promas Estates Elviria, MPA Dunne Hamptons International, MARCHI Realty Marbella, Terra Meridiana Malaga, Inmobiliaria Sevilla 2000, Paul Goossens Marbella, D&A Inmobiliaria Malaga, Spain Realty Estate Costa del Sol, LPA Spain Agents, Bjurfors Swedish Brokers Marbella, Your Viva Costa del Sol, Atlas Group Marbella, StartGroup Fuengirola, Direct Property Investments Estepona, Top Ten Marbella, Marbella & Co Luxury, Christies International Real Estate Costa del Sol, Elite Real Estate Marbella, Nordica Sales Rentals, Domus Venari, Crystal Shore Properties, Marina Blue Properties, Andersen Fox Marbella, Key Real Estate Costa del Sol, Chloes Real Estate, Inmalaga Malaga, Inmobiliaria Arenal, Malaga Estates, Kinos Malaga, Colliers International Spain, DCANO Real Estate Malaga, The Spanish Estate Agent, Cima Real Estate Marbella, Nvoga Marbella Realty">
+    <meta name="author" content="AGG.homes - Costa del Sol Real Estate Agency">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://agg.homes/">
+
+    <!-- Additional Meta Tags for Enhanced SEO -->
+    <meta property="og:title" content="AGG.homes - Elite Real Estate in Costa del Sol, Marbella & Malaga | Superior to Drumelia or Mojo Estates">
+    <meta property="og:description" content="Personalized property services in Marbella, Malaga, Costa del Sol—elevating beyond CDS Property, Panorama, or Strand Properties with exclusive AGG expertise.">
+    <meta property="og:image" content="https://agg.homes/images/hero.jpg">
+    <meta property="og:url" content="https://agg.homes/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AGG.homes">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AGG.homes - Costa del Sol Leaders | Vs. Homerun Brokers or The Agency Marbella">
+    <meta name="twitter:description" content="Discover premium properties in Marbella/Malaga—compare to Engel & Völkers or M21 for unmatched personalization.">
+    <meta name="twitter:image" content="https://agg.homes/images/hero.jpg">
+    <meta name="twitter:site" content="@agghomes">
+    <link rel="alternate" hreflang="en" href="https://agg.homes/">
+    <link rel="alternate" hreflang="es" href="https://agg.homes/es/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Find Your Dream Home | Premier Real Estate Agency">
+    <meta property="og:description" content="Discover your perfect home with our expert real estate agents. Get personalized property listings and professional guidance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://agg.homes/">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Your Real Estate Agency">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Find Your Dream Home | Premier Real Estate Agency">
+    <meta name="twitter:description" content="Discover your perfect home with our expert real estate agents. Get personalized property listings and professional guidance.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="msapplication-TileColor" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Real Estate Agency">
+    
+    <!-- Additional SEO Links -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <link rel="alternate" type="application/rss+xml" title="Real Estate Listings RSS" href="/feed.xml">
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "name": "Your Real Estate Agency",
+        "description": "Premier real estate agency helping clients find their dream homes with expert guidance and personalized service.",
+        "url": "https://agg.homes",
+        "logo": "https://agg.homes/logo.png",
+        "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        "telephone": "+31617622375",
+        "email": "agg@post.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "123 Main Street",
+            "addressLocality": "Your City",
+            "addressRegion": "Your State",
+            "postalCode": "12345",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.7128",
+            "longitude": "-74.0060"
+        },
+        "openingHours": "Mo-Fr 09:00-18:00, Sa 09:00-17:00",
+        "priceRange": "$200,000 - $20,000,000",
+        "serviceArea": {
+            "@type": "GeoCircle",
+            "geoMidpoint": {
+                "@type": "GeoCoordinates",
+                "latitude": "40.7128",
+                "longitude": "-74.0060"
+            },
+            "geoRadius": "50000"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Real Estate Services",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Home Buying Assistance",
+                        "description": "Expert guidance for finding and purchasing your dream home"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Property Listings",
+                        "description": "Access to exclusive property listings and market insights"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Real Estate Consultation",
+                        "description": "Professional consultation for all your real estate needs"
+                    }
+                }
+            ]
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "127"
+        }
+    }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 60px 20px;
+            background-color: white;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-item {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            transition: transform 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-item h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .service-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 50px 20px;
+            background-color: #f8f9fa;
+            margin: 0 auto;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-description {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .form-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .form-help {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 2rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                height: 300px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .services-section {
+                padding: 40px 15px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-section {
+                margin: 0 10px;
+                padding: 30px 15px;
+            }
+
+            .footer {
+                padding: 15px;
+                text-align: center;
+            }
+
+            .footer p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/cookie-consent.css" rel="preload" as="style">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero" role="banner">
+        <div class="hero-content">
+            <h1>Find Your Dream Home Today with Expert Real Estate Agents</h1>
+            <p>Discover exclusive property listings, get personalized market insights, and connect with our certified real estate professionals. We specialize in helping families find their perfect home in today's competitive market.</p>
+            <a href="#name" data-original-href="#name" data-original-href="https://formspree.io/f/mjkeqevn" class="cta-button" aria-label="Get started with our real estate services">Get Started Today</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main role="main">
+        <!-- Services Section -->
+        <section class="services-section" aria-labelledby="services-heading">
+            <div class="container">
+                <h2 id="services-heading">Why Choose Our Real Estate Services?</h2>
+                <div class="services-grid">
+                    <article class="service-item">
+                        <h3>Expert Property Search</h3>
+                        <p>Our experienced agents use advanced MLS systems and local market knowledge to find properties that match your exact criteria and budget.</p>
+                    </article>
+                    <article class="service-item">
+                        <h3>Market Analysis & Pricing</h3>
+                        <p>Get comprehensive market insights, property valuations, and pricing strategies to make informed real estate decisions.</p>
+                    </article>
+                    <article class="service-item">
+                        <h3>Negotiation & Closing</h3>
+                        <p>Professional negotiation services and seamless closing process to ensure you get the best deal on your dream home.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="form-section" id="contact-form" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Get Your Free Real Estate Consultation</h2>
+            <p class="form-description">Ready to find your dream home? Fill out our form below and our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
+            <form action="https://formspree.io/f/mjkeqevn" method="POST" role="form" aria-label="Real estate consultation request form">
+  <a id="question1" tabindex="-1"></a>
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required aria-describedby="name-help">
+                <small id="name-help" class="form-help">We'll use this to personalize your property recommendations</small>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required aria-describedby="email-help">
+                <small id="email-help" class="form-help">We'll send you exclusive property listings and market updates</small>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required aria-describedby="phone-help">
+                <small id="phone-help" class="form-help">Our agents will call you within 24 hours</small>
+            </div>
+            <div class="form-group">
+                <label for="property-type">Property Type You're Looking For *</label>
+                <select id="property-type" name="property-type" required aria-describedby="property-help">
+                    <option value="" disabled selected>Select your preferred property type</option>
+                    <option value="house">Single Family House</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="condo">Condominium</option>
+                    <option value="townhouse">Townhouse</option>
+                    <option value="land">Vacant Land</option>
+                    <option value="commercial">Commercial Property</option>
+                </select>
+                <small id="property-help" class="form-help">This helps us find the most relevant listings for you</small>
+            </div>
+            <div class="form-group">
+                <label for="budget">Your Budget Range *</label>
+                <select id="budget" name="budget" required aria-describedby="budget-help">
+                    <option value="" disabled selected>Select your budget range</option>
+                    <option value="under-200k">Under $200,000</option>
+                    <option value="200k-400k">$200,000 - $400,000</option>
+                    <option value="400k-600k">$400,000 - $600,000</option>
+                    <option value="600k-800k">$600,000 - $800,000</option>
+                    <option value="800k-1m">$800,000 - $1,000,000</option>
+                    <option value="1m+">$5,000,000+</option>
+                </select>
+                <small id="budget-help" class="form-help">This helps us show you properties within your price range</small>
+            </div>
+            <button type="submit" class="submit-button">Get My Free Consultation</button>
+        </form
+        </section>
+    </main>
+
+ <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 Your Real Estate Agency. All rights reserved. | Licensed Real Estate Professionals | Serving Your Local Community</p>
+            <p>Contact us: <a href="tel:+31617622375" aria-label="Call us at +31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com" aria-label="Email us at agg@post.com">agg@post.com</a></p>
+        </div>
+    </footer>
+    <script src="js/cookie-consent.js" defer>></script>
+</body>
+
+</html>
