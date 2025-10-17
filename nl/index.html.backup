@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="nl">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://lucid.thereadme.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https:;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Encuentra tu casa ideal con nuestros servicios expertos de bienes raíces. Obtén recomendaciones personalizadas de propiedades y perspectivas del mercado.">
-    <meta name="keywords" content="bienes raíces, propiedades, casas, comprar casa, vender propiedad, agente inmobiliario">
-    <meta name="author" content="AGG.homes - Agente Inmobiliario">
+    <meta name="description" content="Vind je droomhuis met onze expert vastgoed diensten. Krijg gepersonaliseerde woningaanbevelingen en marktinzichten.">
+    <meta name="keywords" content="vastgoed, woningen, huizen, huis kopen, huis verkopen, makelaar">
+    <meta name="author" content="AGG.homes - Vastgoedmakelaar">
     <meta name="robots" content="index, follow">
-    <!-- Self-referential canonical for es version -->
-    <link rel="canonical" href="https://agg.homes/es/">
-    <!-- Correct hreflang implementation -->
+    <link rel="canonical" href="https://agg.homes/nl/">
     <link rel="alternate" hreflang="en" href="https://agg.homes/">
     <link rel="alternate" hreflang="es" href="https://agg.homes/es/">
     <link rel="alternate" hreflang="nl" href="https://agg.homes/nl/">
-    <link rel="alternate" hreflang="x-default" href="https://agg.homes/">
-    <title>Encuentra Tu Casa Ideal | Agente Inmobiliario Premier</title>
+    <title>Vind Je Droomhuis | Premier Vastgoedmakelaar</title>
     <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -171,71 +168,71 @@
 
     <header class="hero" role="banner">
         <div class="hero-content">
-            <h1>Encuentra Tu Casa Ideal Hoy con Agentes Inmobiliarios Expertos</h1>
-            <p>Descubre listados exclusivos de propiedades, obtén perspectivas personalizadas del mercado y conecta con nuestros profesionales inmobiliarios certificados. Nos especializamos en ayudar a las familias a encontrar su casa perfecta en el mercado competitivo actual.</p>
-            <a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play/';" role="button">Comenzar Ahora</a>
+            <h1>Vind Je Droomhuis Vandaag met Expert Vastgoedagenten</h1>
+            <p>Ontdek exclusieve woningaanbiedingen, krijg gepersonaliseerde marktinzichten en verbind met onze gecertificeerde vastgoedprofessionals. We specialiseren ons in het helpen van families om hun perfecte huis te vinden op de huidige competitieve markt.</p>
+            <a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play/';" role="button">Begin Nu</a>
         </div>
     </header>
 
     <main role="main">
         <section class="services-section" aria-labelledby="services-heading">
             <div class="container">
-                <h2 id="services-heading">¿Por Qué Elegir Nuestros Servicios Inmobiliarios?</h2>
+                <h2 id="services-heading">Waarom Kiezen voor Onze Vastgoeddiensten?</h2>
                 <div class="services-grid">
-                    <a href="/es/experts" class="service-item">
-                        <h3>Búsqueda Experta de Propiedades</h3>
-                        <p>Nuestros agentes experimentados utilizan sistemas MLS avanzados y conocimiento local del mercado para encontrar propiedades que se ajusten perfectamente a tus criterios y presupuesto.</p>
+                    <a href="/nl/experts" class="service-item">
+                        <h3>Expert Woning Zoeken</h3>
+                        <p>Onze ervaren agenten gebruiken geavanceerde MLS-systemen en lokale marktkennis om woningen te vinden die perfect passen bij je criteria en budget.</p>
                     </a>
-                    <a href="/es/market" class="service-item">
-                        <h3>Análisis de Mercado y Precios</h3>
-                        <p>Obtén perspectivas exhaustivas del mercado, valoraciones de propiedades y estrategias de precios para tomar decisiones inmobiliarias informadas.</p>
+                    <a href="/nl/market" class="service-item">
+                        <h3>Marktanalyse en Prijsstelling</h3>
+                        <p>Krijg uitgebreide marktinzichten, woningwaarderingen en prijsstrategieën om geïnformeerde vastgoedbeslissingen te nemen.</p>
                     </a>
-                    <a href="/es/negotiation" class="service-item">
-                        <h3>Negociación y Cierre</h3>
-                        <p>Servicios profesionales de negociación y proceso de cierre sin problemas para asegurar que obtengas el mejor trato para tu casa de ensueño.</p>
+                    <a href="/nl/negotiation" class="service-item">
+                        <h3>Onderhandeling en Afsluiting</h3>
+                        <p>Professionele onderhandelingsdiensten en naadloos afsluitingsproces om ervoor te zorgen dat je de beste deal krijgt voor je droomhuis.</p>
                     </a>
                 </div>
             </div>
         </section>
 
         <section id="consultation" aria-labelledby="consultation-heading">
-            <h2 id="consultation-heading">Obtén Tu Consulta Gratuita de Bienes Raíces</h2>
-            <p>¿Listo para encontrar tu casa de ensueño? Nuestros agentes inmobiliarios expertos se pondrán en contacto contigo dentro de 24 horas con recomendaciones personalizadas de propiedades.</p>
-            <a href="https://formspree.io/f/mjkeqevn" class="contact-button" role="button">Obtener Consulta Gratuita</a>
+            <h2 id="consultation-heading">Krijg Je Gratis Vastgoedconsultatie</h2>
+            <p>Klaar om je droomhuis te vinden? Onze expert vastgoedagenten nemen binnen 24 uur contact met je op met gepersonaliseerde woningaanbevelingen.</p>
+            <a href="https://formspree.io/f/mjkeqevn" class="contact-button" role="button">Krijg Gratis Consultatie</a>
         </section>
 
         <section class="form-section" id="contact-form" aria-labelledby="contact-heading">
-            <h2 id="contact-heading">Obtén Tu Consulta Gratuita de Bienes Raíces</h2>
+            <h2 id="contact-heading">Krijg Je Gratis Vastgoedconsultatie</h2>
             <form action="https://formspree.io/f/mjkeqevn" method="POST" role="form">
                 <div class="form-group">
-                    <label for="name">Nombre Completo *</label>
-                    <input type="text" id="name" name="name" placeholder="Ingresa tu nombre completo" required>
+                    <label for="name">Volledige Naam *</label>
+                    <input type="text" id="name" name="name" placeholder="Voer je volledige naam in" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Correo Electrónico *</label>
-                    <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+                    <label for="email">E-mailadres *</label>
+                    <input type="email" id="email" name="email" placeholder="Voer je e-mailadres in" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Número de Teléfono *</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Ingresa tu número de teléfono" required>
+                    <label for="phone">Telefoonnummer *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Voer je telefoonnummer in" required>
                 </div>
                 <div class="form-group">
-                    <label for="property-type">Tipo de Propiedad *</label>
+                    <label for="property-type">Type Woning *</label>
                     <select id="property-type" name="property-type" required>
-                        <option value="">Selecciona tipo de propiedad</option>
-                        <option value="villa">Villa de Lujo</option>
-                        <option value="apartment">Apartamento</option>
-                        <option value="penthouse">Ático</option>
-                        <option value="townhouse">Casa Adosada</option>
-                        <option value="plot">Terreno para Construir</option>
-                        <option value="commercial">Propiedad Comercial</option>
+                        <option value="">Selecteer woningtype</option>
+                        <option value="villa">Luxe Villa</option>
+                        <option value="apartment">Appartement</option>
+                        <option value="penthouse">Penthouse</option>
+                        <option value="townhouse">Rijtjeshuis</option>
+                        <option value="plot">Bouwgrond</option>
+                        <option value="commercial">Commercieel Onroerend Goed</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="budget">Rango de Presupuesto *</label>
+                    <label for="budget">Budgetbereik *</label>
                     <select id="budget" name="budget" required>
-                        <option value="">Selecciona rango de presupuesto</option>
-                        <option value="under-300k">Menos de €300.000</option>
+                        <option value="">Selecteer budgetbereik</option>
+                        <option value="under-300k">Onder €300.000</option>
                         <option value="300k-500k">€300.000 - €500.000</option>
                         <option value="500k-750k">€500.000 - €750.000</option>
                         <option value="750k-1m">€750.000 - €1.000.000</option>
@@ -243,14 +240,14 @@
                         <option value="2m+">€2.000.000+</option>
                     </select>
                 </div>
-                <button type="submit" class="submit-button">Obtén Mi Consulta Gratuita</button>
+                <button type="submit" class="submit-button">Krijg Mijn Gratis Consultatie</button>
             </form>
         </section>
     </main>
 
     <footer class="footer" role="contentinfo">
-        <p>&copy; 2025 Tu Agente Inmobiliario. Todos los derechos reservados. | Profesionales Inmobiliarios Certificados</p>
-        <p>Contacta con nosotros: <a href="tel:+31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com">agg@post.com</a></p>
+        <p>&copy; 2025 Je Vastgoedmakelaar. Alle rechten voorbehouden. | Gecertificeerde Vastgoedprofessionals</p>
+        <p>Neem contact op: <a href="tel:+31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com">agg@post.com</a></p>
     </footer>
 </body>
 </html>
