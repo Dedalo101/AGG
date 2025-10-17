@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://lucid.thereadme.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https:;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Encuentra tu casa ideal con nuestros servicios expertos de bienes raíces. Obtén recomendaciones personalizadas de propiedades y perspectivas del mercado.">
     <meta name="keywords" content="bienes raíces, propiedades, casas, comprar casa, vender propiedad, agente inmobiliario">
     <meta name="author" content="AGG.homes - Agente Inmobiliario">
     <meta name="robots" content="index, follow">
-    <!-- Self-referential canonical for es version -->
     <link rel="canonical" href="https://agg.homes/es/">
-    <!-- Correct hreflang implementation -->
     <link rel="alternate" hreflang="en" href="https://agg.homes/">
     <link rel="alternate" hreflang="es" href="https://agg.homes/es/">
     <link rel="alternate" hreflang="nl" href="https://agg.homes/nl/">
-    <link rel="alternate" hreflang="x-default" href="https://agg.homes/">
     <title>Encuentra Tu Casa Ideal | Agente Inmobiliario Premier</title>
     <script type="application/ld+json">
 {
