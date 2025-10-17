@@ -68,7 +68,8 @@ From **main** branch:
 
 ### Option 2: Update PR #1 Branch (Recommended GitHub Workflow)
 ```bash
-# Push the resolved state to PR #1's branch
+# WARNING: Force push will overwrite the remote branch
+# Only do this if you're sure no other work has been done on the PR branch
 git push origin copilot/resolve-conflicts-pr1:copilot/vscode1760700066688 --force
 
 # Then merge PR #1 normally in GitHub
@@ -99,8 +100,8 @@ node validate-setup.js
 ## Impact
 
 ### Lines Changed
-- **~2,500+ lines added** (tests, docs, configs)
-- **15 files created/modified**
+- **2,500+ lines added** (tests, docs, configs)
+- **22 files created/modified**
 - **No breaking changes**
 
 ### Benefits
