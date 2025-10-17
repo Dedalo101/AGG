@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alien Abduction Simulator | AGG Homes</title>
+    <style>
+        body { background: #000; color: lime; font-family: monospace; text-align: center; }
+        video { border: 2px solid lime; width: 400px; height: 300px; }
+        #photo { display: none; width: 200px; height: 150px; }
+        button { background: lime; color: black; padding: 10px 20px; font-size: 16px; margin: 10px; }
+        #message { font-size: 18px; margin: 20px; }
+        .home-link { position: fixed; top: 10px; left: 10px; color: lime; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-link">← Back to AGG Homes</a>
+    <h1>Alien Abduction Simulator</h1>
+    <p>Grant camera/mic access to scan for extraterrestrials!</p>
+    <video id="video" autoplay></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <img id="photo" alt="Abducted!">
+    <br>
+    <button id="startScan">Start Alien Scan</button>
+    <div id="message">Waiting for signal...</div>
+
+    <script>
+        // ...existing alien game code...
+    </script>
+</body>
+</html>

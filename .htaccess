@@ -4,9 +4,7 @@ Header set X-Frame-Options "SAMEORIGIN"
 Header always set Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https:; img-src 'self' https: data:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval';"
 
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-<FilesMatch "\.(css|js|jpg|jpeg|png|gif|ico|webp|woff2)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
-</FilesMatch>
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^play/?$ play/index.html [L]
