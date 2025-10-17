@@ -2,58 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Snake Game | AGG Homes</title>
     <style>
-        body { background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        canvas { border: 1px solid white; max-width: 100%; max-height: 80vh; }
-        .controls { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
-        .row { display: flex; gap: 10px; }
-        .button { width: 60px; height: 60px; background: #333; border: none; color: white; font-size: 24px; }
-        .home-link { position: fixed; top: 20px; left: 20px; color: white; text-decoration: none; }
+        body {
+            background: black;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            touch-action: none;
+        }
+        canvas {
+            width: 100vw;
+            height: 80vh;
+            touch-action: none;
+        }
+        .control-area {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            touch-action: none;
+        }
+        .control-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #666;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .home-link {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: white;
+            text-decoration: none;
+            z-index: 100;
+        }
     </style>
 </head>
 <body>
-    <a href="/play/" class="home-link">← Back to Games</a>
-    <canvas id="gameCanvas" width="800" height="800"></canvas>
-    <div class="controls">
-        <div class="row"><button class="button" onclick="move('up')">↑</button></div>
-        <div class="row">
-            <button class="button" onclick="move('left')">←</button>
-            <button class="button" onclick="move('down')">↓</button>
-            <button class="button" onclick="move('right')">→</button>
-        </div>
+    <a href="/play/" class="home-link">← Back</a>
+    <canvas id="gameCanvas"></canvas>
+    <div id="controlArea" class="control-area">
+        <div id="controlDot" class="control-dot"></div>
     </div>
+    
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const controlArea = document.getElementById('controlArea');
+        const controlDot = document.getElementById('controlDot');
+        
+        // Set canvas size to viewport
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight * 0.8;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Touch controls
+        let touchStart = { x: 0, y: 0 };
+        let dx = 0, dy = 0;
+
+        controlArea.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            touchStart.x = touch.clientX;
+            touchStart.y = touch.clientY;
+            e.preventDefault();
+        });
+
+        controlArea.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - touchStart.x;
+            const deltaY = touch.clientY - touchStart.y;
+            
+            // Update control dot position
+            const maxDistance = 50;
+            const distance = Math.min(Math.sqrt(deltaX * deltaX + deltaY * deltaY), maxDistance);
+            const angle = Math.atan2(deltaY, deltaX);
+            
+            controlDot.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+            
+            // Update snake direction
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                dx = deltaX > 0 ? 1 : -1;
+                dy = 0;
+            } else {
+                dx = 0;
+                dy = deltaY > 0 ? 1 : -1;
+            }
+            
+            e.preventDefault();
+        });
+
+        controlArea.addEventListener('touchend', () => {
+            controlDot.style.transform = 'translate(-50%, -50%)';
+        });
+
+        // Game variables
         const gridSize = 40;
         const tileCount = canvas.width / gridSize;
         let snake = [{x: 10, y: 10}];
         let food = {x: 15, y: 15};
-        let dx = 0, dy = 0;
         let score = 0;
         let gameStarted = true;
         let lastMoveTime = 0;
 
-        function move(direction) {
-            if (Date.now() - lastMoveTime < 50) return;
-            lastMoveTime = Date.now();
-            if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
-            if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
-            if (direction === 'left' && dx !== 1) { dx = -1; dy = 0; }
-            if (direction === 'right' && dx !== -1) { dx = 1; dy = 0; }
-        }
-
-        document.addEventListener('keydown', e => {
-            if (Date.now() - lastMoveTime < 50) return;
-            lastMoveTime = Date.now();
-            if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
-            if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
-            if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
-            if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
-        });
-
+        // Game loop
         function drawGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             let head = {x: snake[0].x + dx, y: snake[0].y + dy};

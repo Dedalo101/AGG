@@ -72,21 +72,34 @@
 
         async function requestPermissions() {
             try {
-                // Request permissions one at a time for iOS
                 if (isIOS) {
+                    // iOS sequential permissions
                     await navigator.mediaDevices.getUserMedia({ video: true });
+                    message.textContent = 'Camera access granted! Now enabling microphone...';
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                     await navigator.mediaDevices.getUserMedia({ audio: true });
                 }
                 
-                // Then request both for actual usage
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' }, 
-                    audio: true 
-                });
+                const constraints = {
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true
+                    }
+                };
                 
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 startAlienDetection(stream);
+                
             } catch (err) {
-                message.textContent = `Permission error: ${err.message}. Please check your browser settings.`;
+                message.textContent = `Cannot access camera/mic. ${err.message}`;
+                if (isIOS) {
+                    message.textContent += ' Please check your iOS settings.';
+                }
             }
         }
 
@@ -112,12 +125,59 @@
             }, 100);
         }
         
+        const pixelAlien = `
+        .....####.....
+        ....######....
+        ...########...
+        ..##########..
+        .####....####.
+        ##..######..##
+        ################
+        .##########.
+        ..########..
+        ...######...
+        ....####....
+    `;
+
+    function drawPixelAlien(ctx, x, y, size) {
+        const rows = pixelAlien.trim().split('\n');
+        const pixelSize = size / rows[0].length;
+        
+        ctx.fillStyle = '#808080'; // Grey color
+        rows.forEach((row, i) => {
+            [...row].forEach((char, j) => {
+                if (char === '#') {
+                    ctx.fillRect(
+                        x + j * pixelSize,
+                        y + i * pixelSize,
+                        pixelSize,
+                        pixelSize
+                    );
+                }
+            });
+        });
+    }
+
         function capturePhoto() {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
+            
+            // Capture video frame
             ctx.drawImage(video, 0, 0);
+            
+            // Add green overlay
             ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw pixel alien
+            const alienSize = canvas.width * 0.2;
+            drawPixelAlien(
+                ctx,
+                (canvas.width - alienSize) / 2,
+                (canvas.height - alienSize) / 2,
+                alienSize
+            );
+            
             photo.src = canvas.toDataURL('image/png');
             photo.style.display = 'block';
         }
