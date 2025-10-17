@@ -5,6 +5,87 @@ Header always set Content-Security-Policy "default-src 'self' https: data: 'unsa
 
 RewriteEngine On
 RewriteBase /
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^play/?$ play/index.html [L]
+
+# Game selection routing
+RewriteCond %{REQUEST_URI} ^/play/?$
+RewriteRule ^.*$ /play/index.html [L]
+
+# Snake game routing
+RewriteCond %{REQUEST_URI} ^/play/snake/?$
+RewriteRule ^.*$ /play/snake/index.html [L]
+
+# Alien game routing
+RewriteCond %{REQUEST_URI} ^/play/aliens/?$
+RewriteRule ^.*$ /play/aliens/index.html [L]
+
+# Handle form submissions
+RewriteCond %{REQUEST_URI} ^/consultation/?$
+RewriteRule ^.*$ https://formspree.io/f/mjkeqevn [R=302,L]
+
+<a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play';">
+    Get Started Now
+</a>
+
+#!/bin/bash
+# Update files and deploy changes
+cd /workspaces/AGG && \
+git add index.html css/styles.css .htaccess && \
+git commit -m "Fix routing: Separate game and consultation links" && \
+git push origin main
+
+// Initial draw
+ctx.fillStyle = 'red';
+ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
+ctx.fillStyle = 'yellow';
+ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+document.getElementById('startButton').addEventListener('click', () => {
+  gameStarted = true;
+  document.getElementById('startButton').style.display = 'none';
+});
+
+function move(direction) {
+  if (!gameStarted || Date.now() - lastMoveTime < 50) return;
+  lastMoveTime = Date.now();
+  if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
+  if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
+  if (direction === 'left' && dx !== 1) { dx = -1; dy = 0; }
+  if (direction === 'right' && dx !== -1) { dx = 1; dy = 0; }
+}
+
+document.addEventListener('keydown', e => {
+  if (!gameStarted || Date.now() - lastMoveTime < 50) return;
+  lastMoveTime = Date.now();
+  if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
+  if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
+  if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
+  if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
+});
+
+function drawGame() {
+  if (!gameStarted) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+  // Loop around walls
+  head.x = (head.x + tileCount) % tileCount;
+  head.y = (head.y + tileCount) % tileCount;
+
+  snake.unshift(head);
+  if (head.x === food.x && head.y === food.y) {
+    score++;
+    do {
+      food = {x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount)};
+    } while (snake.some(s => s.x === food.x && s.y === food.y));
+  } else {
+    snake.pop();
+  }
+
+  ctx.fillStyle = 'red';
+  snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+}
+
+setInterval(drawGame, 100);

@@ -3,168 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alien Abduction Simulator | AGG Homes</title>
+    <title>Choose Your Game | AGG Homes</title>
     <style>
-        body { 
-            background: #000; 
-            color: lime; 
-            font-family: monospace; 
-            text-align: center; 
-        }
-        .permission-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            z-index: 1000;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .permission-box {
-            border: 2px solid lime;
-            padding: 20px;
-            max-width: 400px;
+        .game-select {
             text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
         }
-        .permission-btn {
-            background: lime;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            margin: 10px;
+        .options {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .game-option {
+            padding: 20px;
+            border: 2px solid #fff;
+            border-radius: 10px;
             cursor: pointer;
-            font-family: monospace;
-            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 200px;
         }
-        video { 
-            border: 2px solid lime; 
-            width: 400px; 
-            height: 300px;
-            display: none;
+        .game-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
         }
-        #photo { 
-            display: none; 
-            width: 200px; 
-            height: 150px; 
+        .snake {
+            background: linear-gradient(45deg, #ff0000, #ff6b6b);
         }
+        .aliens {
+            background: linear-gradient(45deg, #00ff00, #4caf50);
+        }
+        h1 { margin-bottom: 30px; }
         .home-link {
             position: fixed;
-            top: 10px;
-            left: 10px;
-            color: lime;
+            top: 20px;
+            left: 20px;
+            color: white;
             text-decoration: none;
         }
     </style>
 </head>
 <body>
     <a href="/" class="home-link">← Back to AGG Homes</a>
-    <div id="permissionOverlay" class="permission-overlay">
-        <div class="permission-box">
-            <h2>🛸 Alien Detection System</h2>
-            <p>To scan for extraterrestrial activity, we need:</p>
-            <ul style="text-align: left;">
-                <li>Camera access (to detect alien presence)</li>
-                <li>Microphone access (to analyze alien signals)</li>
-            </ul>
-            <button id="requestPermissions" class="permission-btn">Grant Access</button>
-            <p style="font-size: 12px;">Your data stays local and is not stored.</p>
+    <div class="game-select">
+        <h1>Choose Your Game</h1>
+        <div class="options">
+            <div class="game-option snake" onclick="window.location.href='/play/snake'">
+                <h2>Snake</h2>
+                <p>Classic snake game with modern controls</p>
+            </div>
+            <div class="game-option aliens" onclick="window.location.href='/play/aliens'">
+                <h2>Alien Detector</h2>
+                <p>Scan for extraterrestrial activity</p>
+            </div>
         </div>
     </div>
-
-    <h1>Alien Abduction Simulator</h1>
-    <video id="video" autoplay muted playsinline></video>
-    <canvas id="canvas" style="display: none;"></canvas>
-    <img id="photo" alt="Abducted!">
-    <div id="message">Awaiting alien contact...</div>
-
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const photo = document.getElementById('photo');
-        const message = document.getElementById('message');
-        const permissionOverlay = document.getElementById('permissionOverlay');
-        const requestPermissionsBtn = document.getElementById('requestPermissions');
-
-        let stream = null;
-
-        requestPermissionsBtn.addEventListener('click', async () => {
-            try {
-                // Request both permissions
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' }, 
-                    audio: true 
-                });
-                
-                // Hide overlay and show video on success
-                permissionOverlay.style.display = 'none';
-                video.style.display = 'block';
-                video.srcObject = stream;
-                
-                // Start alien detection
-                startAlienDetection(stream);
-                
-            } catch (err) {
-                message.textContent = `Access denied: ${err.message}. Aliens are disappointed!`;
-                console.error('Permission error:', err);
-            }
-        });
-
-        function startAlienDetection(stream) {
-            // Audio analysis setup
-            const audioContext = new AudioContext();
-            const source = audioContext.createMediaStreamSource(stream);
-            const analyser = audioContext.createAnalyser();
-            source.connect(analyser);
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-            // Funny messages for "detections"
-            const alienMessages = [
-                "👽 Alien signal detected! They want your pizza recipe!",
-                "🛸 UFO approaching... They're impressed by your dance moves!",
-                "👾 Extraterrestrial transmission: 'Nice haircut, human!'",
-                "🌌 Alien scan complete: You're 0.01% Martian!",
-                "🚀 Warning: High levels of awesome detected!"
-            ];
-
-            // Check for "alien signals"
-            setInterval(() => {
-                analyser.getByteFrequencyData(dataArray);
-                const volume = dataArray.reduce((a, b) => a + b) / dataArray.length;
-                
-                if (volume > 50) {
-                    capturePhoto();
-                    message.textContent = alienMessages[Math.floor(Math.random() * alienMessages.length)];
-                }
-            }, 100);
-        }
-
-        function capturePhoto() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            // Capture base photo
-            ctx.drawImage(video, 0, 0);
-            
-            // Add UFO hat overlay
-            ctx.fillStyle = 'rgba(150, 150, 150, 0.7)';
-            ctx.beginPath();
-            ctx.ellipse(canvas.width/2, 50, 80, 30, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Add alien effects
-            ctx.strokeStyle = 'lime';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(0, 0, canvas.width, canvas.height);
-            
-            // Display the result
-            photo.src = canvas.toDataURL('image/png');
-            photo.style.display = 'block';
-        }
-    </script>
 </body>
 </html>
