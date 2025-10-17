@@ -6,49 +6,39 @@
     <title>Snake Game | AGG Homes</title>
     <style>
         body {
-            background: black;
             margin: 0;
+            padding: 0;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            background: black;
             overflow: hidden;
-            touch-action: none;
         }
+        
         canvas {
             width: 100vw;
-            height: 80vh;
+            height: 70vh;
             touch-action: none;
         }
-        .control-area {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 2px solid #333;
-            touch-action: none;
+        
+        .controls {
+            height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
         }
-        .control-dot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            background: #666;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-        .home-link {
-            position: fixed;
-            top: 10px;
-            left: 10px;
+        
+        .button {
+            width: 50px;
+            height: 50px;
+            background: #333;
+            border: none;
             color: white;
-            text-decoration: none;
-            z-index: 100;
+            border-radius: 25px;
+            font-size: 20px;
+            touch-action: manipulation;
         }
     </style>
 </head>
@@ -65,17 +55,47 @@
         const controlArea = document.getElementById('controlArea');
         const controlDot = document.getElementById('controlDot');
         
-        // Set canvas size to viewport
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight * 0.8;
+        // Game variables
+        let gridSize;
+        let snake = [{x: 10, y: 10}];
+        let food = {x: 15, y: 15};
+        let score = 0;
+        let dx = 0, dy = 0;
+
+        // Update game logic to ensure food is always visible
+        function spawnFood() {
+            do {
+                food = {
+                    x: Math.floor(Math.random() * (canvas.width / gridSize)),
+                    y: Math.floor(Math.random() * (canvas.height / gridSize))
+                };
+            } while (
+                // Keep food away from edges
+                food.x < 1 || 
+                food.x > (canvas.width / gridSize) - 2 ||
+                food.y < 1 || 
+                food.y > (canvas.height / gridSize) - 2 ||
+                // Avoid spawning on snake
+                snake.some(segment => segment.x === food.x && segment.y === food.y)
+            );
         }
-        resizeCanvas();
+        
+        // Ensure canvas fits screen
+        function resizeCanvas() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight * 0.7;
+            
+            gridSize = Math.min(canvas.width, canvas.height) / 20;
+        }
+        
         window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         // Touch controls
         let touchStart = { x: 0, y: 0 };
-        let dx = 0, dy = 0;
 
         controlArea.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
@@ -112,31 +132,17 @@
             controlDot.style.transform = 'translate(-50%, -50%)';
         });
 
-        // Game variables
-        const gridSize = 40;
-        const tileCount = canvas.width / gridSize;
-        let snake = [{x: 10, y: 10}];
-        let food = {x: 15, y: 15};
-        let score = 0;
-        let gameStarted = true;
-        let lastMoveTime = 0;
-
         // Game loop
         function drawGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             let head = {x: snake[0].x + dx, y: snake[0].y + dy};
-            head.x = (head.x + tileCount) % tileCount;
-            head.y = (head.y + tileCount) % tileCount;
+            head.x = (head.x + gridSize) % gridSize;
+            head.y = (head.y + gridSize) % gridSize;
 
             snake.unshift(head);
             if (head.x === food.x && head.y === food.y) {
                 score++;
-                do {
-                    food = {
-                        x: Math.floor(Math.random() * tileCount),
-                        y: Math.floor(Math.random() * tileCount)
-                    };
-                } while (snake.some(s => s.x === food.x && s.y === food.y));
+                spawnFood();
             } else {
                 snake.pop();
             }
