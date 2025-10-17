@@ -4,96 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alien Detector | AGG Homes</title>
+    <link rel="stylesheet" href="/css/styles.css">
     <style>
-        body {
-            background: #001340;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .game-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .game-content {
+            background: rgba(0,0,0,0.2);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
         }
 
         video {
-            max-width: 100%;
+            width: 100%;
+            max-width: 600px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 20px auto;
             display: none;
         }
 
+        #photo {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: none;
+            margin: 20px auto;
+        }
+
         .permission-btn {
-            background: #0e3c1a;
+            background: var(--secondary);
             color: white;
             border: none;
             padding: 12px 24px;
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .permission-btn:hover {
+            background: #0a2912;
         }
 
         #message {
+            font-size: 1.2em;
             margin: 20px 0;
-            text-align: center;
         }
 
-        .home-link {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 5px;
+        .ios-notice {
+            display: none;
+            background: rgba(0,0,0,0.9);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            max-width: 600px;
+        }
+
+        .ios-notice.show {
+            display: block;
         }
     </style>
 </head>
-<body>
+<body class="site-root">
     <a href="/play/" class="home-link">← Back to Games</a>
-    <h1>Alien Detector</h1>
-    <video id="video" autoplay muted playsinline></video>
-    <canvas id="canvas" style="display: none;"></canvas>
-    <img id="photo" alt="Alien Detection" style="display: none;">
-    <button id="startScan" class="permission-btn">Start Alien Scan</button>
-    <div id="message">Waiting for signal...</div>
 
-    <div id="iosNotice" class="ios-notice">
-        <h2>iOS Device Detected</h2>
-        <p>For the best alien detection experience:</p>
-        <ol style="text-align: left;">
-            <li>Tap "Allow" when prompted for camera access</li>
-            <li>Enable microphone in Settings if prompted</li>
-            <li>Make sure website permissions are enabled</li>
-        </ol>
-        <button class="permission-btn" onclick="this.parentElement.remove(); requestPermissions();">
-            I Understand
-        </button>
-    </div>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Alien Detector</h1>
+            <p>Use your device's camera and microphone to scan for extraterrestrial activity.</p>
+        </div>
+    </header>
 
-    <div class="questionnaire">
-        <h2>Alien Contact Form</h2>
-        <form action="https://formspree.io/f/mjkeqevn" method="POST">
-            <div class="form-group">
-                <label for="name">Your Earth Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Communication Channel (Email):</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Emergency Beacon (Phone):</label>
-                <input type="tel" id="phone" name="phone">
-            </div>
-            <div class="form-group">
-                <label for="message">Message to Aliens:</label>
-                <textarea id="message" name="message" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">Transmit Message</button>
-        </form>
-    </div>
+    <main class="game-section">
+        <div class="game-content">
+            <video id="video" autoplay muted playsinline></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+            <img id="photo" alt="Alien Detection">
+            <button id="startScan" class="permission-btn">Start Alien Scan</button>
+            <div id="message">Waiting for signal...</div>
+        </div>
+
+        <div id="iosNotice" class="ios-notice">
+            <h2>iOS Device Detected</h2>
+            <p>For the best alien detection experience:</p>
+            <ol style="text-align: left;">
+                <li>Tap "Allow" when prompted for camera access</li>
+                <li>Enable microphone in Settings if prompted</li>
+                <li>Make sure website permissions are enabled</li>
+            </ol>
+            <button class="permission-btn" onclick="this.parentElement.remove(); requestPermissions();">
+                I Understand
+            </button>
+        </div>
+    </main>
 
     <script>
         const video = document.getElementById('video');
