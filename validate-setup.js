@@ -39,7 +39,11 @@ function check(name, fn) {
 
 // Check Node.js version
 check('Node.js version >= 16', () => {
-  const version = process.version.match(/^v(\d+)\./)[1];
+  const match = process.version.match(/^v(\d+)\./);
+  if (!match) {
+    throw new Error('Unable to determine Node.js version');
+  }
+  const version = match[1];
   if (parseInt(version) < 16) {
     throw new Error(`Node.js ${version} found, but >= 16 required`);
   }
@@ -114,7 +118,11 @@ check('Language versions exist', () => {
 // Check Python availability
 check('Python 3 is available', () => {
   try {
-    const version = execSync('python3 --version', { encoding: 'utf8' });
+    const version = execSync('python3 --version', { 
+      encoding: 'utf8',
+      timeout: 5000,
+      stdio: ['pipe', 'pipe', 'ignore']
+    });
     if (!version.includes('Python 3')) {
       return 'warning';
     }
