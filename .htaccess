@@ -1,0 +1,32 @@
+# Enable cache control
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Set default expire time
+    ExpiresDefault "access plus 1 year"
+
+    # CSS files
+    <FilesMatch "\.(css)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    # JavaScript files
+    <FilesMatch "\.(js)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    # Images
+    <FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|webp)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+</IfModule>
+
+# Enable GZIP compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
