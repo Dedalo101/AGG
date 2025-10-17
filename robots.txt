@@ -1,3 +1,4 @@
-User-agent: * Allow: /
+User-agent: *
+Allow: /
 
 Sitemap: https://agg.homes/sitemap.xml
