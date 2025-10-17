@@ -10,21 +10,6 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     Header set Cache-Control "public, max-age=31536000, immutable"
 </FilesMatch>
 
-# Enable compression
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
-</IfModule>
-
-# Set caching headers
-<FilesMatch "\.(ico|pdf|jpg|jpeg|png|webp|gif|js|css|woff2|svg)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
-</FilesMatch>
-
-# Set HTML caching
-<FilesMatch "\.html$">
-    Header set Cache-Control "public, max-age=300, must-revalidate"
-</FilesMatch>
-
 # Game routing
 RewriteRule ^play/?$ /play/index.html [L]
 RewriteRule ^play/snake/?$ /play/snake/index.html [L]
