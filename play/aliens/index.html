@@ -4,105 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alien Detector | AGG Homes</title>
-    <link rel="stylesheet" href="/css/styles.css">
     <style>
-        .game-section {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            text-align: center;
+        body {
+            background: #001340;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        .game-content {
-            background: rgba(0,0,0,0.2);
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-        }
-
+        
         video {
-            width: 100%;
-            max-width: 600px;
+            max-width: 100%;
+            max-height: 70vh;
             border-radius: 10px;
-            margin: 20px auto;
+            margin: 20px 0;
             display: none;
         }
-
-        #photo {
-            max-width: 600px;
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
+        
+        canvas {
             display: none;
-            margin: 20px auto;
         }
-
+        
         .permission-btn {
-            background: var(--secondary);
+            background: #0e3c1a;
             color: white;
             border: none;
             padding: 12px 24px;
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s;
         }
-
-        .permission-btn:hover {
-            background: #0a2912;
-        }
-
-        #message {
-            font-size: 1.2em;
-            margin: 20px 0;
-        }
-
-        .ios-notice {
-            display: none;
-            background: rgba(0,0,0,0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-            max-width: 600px;
-        }
-
-        .ios-notice.show {
-            display: block;
+        
+        .home-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 5px;
         }
     </style>
 </head>
-<body class="site-root">
+<body>
     <a href="/play/" class="home-link">← Back to Games</a>
-
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Alien Detector</h1>
-            <p>Use your device's camera and microphone to scan for extraterrestrial activity.</p>
-        </div>
-    </header>
-
-    <main class="game-section">
-        <div class="game-content">
-            <video id="video" autoplay muted playsinline></video>
-            <canvas id="canvas" style="display: none;"></canvas>
-            <img id="photo" alt="Alien Detection">
-            <button id="startScan" class="permission-btn">Start Alien Scan</button>
-            <div id="message">Waiting for signal...</div>
-        </div>
-
-        <div id="iosNotice" class="ios-notice">
-            <h2>iOS Device Detected</h2>
-            <p>For the best alien detection experience:</p>
-            <ol style="text-align: left;">
-                <li>Tap "Allow" when prompted for camera access</li>
-                <li>Enable microphone in Settings if prompted</li>
-                <li>Make sure website permissions are enabled</li>
-            </ol>
-            <button class="permission-btn" onclick="this.parentElement.remove(); requestPermissions();">
-                I Understand
-            </button>
-        </div>
-    </main>
+    <h1>Alien Detector</h1>
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas"></canvas>
+    <button id="startScan" class="permission-btn">Start Alien Scan</button>
+    <div id="message">Waiting for signal...</div>
 
     <script>
         const video = document.getElementById('video');
