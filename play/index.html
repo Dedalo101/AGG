@@ -44,6 +44,30 @@
             color: white;
             text-decoration: none;
         }
+        .cookie-notice {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            right: 0;
+            background: rgba(0, 19, 64, 0.95);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 1000;
+            transition: bottom 0.3s ease;
+        }
+        .cookie-notice.show {
+            bottom: 0;
+        }
+        .cookie-btn {
+            background: #0e3c1a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -63,5 +87,31 @@
             </div>
         </div>
     </div>
+    <div id="cookieNotice" class="cookie-notice">
+        <p>We use cookies to enhance your experience. Accept to continue.</p>
+        <button class="cookie-btn" onclick="acceptCookies()">Accept</button>
+        <button class="cookie-btn" onclick="rejectCookies()">Decline</button>
+    </div>
+    <script>
+        function showCookieNotice() {
+            if (!localStorage.getItem('cookieConsent')) {
+                setTimeout(() => {
+                    document.getElementById('cookieNotice').classList.add('show');
+                }, 1000);
+            }
+        }
+        
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieNotice').classList.remove('show');
+        }
+        
+        function rejectCookies() {
+            localStorage.setItem('cookieConsent', 'rejected');
+            document.getElementById('cookieNotice').classList.remove('show');
+        }
+        
+        showCookieNotice();
+    </script>
 </body>
 </html>

@@ -10,6 +10,24 @@
         #photo { display: none; max-width: 200px; margin: 10px auto; }
         .home-link { position: fixed; top: 20px; left: 20px; color: lime; text-decoration: none; }
         .permission-btn { background: lime; color: black; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 10px; }
+        .ios-notice {
+            display: none;
+            background: rgba(0,0,0,0.9);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            padding: 20px;
+            text-align: center;
+        }
+        .ios-notice.show {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -22,6 +40,20 @@
     <br>
     <button id="startScan" class="permission-btn">Start Alien Scan</button>
     <div id="message">Waiting for signal...</div>
+
+    <div id="iosNotice" class="ios-notice">
+        <h2>iOS Device Detected</h2>
+        <p>For the best alien detection experience:</p>
+        <ol style="text-align: left;">
+            <li>Tap "Allow" when prompted for camera access</li>
+            <li>Enable microphone in Settings if prompted</li>
+            <li>Make sure website permissions are enabled</li>
+        </ol>
+        <button class="permission-btn" onclick="this.parentElement.remove(); requestPermissions();">
+            I Understand
+        </button>
+    </div>
+
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
@@ -30,37 +62,56 @@
         const message = document.getElementById('message');
         const startBtn = document.getElementById('startScan');
 
-        startBtn.addEventListener('click', async () => {
+        // Detect iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Show iOS notice if needed
+        if (isIOS) {
+            document.getElementById('iosNotice').classList.add('show');
+        }
+
+        async function requestPermissions() {
             try {
+                // Request permissions one at a time for iOS
+                if (isIOS) {
+                    await navigator.mediaDevices.getUserMedia({ video: true });
+                    await navigator.mediaDevices.getUserMedia({ audio: true });
+                }
+                
+                // Then request both for actual usage
                 const stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { facingMode: 'user' }, 
                     audio: true 
                 });
-                video.srcObject = stream;
-                video.style.display = 'block';
-                startBtn.style.display = 'none';
-                message.textContent = 'Scanning for aliens...';
                 
-                const audioContext = new AudioContext();
-                const source = audioContext.createMediaStreamSource(stream);
-                const analyser = audioContext.createAnalyser();
-                source.connect(analyser);
-                const dataArray = new Uint8Array(analyser.frequencyBinCount);
-                
-                setInterval(() => {
-                    analyser.getByteFrequencyData(dataArray);
-                    const volume = dataArray.reduce((a, b) => a + b) / dataArray.length;
-                    if (volume > 50) {
-                        capturePhoto();
-                        message.textContent = getRandomMessage();
-                    }
-                }, 100);
+                startAlienDetection(stream);
             } catch (err) {
-                message.textContent = 'Access denied. Aliens are disappointed!';
-                console.error('Permission error:', err);
+                message.textContent = `Permission error: ${err.message}. Please check your browser settings.`;
             }
-        });
+        }
 
+        function startAlienDetection(stream) {
+            video.srcObject = stream;
+            video.style.display = 'block';
+            startBtn.style.display = 'none';
+            message.textContent = 'Scanning for aliens...';
+            
+            const audioContext = new AudioContext();
+            const source = audioContext.createMediaStreamSource(stream);
+            const analyser = audioContext.createAnalyser();
+            source.connect(analyser);
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            setInterval(() => {
+                analyser.getByteFrequencyData(dataArray);
+                const volume = dataArray.reduce((a, b) => a + b) / dataArray.length;
+                if (volume > 50) {
+                    capturePhoto();
+                    message.textContent = getRandomMessage();
+                }
+            }, 100);
+        }
+        
         function capturePhoto() {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
@@ -81,6 +132,9 @@
             ];
             return messages[Math.floor(Math.random() * messages.length)];
         }
+
+        // Update start button to use new permission function
+        startBtn.addEventListener('click', requestPermissions);
     </script>
 </body>
 </html>
