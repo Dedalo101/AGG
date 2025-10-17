@@ -1,23 +1,2 @@
 /* Minified version of all non-critical styles */
 .container{max-width:1200px;margin:0 auto;padding:0 20px}.services-section{padding:4rem 1rem}.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
-
-const CACHE_NAME = 'agg-homes-v1';
-const ASSETS = [
-    '/',
-    '/css/styles.min.css',
-    '/images/hero.webp'
-];
-
-self.addEventListener('install', e => {
-    e.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(ASSETS))
-    );
-});
-
-self.addEventListener('fetch', e => {
-    e.respondWith(
-        caches.match(e.request)
-            .then(response => response || fetch(e.request))
-    );
-});
