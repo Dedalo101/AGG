@@ -393,7 +393,6 @@
             <h2 id="contact-heading">Get Your Free Real Estate Consultation</h2>
             <p class="form-description">Ready to find your dream home? Fill out our form below and our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
             <form action="https://formspree.io/f/mjkeqevn" method="POST" role="form" aria-label="Real estate consultation request form">
-  <a id="question1" tabindex="-1"></a>
             <div class="form-group">
                 <label for="name">Full Name *</label>
                 <input type="text" id="name" name="name" placeholder="Enter your full name" required aria-describedby="name-help">
