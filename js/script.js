@@ -109,3 +109,14 @@ document.addEventListener('click', function (ev) {
     }
   } catch (err) {}
 }, false);
+// /* header-link-fix */
+// Ensure /html/body/header/div/a links to /blank.html and opens in a new tab
+document.addEventListener('DOMContentLoaded', function () {
+  try {
+    var a = document.querySelector('body > header > div > a');
+    if (!a) return;
+    a.setAttribute('href', '/blank.html');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+  } catch (e) { /* non-fatal */ }
+});
