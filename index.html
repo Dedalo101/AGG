@@ -176,16 +176,16 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
-                        url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
-            height: 400px;
+            height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: white;
+            color: var(--text-light);
         }
 
         .hero-content h1 {
@@ -198,98 +198,144 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Update color variables for better contrast */
+        /* Updated color variables for better contrast */
 :root {
-    --primary: #0056b3;        /* Darker blue for better contrast */
-    --secondary: #156428;      /* Darker green for better contrast */
+    --primary: #003d82;        /* Darker blue for better contrast */
+    --secondary: #0d4d1f;      /* Darker green for better contrast */
+    --accent: #1e7e34;         /* Bright green for buttons */
     --text-light: #ffffff;     /* White text */
-    --text-dark: #333333;      /* Dark text */
+    --text-dark: #1a1a1a;      /* Very dark text */
     --background-light: #f8f9fa;
+    --background-dark: #2c3e50;
 }
 
 /* Update CTA button styles */
 .cta-button {
-    background-color: var(--secondary);
+    background-color: var(--accent);
     color: var(--text-light);
-    padding: 12px 25px;
+    padding: 15px 30px;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    transition: background-color 0.3s;
+    border-radius: 8px;
+    font-size: 1.2rem;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 2px solid var(--accent);
 }
 
 .cta-button:hover,
 .cta-button:focus {
-    background-color: #0d4d1f;
-    text-decoration: underline;
+    background-color: var(--text-light);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
 }
 
 /* Update consultation section */
 #consultation {
     text-align: center;
-    padding: 40px 20px;
+    padding: 50px 20px;
     background-color: var(--primary);
     color: var(--text-light);
     margin-top: 40px;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+#consultation h2 {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#consultation p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    opacity: 0.95;
 }
 
 /* Update contact button styles */
 .contact-button {
     display: inline-block;
-    padding: 12px 25px;
-    background-color: var(--secondary);
+    padding: 15px 30px;
+    background-color: var(--accent);
     color: var(--text-light);
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1.1rem;
-    transition: background-color 0.3s;
     font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 2px solid var(--accent);
 }
 
 .contact-button:hover,
 .contact-button:focus {
-    background-color: #0d4d1f;
-    text-decoration: underline;
+    background-color: var(--text-light);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
 }
 
 /* Update submit button styles */
 .submit-button {
     width: 100%;
-    padding: 12px;
-    background-color: var(--secondary);
+    padding: 15px;
+    background-color: var(--accent);
     color: var(--text-light);
-    border: none;
-    border-radius: 5px;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
     font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
     font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .submit-button:hover,
 .submit-button:focus {
-    background-color: #0d4d1f;
+    background-color: var(--text-light);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
 }
 
-/* Ensure form text is readable */
-.form-description,
-#consultation p {
-    color: var(--text-light);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 60ch;
-    margin-left: auto;
-    margin-right: auto;
+/* Form elements with improved contrast */
+.form-group label {
+    color: var(--text-dark);
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
 }
 
-/* Add focus styles for accessibility */
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: var(--text-light);
+    color: var(--text-dark);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(30, 126, 52, 0.1);
+}
+
+/* Focus indicators for accessibility */
 .cta-button:focus,
 .contact-button:focus,
 .submit-button:focus {
-    outline: 3px solid #fff;
+    outline: 3px solid var(--text-light);
     outline-offset: 2px;
 }
 
@@ -398,20 +444,24 @@
 
 .submit-button {
     width: 100%;
-    padding: 12px;
-    background-color: var(--secondary);
+    padding: 15px;
+    background-color: var(--accent);
     color: var(--text-light);
-    border: none;
-    border-radius: 5px;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
     font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
     font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .submit-button:hover,
 .submit-button:focus {
-    background-color: #0d4d1f;
+    background-color: var(--text-light);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Footer */
@@ -425,21 +475,28 @@
 /* Consultation Section */
 #consultation {
     text-align: center;
-    padding: 40px 20px;
+    padding: 50px 20px;
     background-color: var(--primary);
     color: var(--text-light);
     margin-top: 40px;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #consultation h2 {
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 #consultation p {
-    margin-bottom: 2rem;
+    color: var(--text-light);
     font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    opacity: 0.95;
 }
 
 /* Contact Form Section */
