@@ -59,3 +59,15 @@ RewriteRule ^negotiation/?$ /negotiation/index.html [L]
 Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
+
+# Language routing and redirects
+RewriteRule ^$ /en/ [R=301,L]  # Redirect root to /en/
+
+# Route language subdirectories
+RewriteRule ^(en|es|nl)/?$ /$1/index.html [L]
+RewriteRule ^(en|es|nl)/experts/?$ /$1/experts/index.html [L]
+RewriteRule ^(en|es|nl)/market/?$ /$1/market/index.html [L]
+RewriteRule ^(en|es|nl)/negotiation/?$ /$1/negotiation/index.html [L]
+RewriteRule ^(en|es|nl)/play/?$ /$1/play/index.html [L]
+RewriteRule ^(en|es|nl)/play/snake/?$ /$1/play/snake/index.html [L]
+RewriteRule ^(en|es|nl)/play/aliens/?$ /$1/play/aliens/index.html [L]
