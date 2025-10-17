@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alien Detector | AGG Homes</title>
+    <style>
+        body { 
+            background: #000; 
+            color: lime; 
+            font-family: monospace; 
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        video { 
+            border: 2px solid lime; 
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
+        #photo { 
+            display: none; 
+            max-width: 200px;
+            margin: 10px auto;
+        }
+        .home-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: lime;
+            text-decoration: none;
+        }
+        .permission-btn {
+            background: lime;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/play" class="home-link">← Back to Games</a>
+    <h1>Alien Detector</h1>
+    <p>Grant camera/mic access to scan for aliens!</p>
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <img id="photo" alt="Alien Detection">
+    <br>
+    <button id="startScan" class="permission-btn">Start Alien Scan</button>
+    <div id="message">Waiting for signal...</div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const photo = document.getElementById('photo');
+        const message = document.getElementById('message');
+        const startBtn = document.getElementById('startScan');
+
+        startBtn.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' }, 
+                    audio: true 
+                });
+                video.srcObject = stream;
+                startBtn.style.display = 'none';
+                
+                // Audio analysis setup
+                const audioContext = new AudioContext();
+                const source = audioContext.createMediaStreamSource(stream);
+                const analyser = audioContext.createAnalyser();
+                source.connect(analyser);
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                
+                setInterval(() => {
+                    analyser.getByteFrequencyData(dataArray);
+                    const volume = dataArray.reduce((a, b) => a + b) / dataArray.length;
+                    if (volume > 50) {
+                        capturePhoto();
+                        message.textContent = getRandomMessage();
+                    }
+                }, 100);
+            } catch (err) {
+                message.textContent = 'Access denied. Aliens are disappointed!';
+            }
+        });
+
+        function capturePhoto() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            photo.src = canvas.toDataURL('image/png');
+            photo.style.display = 'block';
+        }
+
+        function getRandomMessage() {
+            const messages = [
+                '👽 Alien signal detected!',
+                '🛸 UFO approaching...',
+                '👾 Extraterrestrial transmission received!',
+                '🌌 Alien scan complete!',
+                '🚀 Warning: High levels of awesome detected!'
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+    </script>
+</body>
+</html>

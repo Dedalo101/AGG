@@ -4,4 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game | AGG Homes</title>
-    <!-- Your existing snake game code -->
+    <style>
+        body { 
+            background: black; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            position: relative; 
+        }
+        canvas { 
+            border: 1px solid white; 
+            max-width: 100%; 
+            max-height: 80vh; 
+        }
+        .controls { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 10px; 
+        }
+        .row { display: flex; gap: 10px; }
+        .button { 
+            width: 60px; 
+            height: 60px; 
+            background: #333; 
+            border: none; 
+            color: white; 
+            font-size: 24px; 
+            touch-action: manipulation; 
+        }
+        .home-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="/play" class="home-link">← Back to Games</a>
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
+    <div class="controls">
+        <div class="row"><button class="button" onclick="move('up')">↑</button></div>
+        <div class="row">
+            <button class="button" onclick="move('left')">←</button>
+            <button class="button" onclick="move('down')">↓</button>
+            <button class="button" onclick="move('right')">→</button>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 40;
+        const tileCount = canvas.width / gridSize;
+        let snake = [{x: 10, y: 10}];
+        let food = {x: 15, y: 15};
+        let dx = 0, dy = 0;
+        let score = 0;
+        let gameStarted = true;
+        let lastMoveTime = 0;
+
+        function move(direction) {
+            if (Date.now() - lastMoveTime < 50) return;
+            lastMoveTime = Date.now();
+            if (direction === 'up' && dy !== 1) { dx = 0; dy = -1; }
+            if (direction === 'down' && dy !== -1) { dx = 0; dy = 1; }
+            if (direction === 'left' && dx !== 1) { dx = -1; dy = 0; }
+            if (direction === 'right' && dx !== -1) { dx = 1; dy = 0; }
+        }
+
+        document.addEventListener('keydown', e => {
+            if (Date.now() - lastMoveTime < 50) return;
+            lastMoveTime = Date.now();
+            if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
+            if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
+            if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
+            if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
+        });
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            head.x = (head.x + tileCount) % tileCount;
+            head.y = (head.y + tileCount) % tileCount;
+
+            snake.unshift(head);
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                do {
+                    food = {
+                        x: Math.floor(Math.random() * tileCount),
+                        y: Math.floor(Math.random() * tileCount)
+                    };
+                } while (snake.some(s => s.x === food.x && s.y === food.y));
+            } else {
+                snake.pop();
+            }
+
+            ctx.fillStyle = 'red';
+            snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 2, gridSize - 2));
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+        }
+
+        setInterval(drawGame, 100);
+    </script>
+</body>
+</html>
