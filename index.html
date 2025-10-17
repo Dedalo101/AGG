@@ -320,6 +320,41 @@
             color: #666;
         }
 
+        /* Consultation Section */
+        #consultation {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #007bff;
+            color: white;
+            margin-top: 40px;
+            border-radius: 10px;
+        }
+
+        #consultation h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        #consultation p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .contact-button:hover {
+            background-color: #218838;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero {
@@ -367,7 +402,8 @@
         <div class="hero-content">
             <h1>Find Your Dream Home Today with Expert Real Estate Agents</h1>
             <p>Discover exclusive property listings, get personalized market insights, and connect with our certified real estate professionals. We specialize in helping families find their perfect home in today's competitive market.</p>
-            <a href="/play" class="cta-button" aria-label="Play our Alien Abduction Simulator game">
+            <!-- Change the CTA button from form to game link -->
+<a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play';">
     Get Started Now
 </a>
         </div>
@@ -396,54 +432,13 @@
             </div>
         </section>
 
-        <!-- Contact Form Section -->
-        <section class="form-section" id="contact-form" aria-labelledby="contact-heading">
-            <h2 id="contact-heading">Get Your Free Real Estate Consultation</h2>
-            <p class="form-description">Ready to find your dream home? Fill out our form below and our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
-            <form action="https://formspree.io/f/mjkeqevn" method="POST" role="form" aria-label="Real estate consultation request form">
-            <div class="form-group">
-                <label for="name">Full Name *</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" required aria-describedby="name-help">
-                <small id="name-help" class="form-help">We'll use this to personalize your property recommendations</small>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email address" required aria-describedby="email-help">
-                <small id="email-help" class="form-help">We'll send you exclusive property listings and market updates</small>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number *</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required aria-describedby="phone-help">
-                <small id="phone-help" class="form-help">Our agents will call you within 24 hours</small>
-            </div>
-            <div class="form-group">
-                <label for="property-type">Property Type You're Looking For *</label>
-                <select id="property-type" name="property-type" required aria-describedby="property-help">
-                    <option value="" disabled selected>Select your preferred property type</option>
-                    <option value="house">Single Family House</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="condo">Condominium</option>
-                    <option value="townhouse">Townhouse</option>
-                    <option value="land">Vacant Land</option>
-                    <option value="commercial">Commercial Property</option>
-                </select>
-                <small id="property-help" class="form-help">This helps us find the most relevant listings for you</small>
-            </div>
-            <div class="form-group">
-                <label for="budget">Your Budget Range *</label>
-                <select id="budget" name="budget" required aria-describedby="budget-help">
-                    <option value="" disabled selected>Select your budget range</option>
-                    <option value="under-200k">Under $200,000</option>
-                    <option value="200k-400k">$200,000 - $400,000</option>
-                    <option value="400k-600k">$400,000 - $600,000</option>
-                    <option value="600k-800k">$600,000 - $800,000</option>
-                    <option value="800k-1m">$800,000 - $1,000,000</option>
-                    <option value="1m+">$5,000,000+</option>
-                </select>
-                <small id="budget-help" class="form-help">This helps us show you properties within your price range</small>
-            </div>
-            <button type="submit" class="submit-button">Get My Free Consultation</button>
-        </form>
+        <!-- Consultation Section -->
+        <section id="consultation">
+            <h2>Get Your Free Real Estate Consultation</h2>
+            <p>Ready to find your dream home? Fill out our form below and our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
+            <a href="https://formspree.io/f/mjkeqevn" class="contact-button">
+        Get Free Consultation
+    </a>
         </section>
     </main>
 
