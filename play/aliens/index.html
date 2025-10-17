@@ -28,6 +28,45 @@
             justify-content: center;
             align-items: center;
         }
+        .questionnaire {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid lime;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: lime;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            background: #000;
+            border: 1px solid lime;
+            color: lime;
+            font-family: monospace;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .submit-btn {
+            background: lime;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -52,6 +91,29 @@
         <button class="permission-btn" onclick="this.parentElement.remove(); requestPermissions();">
             I Understand
         </button>
+    </div>
+
+    <div class="questionnaire">
+        <h2>Alien Contact Form</h2>
+        <form action="https://formspree.io/f/mjkeqevn" method="POST">
+            <div class="form-group">
+                <label for="name">Your Earth Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Communication Channel (Email):</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Emergency Beacon (Phone):</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="message">Message to Aliens:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Transmit Message</button>
+        </form>
     </div>
 
     <script>
