@@ -5,48 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game | AGG Homes</title>
     <style>
-        body { 
-            background: black; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            position: relative; 
-        }
-        canvas { 
-            border: 1px solid white; 
-            max-width: 100%; 
-            max-height: 80vh; 
-        }
-        .controls { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            margin-top: 10px; 
-        }
+        body { background: black; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        canvas { border: 1px solid white; max-width: 100%; max-height: 80vh; }
+        .controls { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
         .row { display: flex; gap: 10px; }
-        .button { 
-            width: 60px; 
-            height: 60px; 
-            background: #333; 
-            border: none; 
-            color: white; 
-            font-size: 24px; 
-            touch-action: manipulation; 
-        }
-        .home-link {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-        }
+        .button { width: 60px; height: 60px; background: #333; border: none; color: white; font-size: 24px; }
+        .home-link { position: fixed; top: 20px; left: 20px; color: white; text-decoration: none; }
     </style>
 </head>
 <body>
-    <a href="/play" class="home-link">← Back to Games</a>
+    <a href="../" class="home-link">← Back to Games</a>
     <canvas id="gameCanvas" width="800" height="800"></canvas>
     <div class="controls">
         <div class="row"><button class="button" onclick="move('up')">↑</button></div>

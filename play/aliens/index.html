@@ -5,45 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alien Detector | AGG Homes</title>
     <style>
-        body { 
-            background: #000; 
-            color: lime; 
-            font-family: monospace; 
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        video { 
-            border: 2px solid lime; 
-            max-width: 100%;
-            height: auto;
-            margin: 20px auto;
-        }
-        #photo { 
-            display: none; 
-            max-width: 200px;
-            margin: 10px auto;
-        }
-        .home-link {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: lime;
-            text-decoration: none;
-        }
-        .permission-btn {
-            background: lime;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px;
-        }
+        body { background: #000; color: lime; font-family: monospace; text-align: center; padding: 20px; margin: 0; }
+        video { border: 2px solid lime; max-width: 100%; height: auto; margin: 20px auto; }
+        #photo { display: none; max-width: 200px; margin: 10px auto; }
+        .home-link { position: fixed; top: 20px; left: 20px; color: lime; text-decoration: none; }
+        .permission-btn { background: lime; color: black; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 10px; }
     </style>
 </head>
 <body>
-    <a href="/play" class="home-link">← Back to Games</a>
+    <a href="../" class="home-link">← Back to Games</a>
     <h1>Alien Detector</h1>
     <p>Grant camera/mic access to scan for aliens!</p>
     <video id="video" autoplay muted playsinline></video>
@@ -68,9 +38,10 @@
                     audio: true 
                 });
                 video.srcObject = stream;
+                video.style.display = 'block';
                 startBtn.style.display = 'none';
+                message.textContent = 'Scanning for aliens...';
                 
-                // Audio analysis setup
                 const audioContext = new AudioContext();
                 const source = audioContext.createMediaStreamSource(stream);
                 const analyser = audioContext.createAnalyser();
@@ -87,6 +58,7 @@
                 }, 100);
             } catch (err) {
                 message.textContent = 'Access denied. Aliens are disappointed!';
+                console.error('Permission error:', err);
             }
         });
 
