@@ -84,3 +84,7 @@ export default defineConfig({
     timeout: 120000,
   },
 });
+// Ignore Sentry tracking errors
+export const webServerConfig = {
+  ignoreHTTPSErrors: true,
+};
