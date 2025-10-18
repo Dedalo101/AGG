@@ -1,1 +1,0 @@
-document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector("form");e.addEventListener("submit",t=>{const n=e.name.value.trim(),r=e.email.value.trim();n&&r||(alert("Please fill required fields."),t.preventDefault())})});
