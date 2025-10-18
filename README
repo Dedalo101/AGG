@@ -31,6 +31,70 @@ Performance: Lazy loading images, optimized CSS/JS.
 Form Validation: Client-side validation for all fields (name, email, phone, property type, budget, message) with inline error messages and success confirmation.
 Tested on Chrome, Firefox, Safari (latest versions).
 
+## Testing
+
+This project includes a comprehensive Playwright test suite for automated end-to-end testing.
+
+### Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Install Playwright browsers
+npm run test:install
+
+# Validate setup
+npm run validate-setup
+
+# Run all tests
+npm test
+
+# Run tests in UI mode (interactive)
+npm run test:ui
+```
+
+### Test Coverage
+
+The test suite covers:
+- ✅ Multi-language support (English, Spanish, Dutch)
+- ✅ SEO metadata and structured data (JSON-LD)
+- ✅ Hreflang and canonical URLs
+- ✅ Language switcher functionality
+- ✅ Responsive design (mobile, tablet, desktop)
+- ✅ Accessibility features (ARIA, alt text, semantic HTML)
+- ✅ Page load performance
+- ✅ Open Graph and Twitter Card tags
+
+### Available Test Scripts
+
+- `npm test` - Run all tests headless
+- `npm run test:ui` - Interactive UI mode for development
+- `npm run test:headed` - Run tests with browser visible
+- `npm run test:debug` - Debug mode with Playwright Inspector
+- `npm run test:chromium` - Run tests only in Chromium
+- `npm run test:report` - View HTML test report
+- `npm run validate-setup` - Validate test setup
+
+### Documentation
+
+See [TESTING.md](TESTING.md) for complete testing documentation, including:
+- Detailed installation and setup
+- Running tests in different modes
+- Test structure and organization
+- CI/CD integration with GitHub Actions
+- Troubleshooting guide
+- Best practices
+
+### Continuous Integration
+
+Tests run automatically via GitHub Actions on:
+- Push to main/master branches
+- Pull requests
+- Manual workflow dispatch
+
+Test reports and screenshots are available as workflow artifacts.
+
 Accessibility Notes
 
 Contrast Fix: .cta-button uses #001f5b (9.6:1 with white) and .submit-button uses #145523 (9.8:1 with white) to exceed WCAG 2.0/2.1/2.2 AA (4.5:1) and AAA (7:1) for normal text. Hover states use #001340 (11.2:1) and #0e3c1a (12.5:1). Verified with WebAIM Contrast Checker (https://webaim.org/resources/contrastchecker/).
