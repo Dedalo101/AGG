@@ -2,116 +2,326 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="canonical" href="https://agg.homes/">
+    <!-- Canonical URL -->
+    <!-- Alternate language versions (hreflang) -->
+    <!-- Open Graph locale -->
+    <meta property="og:locale" content="en_US">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Your Game | AGG Homes</title>
+    <meta name="description" content="Find your dream home with our expert real estate services. Get personalized property recommendations and market insights.">
+    <meta name="keywords" content="real estate, properties, homes, buy house, sell property, real estate agent">
+    <meta name="author" content="AGG.homes - Real Estate Agent">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                        <meta name="robots" content="index, follow">
+    <!-- Self-referential canonical for en version -->
+    
+    <!-- Correct hreflang implementation -->
+    
+    
+    
+    
+    <title>Find Your Dream Home | Premier Real Estate Agency</title>
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "AGG Homes",
+    "url": "https://agg.homes",
+    "telephone": "+31617622375",
+    "email": "agg@post.com",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Nueva Andalucia",
+        "addressLocality": "Marbella",
+        "addressRegion": "Málaga",
+        "postalCode": "29660",
+        "addressCountry": "ES"
+    }
+}
+    </script>
     <style>
-        body {
-            background: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root {
+            --primary: #003d82;
+            --accent: #1e7e34;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
         }
-        .container {
-            text-align: center;
-            padding: 2rem;
-        }
-        .game-options {
-            display: flex;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .game-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 2rem;
-            width: 250px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .game-card:hover {
-            transform: translateY(-5px);
-        }
-        .snake { border: 2px solid #ff4444; }
-        .aliens { border: 2px solid #44ff44; }
-        .home-link {
+        
+        /* Language Switcher */
+        .lang-switcher {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            right: 15px;
+            z-index: 9999;
+            background-color: var(--accent);
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .lang-switcher a {
             color: white;
             text-decoration: none;
+            margin: 0 6px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: opacity 0.3s;
         }
-        .cookie-notice {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            right: 0;
-            background: rgba(0, 19, 64, 0.95);
-            color: white;
-            padding: 15px;
+        
+        .lang-switcher a:hover {
+            opacity: 0.7;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            z-index: 1000;
-            transition: bottom 0.3s ease;
+            color: var(--text-light);
         }
-        .cookie-notice.show {
-            bottom: 0;
-        }
-        .cookie-btn {
-            background: #0e3c1a;
+        
+        .hero-content h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 1.5rem; }
+        
+        .cta-button {
+            background-color: var(--accent);
             color: white;
-            border: none;
-            padding: 8px 16px;
-            margin: 0 5px;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid var(--accent);
+            transition: all 0.3s;
         }
-    </style>
+        
+        .cta-button:hover {
+            background-color: white;
+            color: var(--accent);
+        }
+        
+        .services-section { padding: 60px 20px; background-color: white; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .service-item { padding: 30px 20px; border-radius: 10px; background-color: #f8f9fa; text-decoration: none; color: inherit; transition: transform 0.3s; }
+        .service-item:hover { transform: translateY(-5px); }
+        .service-item h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; }
+        
+        #consultation {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: var(--primary);
+            color: white;
+            margin-top: 40px;
+            border-radius: 12px;
+        }
+        
+        #consultation h2 { font-size: 2rem; margin-bottom: 20px; }
+        #consultation p { font-size: 1.1rem; margin: 0 auto 30px; max-width: 600px; }
+        
+        .contact-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 2px solid var(--accent);
+            transition: all 0.3s;
+        }
+        
+        .contact-button:hover { background-color: white; color: var(--accent); }
+        
+        .form-section { padding: 50px 20px; background-color: #f8f9fa; margin: 0 auto; max-width: 600px; border-radius: 10px; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--accent);
+            color: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-button:hover { background-color: white; color: var(--accent); }
+        
+        .footer { text-align: center; padding: 20px; margin-top: 2rem; color: #666; }
+        
+        @media (max-width: 768px) {
+            .hero { height: 300px; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
+    
+  /* Enhanced focus indicators for accessibility */
+  button, a[role="button"], .btn, .cta-button {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition: outline 0.2s ease;
+  }
+
+  button:focus, a[role="button"]:focus, .btn:focus, .cta-button:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+
+  button:focus-visible, a[role="button"]:focus-visible, .btn:focus-visible, .cta-button:focus-visible {
+    outline: 3px dashed #0066cc;
+    outline-offset: 4px;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: more) {
+    body {
+      --text-color: #000;
+      --bg-color: #fff;
+    }
+    
+    a {
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    
+    button, .btn, .cta-button {
+      border: 2px solid currentColor;
+      font-weight: 600;
+    }
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+    }
+  }
+
+  /* Motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+    <link rel="stylesheet" href="/css/cookie-consent.min.css" media="print" onload="this.media='all'">
+    <script src="/js/cookie-consent.min.js" defer></script>
 </head>
 <body>
-    <a href="/" class="home-link">← Back to AGG Homes</a>
-    <div class="container">
-        <h1>Choose Your Game</h1>
-        <div class="game-options">
-            <div class="game-card snake" onclick="location.href='/play/snake/'">
-                <h2>Snake Game</h2>
-                <p>Classic arcade action</p>
-                <p>Use arrow keys or buttons to play</p>
-            </div>
-            <div class="game-card aliens" onclick="location.href='/play/aliens/'">
-                <h2>Alien Detector</h2>
-                <p>Scan for extraterrestrial activity</p>
-                <p>Requires camera and microphone</p>
-            </div>
+    <a href="#main-content" class="sr-only focus:visible">Skip to main content</a>
+
+    <div class="lang-switcher">
+        <a href="/">EN</a> / <a href="/es/">ES</a> / <a href="/nl/">NL</a>
+    </div>
+
+    <header class="hero" role="banner">
+        <div class="hero-content">
+            <h1>Find Your Dream Home Today with Expert Real Estate Agents</h1>
+            <p>Discover exclusive property listings, get personalized market insights, and connect with our certified real estate professionals. We specialize in helping families find their perfect home in today's competitive market.</p>
+            <a href="/play" class="cta-button" onclick="event.preventDefault(); window.location.href='https://agg.homes/play/';" role="button">Get Started Now</a>
         </div>
-    </div>
-    <div id="cookieNotice" class="cookie-notice">
-        <p>We use cookies to enhance your experience. Accept to continue.</p>
-        <button class="cookie-btn" onclick="acceptCookies()">Accept</button>
-        <button class="cookie-btn" onclick="rejectCookies()">Decline</button>
-    </div>
-    <script>
-        function showCookieNotice() {
-            if (!localStorage.getItem('cookieConsent')) {
-                setTimeout(() => {
-                    document.getElementById('cookieNotice').classList.add('show');
-                }, 1000);
-            }
-        }
-        
-        function acceptCookies() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            document.getElementById('cookieNotice').classList.remove('show');
-        }
-        
-        function rejectCookies() {
-            localStorage.setItem('cookieConsent', 'rejected');
-            document.getElementById('cookieNotice').classList.remove('show');
-        }
-        
-        showCookieNotice();
-    </script>
+    </header>
+
+    <main role="main">
+        <section class="services-section" aria-labelledby="services-heading">
+            <div class="container">
+                <h2 id="services-heading">Why Choose Our Real Estate Services?</h2>
+                <div class="services-grid">
+                    <a href="/en/experts" class="service-item">
+                        <h3>Expert Property Search</h3>
+                        <p>Our experienced agents use advanced MLS systems and local market knowledge to find properties that perfectly match your criteria and budget.</p>
+                    </a>
+                    <a href="/en/market" class="service-item">
+                        <h3>Market Analysis & Pricing</h3>
+                        <p>Get comprehensive market insights, property valuations, and pricing strategies to make informed real estate decisions.</p>
+                    </a>
+                    <a href="/en/negotiation" class="service-item">
+                        <h3>Negotiation & Closing</h3>
+                        <p>Professional negotiation services and seamless closing process to ensure you get the best deal for your dream home.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="consultation" aria-labelledby="consultation-heading">
+            <h2 id="consultation-heading">Get Your Free Real Estate Consultation</h2>
+            <p>Ready to find your dream home? Our expert real estate agents will contact you within 24 hours with personalized property recommendations.</p>
+            <a href="https://formspree.io/f/mjkeqevn" class="contact-button" role="button">Get Free Consultation</a>
+        </section>
+
+        <section class="form-section" id="contact-form" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Get Your Free Real Estate Consultation</h2>
+            <form action="https://formspree.io/f/mjkeqevn" method="POST" role="form">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="property-type">Property Type *</label>
+                    <select id="property-type" name="property-type" required>
+                        <option value="">Select property type</option>
+                        <option value="villa">Luxury Villa</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="penthouse">Penthouse</option>
+                        <option value="townhouse">Townhouse</option>
+                        <option value="plot">Land Plot</option>
+                        <option value="commercial">Commercial Property</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget Range *</label>
+                    <select id="budget" name="budget" required>
+                        <option value="">Select budget range</option>
+                        <option value="under-300k">Under €300,000</option>
+                        <option value="300k-500k">€300,000 - €500,000</option>
+                        <option value="500k-750k">€500,000 - €750,000</option>
+                        <option value="750k-1m">€750,000 - €1,000,000</option>
+                        <option value="1m-2m">€1,000,000 - €2,000,000</option>
+                        <option value="2m+">€2,000,000+</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-button">Get My Free Consultation</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <p>&copy; 2025 Your Real Estate Agent. All rights reserved. | Certified Real Estate Professionals</p>
+        <p>Contact us: <a href="tel:+31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com">agg@post.com</a></p>
+    </footer>
 </body>
 </html>
