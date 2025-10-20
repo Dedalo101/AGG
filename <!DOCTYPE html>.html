@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play the classic Snake Game online - a free, fast-paced arcade game. Control your snake, eat food, grow longer, and reach high scores. Addictive gameplay with progressive difficulty levels.">
+    <meta name="keywords" content="snake game, online snake, free games, arcade game, classic games, snake online game, play snake">
+    <meta name="author" content="AGG.homes">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#00ff88">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Play Snake Game Online - Free Classic Arcade Game">
+    <meta property="og:description" content="Experience the addictive Snake Game online. Eat food, grow your snake, and compete for high scores. Free to play with progressive difficulty.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://play.agg.homes/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+    
+    <title>Play Snake Game Online - Free Classic Arcade Game | AGG.homes</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            font-family: 'Courier New', monospace;
+            color: #fff;
+        }
+
+        .game-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 48px;
+            color: #00ff88;
+            text-shadow: 0 0 20px #00ff88;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: #00dd77;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 12px 20px;
+            border-radius: 4px;
+            border: 2px solid #00ff88;
+            font-size: 16px;
+        }
+
+        #gameBoard {
+            background: #1a1f3a;
+            border: 4px solid #00ff88;
+            display: block;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 14px;
+            background: #00ff88;
+            color: #0a0e27;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        button:hover {
+            background: #00dd77;
+            transform: scale(1.08);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .instructions {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid #00ff88;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #00dd77;
+        }
+
+        .instructions h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .instructions p {
+            margin: 5px 0;
+        }
+
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 14, 39, 0.98);
+            border: 3px solid #ff0055;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.6);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .game-over.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .game-over h2 {
+            color: #ff0055;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0055;
+        }
+
+        .game-over p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .game-over .final-score {
+            font-size: 24px;
+            color: #ffd700;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .content {
+            background: rgba(0, 255, 136, 0.02);
+            border-top: 2px solid #00ff88;
+            padding: 40px 20px;
+            text-align: left;
+        }
+
+        .content h2 {
+            color: #00ff88;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #00dd77;
+            font-size: 15px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .feature {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #00ff88;
+        }
+
+        .feature strong {
+            color: #00ff88;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            #gameBoard {
+                max-width: 300px;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .game-over {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="game-container">
+            <h1>🐍 SNAKE GAME</h1>
+            <p class="tagline">Classic Arcade Action - Play Online Free</p>
+            
+            <div class="stats">
+                <div class="stat">Score: <span id="score">0</span></div>
+                <div class="stat">Level: <span id="level">1</span></div>
+            </div>
+
+            <canvas id="gameBoard" width="400" height="400"></canvas>
+
+            <div class="controls">
+                <button onclick="game.togglePause()">▶ Play/Pause</button>
+                <button onclick="game.reset()">🔄 New Game</button>
+            </div>
+
+            <div class="instructions">
+                <h3>How to Play</h3>
+                <p>🎮 <strong>Controls:</strong> Use Arrow Keys or WASD to move your snake</p>
+                <p>⏸️ <strong>Pause:</strong> Press Space or click Play/Pause button</p>
+                <p>🎯 <strong>Objective:</strong> Eat food, grow longer, and maximize your score</p>
+                <p>💥 <strong>Game Over:</strong> Avoid walls and hitting yourself</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="gameOverOverlay"></div>
+
+    <div class="game-over" id="gameOverModal">
+        <h2>GAME OVER!</h2>
+        <p>Final Score:</p>
+        <div class="final-score"><span id="finalScore">0</span></div>
+        <p>Press SPACE or click New Game to play again</p>
+    </div>
+
+    <div class="content">
+        <h2>About Snake Game</h2>
+        <p>
+            Welcome to the classic Snake Game - one of the most iconic and addictive arcade games ever created! 
+            This free online version brings back the nostalgia of the original while adding modern graphics and 
+            smooth gameplay. Snake Game has captivated millions of players worldwide with its simple yet challenging 
+            mechanics that have stood the test of time.
+        </p>
+        
+        <p>
+            Our online Snake Game features progressive difficulty levels that increase as you score more points. 
+            The faster you progress, the more challenging the gameplay becomes. Each level tests your reflexes, 
+            strategy, and ability to plan your snake's movement. Whether you're looking for a quick gaming session 
+            or an extended challenge, this free Snake Game delivers endless entertainment right in your browser.
+        </p>
+
+        <h2>Game Features</h2>
+        <div class="features">
+            <div class="feature">
+                <strong>✨ Smooth Graphics</strong>
+                <p>Beautiful neon-style visuals with glowing effects and smooth animations</p>
+            </div>
+            <div class="feature">
+                <strong>📈 Progressive Levels</strong>
+                <p>Difficulty increases with your score for endless challenge</p>
+            </div>
+            <div class="feature">
+                <strong>🎮 Responsive Controls</strong>
+                <p>Multiple control options: Arrow Keys or WASD keyboard controls</p>
+            </div>
+            <div class="feature">
+                <strong>⏱️ Fast Gameplay</strong>
+                <p>Optimized performance for smooth 60 FPS gameplay experience</p>
+            </div>
+        </div>
+
+        <p>
+            Whether you're a casual gamer or a hardcore Snake enthusiast, this online Snake Game offers 
+            something for everyone. Challenge yourself to beat your high score and experience the perfect 
+            blend of nostalgia and modern gaming. Play Snake Game now and become a master of the arcade!
+        </p>
+    </div>
+
+    <script>
+        const Game = class {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.gridSize = 20;
+                this.tileCount = this.canvas.width / this.gridSize;
+                
+                this.reset();
+                this.setupEventListeners();
+                this.draw();
+            }
+
+            reset() {
+                this.snake = [{ x: Math.floor(this.tileCount / 2), y: Math.floor(this.tileCount / 2) }];
+                this.direction = { x: 1, y: 0 };
+                this.nextDirection = { x: 1, y: 0 };
+                this.food = this.generateFood();
+                this.score = 0;
+                this.level = 1;
+                this.isRunning = false;
+                this.gameOver = false;
+                this.gameLoopId = null;
+                this.updateUI();
+                document.getElementById('gameOverModal').classList.remove('show');
+                document.getElementById('gameOverOverlay').classList.remove('show');
+            }
+
+            setupEventListeners() {
+                document.addEventListener('keydown', (e) => this.handleInput(e));
+                document.getElementById('gameOverOverlay').addEventListener('click', () => this.reset());
+            }
+
+            handleInput(e) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    this.togglePause();
+                    return;
+                }
+
+                const keyMap = {
+                    'ArrowUp': { x: 0, y: -1 },
+                    'ArrowDown': { x: 0, y: 1 },
+                    'ArrowLeft': { x: -1, y: 0 },
+                    'ArrowRight': { x: 1, y: 0 },
+                    'KeyW': { x: 0, y: -1 },
+                    'KeyS': { x: 0, y: 1 },
+                    'KeyA': { x: -1, y: 0 },
+                    'KeyD': { x: 1, y: 0 }
+                };
+
+                if (keyMap[e.code]) {
+                    e.preventDefault();
+                    const newDir = keyMap[e.code];
+                    if (newDir.x !== -this.direction.x || newDir.y !== -this.direction.y) {
+                        this.nextDirection = newDir;
+                    }
+                }
+            }
+
+            generateFood() {
+                let food;
+                let isValid = false;
+                while (!isValid) {
+                    food = {
+                        x: Math.floor(Math.random() * this.tileCount),
+                        y: Math.floor(Math.random() * this.tileCount)
+                    };
+                    isValid = !this.snake.some(seg => seg.x === food.x && seg.y === food.y);
+                }
+                return food;
+            }
+
+            update() {
+                this.direction = this.nextDirection;
+                const head = { x: this.snake[0].x + this.direction.x, y: this.snake[0].y + this.direction.y };
+
+                if (head.x < 0 || head.x >= this.tileCount || head.y < 0 || head.y >= this.tileCount) {
+                    this.endGame();
+                    return;
+                }
+
+                if (this.snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+                    this.endGame();
+                    return;
+                }
+
+                this.snake.unshift(head);
+
+                if (head.x === this.food.x && head.y === this.food.y) {
+                    this.score += 10 * this.level;
+                    this.food = this.generateFood();
+                    this.updateLevel();
+                } else {
+                    this.snake.pop();
+                }
+            }
+
+            updateLevel() {
+                this.level = Math.floor(this.score / 100) + 1;
+                this.updateUI();
+            }
+
+            draw() {
+                this.ctx.fillStyle = '#1a1f3a';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
+                this.ctx.lineWidth = 0.5;
+                for (let i = 0; i <= this.tileCount; i++) {
+                    const pos = i * this.gridSize;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos, 0);
+                    this.ctx.lineTo(pos, this.canvas.height);
+                    this.ctx.stroke();
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, pos);
+                    this.ctx.lineTo(this.canvas.width, pos);
+                    this.ctx.stroke();
+                }
+
+                this.snake.forEach((seg, idx) => {
+                    if (idx === 0) {
+                        this.ctx.fillStyle = '#00ff88';
+                        this.ctx.shadowColor = 'rgba(0, 255, 136, 0.8)';
+                        this.ctx.shadowBlur = 10;
+                    } else {
+                        this.ctx.fillStyle = '#00dd77';
+                        this.ctx.shadowBlur = 0;
+                    }
+                    this.ctx.fillRect(seg.x * this.gridSize + 2, seg.y * this.gridSize + 2, this.gridSize - 4, this.gridSize - 4);
+                });
+                this.ctx.shadowBlur = 0;
+
+                this.ctx.fillStyle = '#ff0055';
+                this.ctx.shadowColor = 'rgba(255, 0, 85, 0.8)';
+                this.ctx.shadowBlur = 8;
+                this.ctx.beginPath();
+                this.ctx.arc(this.food.x * this.gridSize + this.gridSize / 2, this.food.y * this.gridSize + this.gridSize / 2, this.gridSize / 2 - 2, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.shadowBlur = 0;
+            }
+
+            gameLoop() {
+                this.update();
+                this.draw();
+            }
+
+            togglePause() {
+                if (this.gameOver) {
+                    this.reset();
+                    this.togglePause();
+                    return;
+                }
+
+                if (this.isRunning) {
+                    clearInterval(this.gameLoopId);
+                    this.isRunning = false;
+                } else {
+                    this.isRunning = true;
+                    const speed = 150 - (this.level * 5);
+                    this.gameLoopId = setInterval(() => this.gameLoop(), Math.max(50, speed));
+                }
+            }
+
+            endGame() {
+                this.isRunning = false;
+                clearInterval(this.gameLoopId);
+                this.gameOver = true;
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('gameOverModal').classList.add('show');
+                document.getElementById('gameOverOverlay').classList.add('show');
+            }
+
+            updateUI() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('level').textContent = this.level;
+            }
+        };
+
+        const game = new Game('gameBoard');
+    </script>
+</body>
+</html>
