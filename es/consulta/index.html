@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Obtenga su consulta inmobiliaria gratuita y exclusiva con AGG Homes. Servicios profesionales de asesoramiento inmobiliario para propiedades de lujo en Costa del Sol.">
+    <meta name="keywords" content="consulta inmobiliaria gratuita, asesor inmobiliario Costa del Sol, contrato agente exclusivo, consulta inmobiliaria Marbella, experto inmobiliario español">
+    <meta name="author" content="AGG Homes">
+    <link rel="canonical" href="https://agg.homes/es/consulta/">
+    <title>Consulta Inmobiliaria Gratuita - AGG Homes Expertos Costa del Sol</title>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; line-height: 1.6; color: #333; background: #fafafa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .header { background: linear-gradient(135deg, #d4af37 0%, #f5e6a8 100%); color: white; padding: 3rem 0; text-align: center; }
+        .header h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin-bottom: 1rem; }
+        .form-container { background: white; margin: 3rem auto; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #2c3e50; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #d4af37; outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
+        .submit-btn { background: #d4af37; color: white; border: none; padding: 1rem 2rem; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; transition: background 0.3s; }
+        .submit-btn:hover { background: #b8941f; }
+        .required { color: #e74c3c; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .container { padding: 0 1rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Consulta Inmobiliaria Gratuita</h1>
+            <p>Obtenga asesoramiento experto en propiedades de Costa del Sol</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="form-container">
+            <h2>Solicite Su Consulta Gratuita</h2>
+            <form action="https://formspree.io/f/myznekjk" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first-name">Nombre <span class="required">*</span></label>
+                        <input type="text" id="first-name" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Apellidos <span class="required">*</span></label>
+                        <input type="text" id="last-name" name="last_name" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="property-type">Tipo de Propiedad <span class="required">*</span></label>
+                    <select id="property-type" name="property_type" required>
+                        <option value="">Seleccionar Tipo de Propiedad</option>
+                        <option value="villa">Villa de Lujo</option>
+                        <option value="apartment">Apartamento</option>
+                        <option value="penthouse">Ático</option>
+                        <option value="townhouse">Casa Adosada</option>
+                        <option value="investment">Propiedad de Inversión</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="budget">Presupuesto (EUR)</label>
+                        <select id="budget" name="budget">
+                            <option value="">Seleccionar Rango de Presupuesto</option>
+                            <option value="under-500k">Menos de €500,000</option>
+                            <option value="500k-1m">€500,000 - €1,000,000</option>
+                            <option value="1m-2m">€1,000,000 - €2,000,000</option>
+                            <option value="over-2m">Más de €2,000,000</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeline">Cronograma de Compra</label>
+                        <select id="timeline" name="timeline">
+                            <option value="">Seleccionar Cronograma</option>
+                            <option value="immediate">Inmediato (0-3 meses)</option>
+                            <option value="short">Corto plazo (3-6 meses)</option>
+                            <option value="medium">Mediano plazo (6-12 meses)</option>
+                            <option value="long">Largo plazo (12+ meses)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Ubicación Preferida</label>
+                    <select id="location" name="preferred_location">
+                        <option value="">Seleccionar Ubicación</option>
+                        <option value="marbella">Marbella</option>
+                        <option value="estepona">Estepona</option>
+                        <option value="malaga">Málaga</option>
+                        <option value="benalmadena">Benalmádena</option>
+                        <option value="fuengirola">Fuengirola</option>
+                        <option value="other">Otra Costa del Sol</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Requisitos Adicionales</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Cuéntanos sobre sus requisitos específicos, preferencias o preguntas..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Solicitar Consulta Gratuita</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
