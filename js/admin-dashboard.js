@@ -731,3 +731,17 @@ window.addEventListener('beforeunload', function () {
 
 // Export for global access
 window.AdminDashboard = AdminDashboard;
+
+// Custom logout function for admin dashboard - redirects to main site
+function logoutToMainSite() {
+    console.log('Logging out admin user and redirecting to main site...');
+
+    // Clear all auth data
+    localStorage.removeItem('agg_admin_logged_in');
+    localStorage.removeItem('agg_admin_username');
+    localStorage.removeItem('agg_admin_session_expiry');
+    localStorage.removeItem('agg_admin_login_time');
+
+    // Redirect to main site instead of login page
+    window.location.href = 'index.html';
+}

@@ -13,19 +13,16 @@ class AGGChatSystem {
     }
 
     init() {
-        console.log('Initializing AGG Chat System with Official Intercom SDK...');
+        console.log('Initializing AGG Chat System with WhatsApp focus...');
 
-        // Load Intercom SDK and initialize
+        // Initialize WhatsApp button (simpler, more prominent)
+        this.initWhatsAppBubble();
+
+        // Still load Intercom but keep it secondary
         this.loadIntercomSDK();
 
-        // Initialize WhatsApp button
-        this.initWhatsApp();
-
-        // Add chat toggle functionality
-        this.addChatToggle();
-
         // Debug information
-        console.log('Chat system initialized with App ID:', this.appId);
+        console.log('Chat system initialized with WhatsApp focus, App ID:', this.appId);
     }
 
     loadIntercomSDK() {
@@ -162,93 +159,158 @@ class AGGChatSystem {
         });
     }
 
-    initWhatsApp() {
-        // Create WhatsApp chat button
-        const whatsappButton = document.createElement('div');
-        whatsappButton.id = 'whatsapp-chat-btn';
-        whatsappButton.innerHTML = `
-            <div class="whatsapp-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.515z"/>
-                </svg>
-                <span>WhatsApp</span>
+    initWhatsAppBubble() {
+        // Create a prominent WhatsApp chat bubble (simpler and more visible)
+        const whatsappBubble = document.createElement('div');
+        whatsappBubble.id = 'whatsapp-bubble';
+        whatsappBubble.innerHTML = `
+            <div class="whatsapp-bubble-content">
+                <div class="whatsapp-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.515z"/>
+                    </svg>
+                </div>
+                <div class="whatsapp-text">
+                    <div class="whatsapp-label">Chat with us!</div>
+                    <div class="whatsapp-subtitle">WhatsApp</div>
+                </div>
+                <div class="whatsapp-close" onclick="this.parentElement.parentElement.style.display='none'">
+                    ×
+                </div>
             </div>
         `;
 
-        whatsappButton.onclick = () => this.openWhatsApp();
-        document.body.appendChild(whatsappButton);
+        whatsappBubble.onclick = (e) => {
+            // Don't trigger if clicking the close button
+            if (e.target.classList.contains('whatsapp-close')) return;
+            this.openWhatsApp();
+        };
+
+        document.body.appendChild(whatsappBubble);
+
+        // Add CSS for the bubble
+        this.addWhatsAppBubbleStyles();
+    }
+
+    addWhatsAppBubbleStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            #whatsapp-bubble {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+                cursor: pointer;
+                animation: whatsapp-bounce 2s infinite;
+            }
+
+            .whatsapp-bubble-content {
+                background: linear-gradient(135deg, #25d366, #128c7e);
+                border-radius: 50px;
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+                transition: all 0.3s ease;
+                min-width: 200px;
+            }
+
+            .whatsapp-bubble-content:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+            }
+
+            .whatsapp-icon {
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .whatsapp-text {
+                color: white;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+
+            .whatsapp-label {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 1.2;
+            }
+
+            .whatsapp-subtitle {
+                font-size: 12px;
+                opacity: 0.9;
+            }
+
+            .whatsapp-close {
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: opacity 0.2s;
+                margin-left: 8px;
+            }
+
+            .whatsapp-close:hover {
+                opacity: 1;
+            }
+
+            @keyframes whatsapp-bounce {
+                0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-5px);
+                }
+                60% {
+                    transform: translateY(-3px);
+                }
+            }
+
+            @media (max-width: 768px) {
+                #whatsapp-bubble {
+                    bottom: 15px;
+                    right: 15px;
+                }
+
+                .whatsapp-bubble-content {
+                    min-width: 180px;
+                    padding: 10px 16px;
+                }
+
+                .whatsapp-text {
+                    display: none;
+                }
+
+                .whatsapp-icon {
+                    margin-right: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     }
 
     addChatToggle() {
-        // Create chat selector widget
-        const chatSelector = document.createElement('div');
-        chatSelector.id = 'chat-selector';
-        chatSelector.innerHTML = `
-            <div class="chat-selector-btn" id="chat-toggle">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
-                </svg>
-                <span>Chat</span>
-            </div>
-            <div class="chat-options" id="chat-options" style="display: none;">
-                <button class="chat-option" onclick="AGGChat.openPropertyMatching()">
-                    <span class="property-icon">🏠</span>
-                    Property Matching
-                </button>
-                <button class="chat-option" onclick="AGGChat.startIntercom()">
-                    <span class="intercom-icon">💬</span>
-                    Web Chat
-                </button>
-                <button class="chat-option" onclick="AGGChat.openWhatsApp()">
-                    <span class="whatsapp-icon">📱</span>
-                    WhatsApp
-                </button>
-            </div>
-        `;
-
-        document.body.appendChild(chatSelector);
-
-        // Toggle functionality
-        document.getElementById('chat-toggle').onclick = () => {
-            const options = document.getElementById('chat-options');
-            options.style.display = options.style.display === 'none' ? 'block' : 'none';
-        };
+        // Removed complex chat selector - now using simple WhatsApp bubble
+        console.log('Chat toggle functionality removed - using simple WhatsApp bubble');
     }
 
     startIntercom() {
-        console.log('Starting Intercom chat...');
-
-        // Hide options first
-        this.hideOptions();
+        console.log('Starting Intercom chat (secondary option)...');
 
         // Check if Intercom is loaded and available
         if (this.isIntercomLoaded && typeof window.Intercom === 'function') {
             console.log('Showing Intercom messenger');
-
-            // Update user data if form fields have been filled
             this.updateUserData();
-
-            // Show the messenger
             window.Intercom('show');
         } else {
-            console.log('Intercom not ready yet, attempting to initialize...');
-
-            // Try to reinitialize if not loaded
-            if (typeof window.Intercom === 'function') {
-                this.updateUserData();
-                window.Intercom('show');
-            } else {
-                // Fallback: reload Intercom SDK
-                setTimeout(() => {
-                    if (typeof window.Intercom === 'function') {
-                        this.updateUserData();
-                        window.Intercom('show');
-                    } else {
-                        console.error('Intercom failed to load. Check your network connection.');
-                        alert('Chat service is temporarily unavailable. Please try WhatsApp or contact us directly at +31617622375');
-                    }
-                }, 2000);
-            }
+            console.log('Intercom not available, redirecting to WhatsApp');
+            this.openWhatsApp();
         }
     }
 
