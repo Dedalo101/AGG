@@ -11,6 +11,7 @@ This document explains how to securely configure sensitive information for the A
 **For local development**, the Intercom token is configured in `js/config.js` for immediate functionality.
 
 **Environment Variable Set Locally:**
+
 ```powershell
 $env:INTERCOM_API_TOKEN = "[REDACTED - Set your actual Intercom API token]"
 ```
@@ -18,6 +19,7 @@ $env:INTERCOM_API_TOKEN = "[REDACTED - Set your actual Intercom API token]"
 ### 🚨 Production Deployment Required
 
 **BEFORE deploying to production:**
+
 1. Remove the hardcoded token from `js/config.js`
 2. Set `INTERCOM_API_TOKEN` on your hosting platform
 3. Use build-time replacement or secure config endpoints
@@ -102,7 +104,50 @@ window.AGG_CONFIG = {
 };
 ```
 
-## 🛡️ Security Best Practices
+## � Configuration Methods
+
+### Method 1: Environment Variables (Most Secure)
+
+```javascript
+// config.js will automatically use process.env variables
+window.AGG_CONFIG = {
+    intercomToken: process.env.INTERCOM_API_TOKEN,
+    adminPassword: process.env.ADMIN_PASSWORD
+};
+```
+
+### Method 2: Secure Config Endpoint
+
+Create a server endpoint that returns configuration:
+
+```javascript
+// Load config from secure endpoint
+fetch('/api/config')
+    .then(response => response.json())
+    .then(config => {
+        window.AGG_CONFIG = config;
+    });
+```
+
+### Method 3: Build-time Replacement
+
+Use your build process to replace placeholders:
+
+```javascript
+// Before build
+window.AGG_CONFIG = {
+    intercomToken: '%%INTERCOM_TOKEN%%',
+    adminPassword: '%%ADMIN_PASSWORD%%'
+};
+
+// After build (replaced by build script)
+window.AGG_CONFIG = {
+    intercomToken: 'your_actual_token',
+    adminPassword: 'your_actual_password'
+};
+```
+
+## �🛡️ Security Best Practices
 
 ### 1. Never Commit Secrets
 - All secret files are in `.gitignore`
@@ -140,11 +185,13 @@ Before deploying to production:
 To verify your configuration is secure:
 
 1. **Check for exposed secrets:**
+
    ```bash
    grep -r "your_actual_intercom_token_here" .
    ```
 
 2. **Verify environment variables:**
+
    ```bash
    echo $INTERCOM_API_TOKEN
    ```
@@ -175,3 +222,4 @@ If you encounter configuration issues:
 
 **Last Updated:** October 2025
 **Security Status:** ✅ Secrets Removed from Codebase
+
