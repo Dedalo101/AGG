@@ -66,11 +66,7 @@ The `js/config.js` file loads configuration securely. For production deployment:
 ### Method 1: Environment Variables (Most Secure)
 
 ```javascript
-// config.js will automatically use process.env variables
-window.AGG_CONFIG = {
-    intercomToken: process.env.INTERCOM_API_TOKEN,
-    adminPassword: process.env.ADMIN_PASSWORD
-};
+## 🛡️ Security Best Practices
 ```
 
 ### Method 2: Secure Config Endpoint
@@ -104,67 +100,28 @@ window.AGG_CONFIG = {
 };
 ```
 
-## � Configuration Methods
-
-### Method 1: Environment Variables (Most Secure)
-
-```javascript
-// config.js will automatically use process.env variables
-window.AGG_CONFIG = {
-    intercomToken: process.env.INTERCOM_API_TOKEN,
-    adminPassword: process.env.ADMIN_PASSWORD
-};
-```
-
-### Method 2: Secure Config Endpoint
-
-Create a server endpoint that returns configuration:
-
-```javascript
-// Load config from secure endpoint
-fetch('/api/config')
-    .then(response => response.json())
-    .then(config => {
-        window.AGG_CONFIG = config;
-    });
-```
-
-### Method 3: Build-time Replacement
-
-Use your build process to replace placeholders:
-
-```javascript
-// Before build
-window.AGG_CONFIG = {
-    intercomToken: '%%INTERCOM_TOKEN%%',
-    adminPassword: '%%ADMIN_PASSWORD%%'
-};
-
-// After build (replaced by build script)
-window.AGG_CONFIG = {
-    intercomToken: 'your_actual_token',
-    adminPassword: 'your_actual_password'
-};
-```
-
-## �🛡️ Security Best Practices
+## 🛡️ Security Best Practices
 
 ### 1. Never Commit Secrets
+
 - All secret files are in `.gitignore`
 - Use environment variables in production
 - Rotate API keys regularly
 
 ### 2. Access Control
+
 - Admin access restricted to authorized users only
 - Session-based authentication with expiration
 - Failed login attempt logging
 
 ### 3. API Security
+
 - Intercom API calls routed through secure backend when possible
 - CORS restrictions prevent direct browser API access
 - Token validation on all admin requests
 
 ### 4. Monitoring
+
 - Log unauthorized access attempts
 - Monitor for unusual activity
 - Regular security audits
@@ -222,4 +179,3 @@ If you encounter configuration issues:
 
 **Last Updated:** October 2025
 **Security Status:** ✅ Secrets Removed from Codebase
-
