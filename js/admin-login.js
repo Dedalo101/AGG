@@ -111,7 +111,9 @@ class AdminLogin {
         }
 
         return isAuthorized;
-    } handleSuccessfulLogin(username) {
+    }
+
+    handleSuccessfulLogin(username) {
         // Set session data
         const sessionExpiry = new Date().getTime() + (8 * 60 * 60 * 1000); // 8 hours
         localStorage.setItem('agg_admin_logged_in', 'true');
