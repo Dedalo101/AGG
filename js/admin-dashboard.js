@@ -32,6 +32,7 @@ class AdminDashboard {
 
         this.refreshInterval = null;
         this.authChecked = false; // Prevent multiple auth checks
+        this.isLoggingOut = false; // Flag to prevent auth checks during logout
 
         // Check authentication first and only once
         if (!this.checkAuthentication()) {
@@ -82,13 +83,13 @@ class AdminDashboard {
         const currentUser = AdminLogin.getCurrentUser();
         if (!currentUser) {
             console.warn('No current user data found, redirecting to login');
-            this.forceLogout();
+            window.location.href = 'admin-login.html';
             return false;
         }
 
         if (currentUser.username !== 'dedalo101') {
             console.warn('Unauthorized access attempt to admin dashboard by user:', currentUser.username);
-            this.forceLogout();
+            window.location.href = 'admin-login.html';
             return false;
         }
 
@@ -103,6 +104,34 @@ class AdminDashboard {
         localStorage.removeItem('agg_admin_session_expiry');
         localStorage.removeItem('agg_admin_login_time');
         window.location.href = 'admin-login.html';
+    }
+
+    // Logout method that redirects to main site
+    logoutToMainSite() {
+        console.log('Logging out admin user and redirecting to main site...');
+
+        // Set flag to prevent further authentication checks
+        this.isLoggingOut = true;
+
+        // Clear the refresh interval to prevent further checks
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+            this.refreshInterval = null;
+        }
+
+        // Clear all auth data
+        localStorage.removeItem('agg_admin_logged_in');
+        localStorage.removeItem('agg_admin_username');
+        localStorage.removeItem('agg_admin_session_expiry');
+        localStorage.removeItem('agg_admin_login_time');
+
+        // Shutdown Intercom if initialized
+        if (window.Intercom && typeof window.Intercom === 'function') {
+            window.Intercom('shutdown');
+        }
+
+        // Redirect to main site instead of login page
+        window.location.href = 'index.html';
     }
 
     initializeDashboard() {
@@ -306,10 +335,19 @@ class AdminDashboard {
         // and only when the page is visible and user is still authenticated
 
         const refreshData = () => {
+            // Skip refresh if user is logging out
+            if (this.isLoggingOut) {
+                return;
+            }
+
             // Check authentication before refreshing
             if (!AdminLogin.isLoggedIn()) {
-                console.log('User session expired during refresh, logging out');
-                this.forceLogout();
+                console.log('User session expired during refresh, stopping refresh and redirecting to login');
+                if (this.refreshInterval) {
+                    clearInterval(this.refreshInterval);
+                    this.refreshInterval = null;
+                }
+                window.location.href = 'admin-login.html';
                 return;
             }
 
@@ -731,17 +769,3 @@ window.addEventListener('beforeunload', function () {
 
 // Export for global access
 window.AdminDashboard = AdminDashboard;
-
-// Custom logout function for admin dashboard - redirects to main site
-function logoutToMainSite() {
-    console.log('Logging out admin user and redirecting to main site...');
-
-    // Clear all auth data
-    localStorage.removeItem('agg_admin_logged_in');
-    localStorage.removeItem('agg_admin_username');
-    localStorage.removeItem('agg_admin_session_expiry');
-    localStorage.removeItem('agg_admin_login_time');
-
-    // Redirect to main site instead of login page
-    window.location.href = 'index.html';
-}
