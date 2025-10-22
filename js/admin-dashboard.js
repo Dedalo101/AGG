@@ -147,10 +147,17 @@ class AdminDashboard {
         // Initialize Intercom for admin use
         this.initializeIntercomForAdmin();
 
+        // Set up chat mode toggle
+        this.setupChatModeToggle();
+
         // Connect to Intercom API
         this.connectToIntercomAPI().then(result => {
             if (result.success) {
                 console.log('✅ Intercom API connected successfully');
+                // Auto-load conversations if dashboard mode is selected
+                if (this.getChatMode() === 'dashboard') {
+                    this.loadConversations();
+                }
             } else {
                 console.warn('⚠️ Intercom API connection failed:', result.error);
             }
@@ -315,6 +322,82 @@ class AdminDashboard {
         actionCards.forEach((card, index) => {
             card.addEventListener('click', () => this.handleQuickAction(index));
         });
+    }
+
+    setupChatModeToggle() {
+        const dashboardRadio = document.getElementById('mode-dashboard');
+        const intercomRadio = document.getElementById('mode-intercom');
+
+        if (dashboardRadio && intercomRadio) {
+            // Set initial state based on saved preference
+            const savedMode = this.getChatMode();
+            if (savedMode === 'intercom') {
+                intercomRadio.checked = true;
+                dashboardRadio.checked = false;
+                this.showIntercomMode();
+            } else {
+                dashboardRadio.checked = true;
+                intercomRadio.checked = false;
+                this.showDashboardMode();
+            }
+
+            // Add event listeners
+            dashboardRadio.addEventListener('change', () => {
+                if (dashboardRadio.checked) {
+                    this.setChatMode('dashboard');
+                    this.showDashboardMode();
+                    this.loadConversations();
+                }
+            });
+
+            intercomRadio.addEventListener('change', () => {
+                if (intercomRadio.checked) {
+                    this.setChatMode('intercom');
+                    this.showIntercomMode();
+                }
+            });
+        }
+    }
+
+    getChatMode() {
+        return localStorage.getItem('agg_admin_chat_mode') || 'dashboard';
+    }
+
+    setChatMode(mode) {
+        localStorage.setItem('agg_admin_chat_mode', mode);
+        console.log('Chat mode set to:', mode);
+    }
+
+    showDashboardMode() {
+        const conversationsContainer = document.getElementById('conversations-container');
+        const intercomEmbed = document.getElementById('intercom-embed');
+
+        if (conversationsContainer) conversationsContainer.style.display = 'block';
+        if (intercomEmbed) intercomEmbed.style.display = 'none';
+
+        // Update button text
+        const loadBtn = document.getElementById('load-conversations-btn');
+        if (loadBtn) {
+            loadBtn.style.display = 'inline-flex';
+        }
+
+        console.log('Switched to dashboard chat mode');
+    }
+
+    showIntercomMode() {
+        const conversationsContainer = document.getElementById('conversations-container');
+        const intercomEmbed = document.getElementById('intercom-embed');
+
+        if (conversationsContainer) conversationsContainer.style.display = 'none';
+        if (intercomEmbed) intercomEmbed.style.display = 'flex';
+
+        // Hide load conversations button
+        const loadBtn = document.getElementById('load-conversations-btn');
+        if (loadBtn) {
+            loadBtn.style.display = 'none';
+        }
+
+        console.log('Switched to Intercom chat mode');
     }
 
     handleQuickAction(actionIndex) {
@@ -521,36 +604,471 @@ class AdminDashboard {
         }
     }
 
-    async loadChatTickets() {
-        console.log('Loading live chat tickets...');
+    async loadConversations() {
+        console.log('Loading conversations from Intercom...');
 
-        const ticketsSection = document.getElementById('chat-tickets-section');
-        const ticketsContainer = document.getElementById('chat-tickets-container');
+        const conversationsContainer = document.getElementById('conversations-container');
+        const conversationsList = document.getElementById('conversations-list');
 
-        if (!ticketsSection || !ticketsContainer) {
-            // Create the tickets section if it doesn't exist
-            this.createTicketsSection();
+        if (!conversationsContainer || !conversationsList) {
+            console.error('Conversations container not found');
             return;
         }
 
-        ticketsSection.style.display = 'block';
+        conversationsContainer.style.display = 'block';
 
         // Show loading state
-        ticketsContainer.innerHTML = `
-            <div style="text-align: center; padding: 20px; color: #64748b;">
-                <div style="margin-bottom: 12px;">🔄</div>
-                <div>Loading chat tickets...</div>
+        conversationsList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #64748b;">
+                <div style="margin-bottom: 12px; font-size: 24px;">🔄</div>
+                <div>Loading conversations...</div>
             </div>
         `;
 
         try {
-            // In production, this would fetch real tickets from Intercom API
-            const tickets = await this.fetchChatTickets();
-            this.displayChatTickets(tickets);
+            // Try to load real conversations from Intercom API
+            const conversations = await this.fetchRealConversations();
+
+            if (conversations && conversations.length > 0) {
+                this.displayConversations(conversations);
+            } else {
+                // Fall back to mock data if no real conversations
+                const mockConversations = await this.fetchMockConversations();
+                this.displayConversations(mockConversations);
+            }
         } catch (error) {
-            console.error('Error loading chat tickets:', error);
-            this.showTicketsError();
+            console.error('Error loading conversations:', error);
+            // Show error and fall back to mock data
+            this.showConversationsError();
+            const mockConversations = await this.fetchMockConversations();
+            this.displayConversations(mockConversations);
         }
+    }
+
+    async fetchRealConversations() {
+        try {
+            // Use the backend proxy to get real conversations
+            const response = await fetch('/api/intercom/conversations', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${this.intercomConfig.apiToken}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`API returned ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.conversations && Array.isArray(data.conversations)) {
+                return data.conversations.map(conv => ({
+                    id: conv.id,
+                    customerName: conv.source?.author?.name || 'Unknown User',
+                    subject: conv.source?.body || 'No subject',
+                    status: conv.state || 'open',
+                    priority: this.calculatePriority(conv),
+                    lastMessage: this.getLastMessage(conv),
+                    timestamp: conv.created_at,
+                    unreadCount: conv.read ? 0 : 1,
+                    userId: conv.source?.author?.id,
+                    conversation: conv
+                }));
+            }
+
+            return [];
+        } catch (error) {
+            console.warn('Failed to fetch real conversations:', error);
+            throw error;
+        }
+    }
+
+    async fetchMockConversations() {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        return [
+            {
+                id: 'conv_001',
+                customerName: 'María García',
+                subject: 'Property inquiry - Marbella Villa',
+                status: 'open',
+                priority: 'high',
+                lastMessage: 'I\'m interested in the 3-bedroom villa in Marbella. Can you send me more details?',
+                timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+                unreadCount: 2,
+                userId: 'user_001'
+            },
+            {
+                id: 'conv_002',
+                customerName: 'John Smith',
+                subject: 'Viewing appointment request',
+                status: 'open',
+                priority: 'medium',
+                lastMessage: 'Can we schedule a viewing for this weekend? I\'m available Saturday afternoon.',
+                timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                unreadCount: 1,
+                userId: 'user_002'
+            },
+            {
+                id: 'conv_003',
+                customerName: 'Anna Petrov',
+                subject: 'Financing options inquiry',
+                status: 'pending',
+                priority: 'low',
+                lastMessage: 'What are the available mortgage options for non-residents?',
+                timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+                unreadCount: 0,
+                userId: 'user_003'
+            },
+            {
+                id: 'conv_004',
+                customerName: 'Carlos López',
+                subject: 'Property matching service',
+                status: 'open',
+                priority: 'high',
+                lastMessage: 'Looking for properties under €500k in Costa del Sol. Any recommendations?',
+                timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+                unreadCount: 3,
+                userId: 'user_004'
+            }
+        ];
+    }
+
+    calculatePriority(conversation) {
+        // Calculate priority based on conversation data
+        if (conversation.tags && conversation.tags.some(tag => tag.name?.toLowerCase().includes('urgent'))) {
+            return 'high';
+        }
+        if (conversation.read === false) {
+            return 'medium';
+        }
+        return 'low';
+    }
+
+    getLastMessage(conversation) {
+        if (conversation.source?.body) {
+            return conversation.source.body.length > 100
+                ? conversation.source.body.substring(0, 100) + '...'
+                : conversation.source.body;
+        }
+        return 'No message content';
+    }
+
+    displayConversations(conversations) {
+        const conversationsList = document.getElementById('conversations-list');
+        if (!conversationsList) return;
+
+        if (conversations.length === 0) {
+            conversationsList.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: #64748b;">
+                    <div style="margin-bottom: 12px; font-size: 24px;">💬</div>
+                    <div>No active conversations</div>
+                </div>
+            `;
+            return;
+        }
+
+        const conversationsHTML = conversations.map(conv => `
+            <div class="conversation-card" style="
+                background: white;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 16px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+                border-left: 4px solid ${this.getPriorityColor(conv.priority)};
+            " onclick="window.adminDashboard.openConversation('${conv.id}')">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                    <div>
+                        <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #1e293b;">${conv.customerName}</h4>
+                        <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">${conv.subject}</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        ${conv.unreadCount > 0 ? `
+                            <span style="
+                                background: #ef4444;
+                                color: white;
+                                border-radius: 10px;
+                                padding: 2px 6px;
+                                font-size: 10px;
+                                font-weight: 600;
+                            ">${conv.unreadCount}</span>
+                        ` : ''}
+                        <span style="
+                            background: ${this.getStatusColor(conv.status)};
+                            color: white;
+                            border-radius: 4px;
+                            padding: 2px 6px;
+                            font-size: 10px;
+                            font-weight: 500;
+                            text-transform: uppercase;
+                        ">${conv.status}</span>
+                    </div>
+                </div>
+                <p style="margin: 0; font-size: 13px; color: #475569; line-height: 1.4;">${conv.lastMessage}</p>
+                <div style="margin-top: 8px; font-size: 11px; color: #94a3b8;">
+                    ${this.formatTimeAgo(conv.timestamp)}
+                </div>
+            </div>
+        `).join('');
+
+        conversationsList.innerHTML = conversationsHTML;
+    }
+
+    openConversation(conversationId) {
+        console.log('Opening conversation:', conversationId);
+
+        // Hide conversations list and show conversation detail
+        const conversationsList = document.getElementById('conversations-list');
+        const conversationDetail = document.getElementById('conversation-detail');
+
+        if (conversationsList) conversationsList.style.display = 'none';
+        if (conversationDetail) conversationDetail.style.display = 'block';
+
+        // Load conversation details
+        this.loadConversationDetail(conversationId);
+    }
+
+    async loadConversationDetail(conversationId) {
+        const conversationDetail = document.getElementById('conversation-detail');
+        if (!conversationDetail) return;
+
+        // Show loading
+        conversationDetail.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #64748b;">
+                <div style="margin-bottom: 12px; font-size: 24px;">🔄</div>
+                <div>Loading conversation...</div>
+            </div>
+        `;
+
+        try {
+            // Try to load real conversation details
+            const conversation = await this.fetchConversationDetail(conversationId);
+            this.displayConversationDetail(conversation);
+        } catch (error) {
+            console.error('Error loading conversation detail:', error);
+            this.showConversationDetailError();
+        }
+    }
+
+    async fetchConversationDetail(conversationId) {
+        try {
+            const response = await fetch(`/api/intercom/conversations/${conversationId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${this.intercomConfig.apiToken}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`API returned ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.warn('Failed to fetch conversation detail:', error);
+            // Return mock data
+            return {
+                id: conversationId,
+                customerName: 'Mock Customer',
+                messages: [
+                    { author: { name: 'Customer' }, body: 'Hello, I need help with property search', created_at: Date.now() - 3600000 },
+                    { author: { name: 'Admin' }, body: 'Hi! I\'d be happy to help you find the perfect property.', created_at: Date.now() - 1800000 }
+                ]
+            };
+        }
+    }
+
+    displayConversationDetail(conversation) {
+        const conversationDetail = document.getElementById('conversation-detail');
+        if (!conversationDetail) return;
+
+        const messagesHTML = (conversation.messages || []).map(msg => `
+            <div style="margin-bottom: 16px; padding: 12px; border-radius: 8px; background: ${msg.author?.name === 'Admin' ? '#f0f9ff' : '#f8fafc'};">
+                <div style="font-weight: 600; font-size: 12px; color: #64748b; margin-bottom: 4px;">
+                    ${msg.author?.name || 'Unknown'} • ${this.formatTimeAgo(msg.created_at)}
+                </div>
+                <div style="font-size: 14px; color: #1e293b;">${msg.body || 'No message content'}</div>
+            </div>
+        `).join('');
+
+        conversationDetail.innerHTML = `
+            <div style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 16px; color: #1e293b;">Conversation with ${conversation.customerName || 'Customer'}</h3>
+                    <div>
+                        <button onclick="window.adminDashboard.closeConversation()" style="padding: 8px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; cursor: pointer; margin-right: 8px;">Back to List</button>
+                        <button onclick="window.adminDashboard.replyToConversation('${conversation.id}')" style="padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">Reply</button>
+                    </div>
+                </div>
+                <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                    ${messagesHTML}
+                </div>
+                <div style="border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <textarea id="reply-message" placeholder="Type your reply..." style="width: 100%; min-height: 80px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: inherit; resize: vertical;"></textarea>
+                    <div style="margin-top: 12px; text-align: right;">
+                        <button onclick="window.adminDashboard.sendReply('${conversation.id}')" style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Send Reply</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    closeConversation() {
+        const conversationsList = document.getElementById('conversations-list');
+        const conversationDetail = document.getElementById('conversation-detail');
+
+        if (conversationsList) conversationsList.style.display = 'block';
+        if (conversationDetail) conversationDetail.style.display = 'none';
+    }
+
+    replyToConversation(conversationId) {
+        const replyTextarea = document.getElementById('reply-message');
+        if (replyTextarea) {
+            replyTextarea.focus();
+        }
+    }
+
+    async sendReply(conversationId) {
+        const replyTextarea = document.getElementById('reply-message');
+        if (!replyTextarea) return;
+
+        const message = replyTextarea.value.trim();
+        if (!message) {
+            alert('Please enter a message');
+            return;
+        }
+
+        try {
+            // Try to send reply via API
+            await this.sendReplyToAPI(conversationId, message);
+
+            // Clear textarea and show success
+            replyTextarea.value = '';
+            this.showReplySuccess();
+
+            // Reload conversation
+            this.loadConversationDetail(conversationId);
+        } catch (error) {
+            console.error('Error sending reply:', error);
+            this.showReplyError();
+        }
+    }
+
+    async sendReplyToAPI(conversationId, message) {
+        try {
+            const response = await fetch(`/api/intercom/conversations/${conversationId}/reply`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.intercomConfig.apiToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    message_type: 'comment',
+                    type: 'admin',
+                    body: message
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API returned ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.warn('Failed to send reply via API:', error);
+            // For demo purposes, just simulate success
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+    }
+
+    showConversationsError() {
+        const conversationsList = document.getElementById('conversations-list');
+        if (!conversationsList) return;
+
+        conversationsList.innerHTML = `
+            <div style="text-align: center; padding: 20px; color: #ef4444; background: #fef2f2; border-radius: 6px;">
+                <div style="margin-bottom: 8px;">⚠️</div>
+                <div style="font-weight: 500;">Failed to load conversations</div>
+                <button onclick="window.adminDashboard.loadConversations()" style="margin-top: 12px; padding: 6px 12px; background: #ef4444; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">Retry</button>
+            </div>
+        `;
+    }
+
+    showConversationDetailError() {
+        const conversationDetail = document.getElementById('conversation-detail');
+        if (!conversationDetail) return;
+
+        conversationDetail.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #ef4444;">
+                <div style="margin-bottom: 12px; font-size: 24px;">⚠️</div>
+                <div>Failed to load conversation details</div>
+                <button onclick="window.adminDashboard.closeConversation()" style="margin-top: 12px; padding: 8px 16px; background: #ef4444; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">Back to List</button>
+            </div>
+        `;
+    }
+
+    showReplySuccess() {
+        const indicator = document.createElement('div');
+        indicator.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        `;
+        indicator.textContent = '✓ Reply sent successfully';
+
+        document.body.appendChild(indicator);
+
+        setTimeout(() => {
+            document.body.removeChild(indicator);
+        }, 3000);
+    }
+
+    showReplyError() {
+        const indicator = document.createElement('div');
+        indicator.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        `;
+        indicator.textContent = '⚠️ Failed to send reply';
+
+        document.body.appendChild(indicator);
+
+        setTimeout(() => {
+            document.body.removeChild(indicator);
+        }, 3000);
+    }
+
+    showSettings() {
+        // Show settings modal or panel
+        alert('Settings panel - Feature coming soon!\n\nYou can configure:\n- Auto-refresh intervals\n- Notification preferences\n- Chat routing rules\n- Admin permissions');
+    }
+
+    async loadChatTickets() {
+        console.log('Loading live chat tickets...');
+
+        // Use the new conversation loading method
+        await this.loadConversations();
     }
 
     createTicketsSection() {

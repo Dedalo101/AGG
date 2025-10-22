@@ -314,54 +314,65 @@
                     <p class="section-subtitle">Manage customer conversations and support tickets</p>
                 </div>
                 <div class="intercom-container">
+                    <!-- Chat Mode Toggle -->
+                    <div class="chat-mode-toggle" style="margin-bottom: 24px; padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #1e293b;">Chat Handling Mode</h3>
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="chat-mode" value="dashboard" id="mode-dashboard" checked>
+                                <span style="font-size: 14px; color: #475569;">Handle chats in Dashboard</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="chat-mode" value="intercom" id="mode-intercom">
+                                <span style="font-size: 14px; color: #475569;">Use Intercom Interface</span>
+                            </label>
+                        </div>
+                        <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">Choose how you want to manage customer conversations</p>
+                    </div>
+
                     <div class="intercom-actions">
-                        <a href="https://app.intercom.com/a/apps/g28vli0s/inbox" target="_blank"
-                            class="action-button primary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                                style="margin-right: 8px;">
-                                <path
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        <button class="action-button primary" id="load-conversations-btn" onclick="window.adminDashboard.loadConversations()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                             </svg>
-                            Open Intercom Dashboard
-                        </a>
+                            Load Conversations
+                        </button>
                         <button class="action-button secondary" onclick="window.adminDashboard.manualRefresh()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                                style="margin-right: 8px;">
-                                <path
-                                    d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
                             </svg>
                             Refresh Data
                         </button>
-                        <a href="https://app.intercom.com/a/apps/g28vli0s/inbox" target="_blank"
-                            class="action-button secondary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                                style="margin-right: 8px;">
-                                <path
-                                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        <a href="https://app.intercom.com/a/apps/g28vli0s/inbox" target="_blank" class="action-button secondary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                             </svg>
-                            View Messages
+                            Open Intercom
                         </a>
-                        <a href="https://app.intercom.com/a/apps/g28vli0s/articles" target="_blank"
-                            class="action-button secondary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                                style="margin-right: 8px;">
-                                <path
-                                    d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                        <button class="action-button secondary" onclick="window.adminDashboard.showSettings()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.69,4.82,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
                             </svg>
-                            Knowledge Base
-                        </a>
+                            Settings
+                        </button>
                     </div>
 
+                    <!-- Conversations Container -->
+                    <div id="conversations-container" style="display: none;">
+                        <div id="conversations-list" style="max-height: 400px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 16px;"></div>
+                        <div id="conversation-detail" style="border: 1px solid #e2e8f0; border-radius: 8px; min-height: 300px; display: none;"></div>
+                    </div>
+
+                    <!-- Intercom Embed (shown when Intercom mode is selected) -->
                     <div class="intercom-embed" id="intercom-embed">
                         <div class="embed-placeholder">
                             <div class="embed-icon">
                                 <svg width="32" height="32" viewBox="0 0 24 24" fill="#64748b">
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                                 </svg>
                             </div>
                             <h3>Intercom Chat Interface</h3>
-                            <p>Click "Open Intercom Dashboard" above to access your chat management interface</p>
+                            <p>Select "Use Intercom Interface" above to access the full Intercom dashboard</p>
                             <p style="margin-top: 8px; font-size: 12px; color: #94a3b8;">App ID: g28vli0s</p>
                         </div>
                     </div>

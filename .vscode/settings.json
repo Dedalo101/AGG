@@ -66,6 +66,34 @@
     // Intercom/Chat development helpers
     "javascript.preferences.quoteStyle": "single",
     "typescript.preferences.quoteStyle": "single",
+    // cSpell settings for custom words
+    "cSpell.words": [
+        "dedalo",
+        "visibilitychange",
+        "CURLOPT",
+        "RETURNTRANSFER",
+        "HTTPHEADER",
+        "CUSTOMREQUEST",
+        "VERIFYPEER",
+        "POSTFIELDS",
+        "conv",
+        "ecure",
+        "María",
+        "García",
+        "Marbella",
+        "Petrov",
+        "López",
+        "Segoe",
+        "Estoy",
+        "interesado",
+        "servicios",
+        "inmobiliarios",
+        "navegando",
+        "geïnteresseerd",
+        "vastgoeddiensten",
+        "bekijk",
+        "hreflang"
+    ],
     // File watchers for auto-reload during development
     "files.watcherExclude": {
         "**/node_modules/**": true,
