@@ -1,0 +1,32 @@
+{
+  "news": [
+    {
+      "id": 1,
+      "title": "Costa del Sol Property Market Trends 2024",
+      "date": "2024-01-15",
+      "description": "An overview of the latest trends in the Costa del Sol property market, including price increases and buyer demographics.",
+      "content": "The Costa del Sol continues to attract international buyers, with property prices rising by an average of 8.5% in 2024. This article explores the factors driving these trends and what potential buyers should consider."
+    },
+    {
+      "id": 2,
+      "title": "Marbella: The Luxury Real Estate Hub",
+      "date": "2024-02-10",
+      "description": "A deep dive into Marbella's luxury real estate market, highlighting key properties and investment opportunities.",
+      "content": "Marbella remains a top destination for luxury real estate, with a variety of high-end villas and apartments available. This article discusses the current market dynamics and offers insights for investors."
+    },
+    {
+      "id": 3,
+      "title": "Estepona's Rising Popularity",
+      "date": "2024-03-05",
+      "description": "Why Estepona is becoming a hotspot for real estate investments and what buyers can expect.",
+      "content": "Estepona is gaining traction among property buyers due to its beautiful beaches and vibrant community. This article examines the reasons behind its popularity and future growth potential."
+    },
+    {
+      "id": 4,
+      "title": "Investment Strategies for Costa del Sol",
+      "date": "2024-04-20",
+      "description": "Expert tips on how to build a successful real estate portfolio in the Costa del Sol region.",
+      "content": "Investing in Costa del Sol real estate can be lucrative if approached strategically. This article provides valuable insights into effective investment strategies and market analysis."
+    }
+  ]
+}

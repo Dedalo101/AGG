@@ -1,0 +1,264 @@
+/* AGG Homes Chat System Styles */
+
+/* Chat Selector Widget */
+#chat-selector {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.chat-selector-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.chat-selector-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+    animation: none;
+}
+
+.chat-selector-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.chat-selector-btn span {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Chat Options Dropdown */
+.chat-options {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    min-width: 180px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+}
+
+.chat-option:hover {
+    background: #f8f9fa;
+    transform: translateX(4px);
+}
+
+.chat-option:first-child:hover {
+    background: linear-gradient(135deg, #003d8220, #00449420);
+}
+
+.chat-option:nth-child(2):hover {
+    background: linear-gradient(135deg, #667eea20, #764ba220);
+}
+
+.chat-option:last-child:hover {
+    background: linear-gradient(135deg, #25d36620, #128c7e20);
+}
+
+.property-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.intercom-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.whatsapp-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+/* WhatsApp Integration Styles */
+#whatsapp-chat-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    display: none; /* Hidden by default, shown programmatically if needed */
+}
+
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+    transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.whatsapp-btn span {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #chat-selector {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .chat-selector-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    
+    .chat-selector-btn span {
+        display: none;
+    }
+    
+    .chat-options {
+        min-width: 160px;
+        bottom: 55px;
+    }
+    
+    .chat-option {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    #whatsapp-chat-btn {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .whatsapp-btn {
+        padding: 10px 16px;
+    }
+    
+    .whatsapp-btn span {
+        display: none;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+    #chat-selector {
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .chat-selector-btn {
+        padding: 8px 12px;
+    }
+    
+    .chat-selector-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .chat-options {
+        bottom: 50px;
+        right: -10px;
+        min-width: 140px;
+    }
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+    .chat-selector-btn {
+        background: #000;
+        border: 2px solid #fff;
+    }
+    
+    .chat-options {
+        border: 2px solid #000;
+    }
+    
+    .chat-option {
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .chat-option:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .chat-selector-btn {
+        animation: none;
+    }
+    
+    .chat-selector-btn:hover {
+        transform: none;
+    }
+    
+    .chat-option:hover {
+        transform: none;
+    }
+    
+    .chat-options {
+        animation: none;
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

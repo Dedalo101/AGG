@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Temporary files
+.backup_*
+.backups*
+.fix_backups_*
+*.bak
+*.backup
+.reports/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Security - Never commit sensitive files
+config.env
+.env
+.env.local
+.env.production
+.env.staging
+*.key
+*.pem
+secrets/
+config/secrets/
