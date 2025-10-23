@@ -39,3 +39,14 @@ config.env
 *.pem
 secrets/
 config/secrets/
+
+# Development documentation and scripts
+*_FIXES.md
+*_SETUP.md
+*_CONFIGURATION.md
+*_IMPLEMENTATION.md
+QUICKSTART.md
+TESTING.md
+deploy*.sh
+optimize.sh
+validate-setup.js
