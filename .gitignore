@@ -21,6 +21,7 @@ Thumbs.db
 
 # Editor directories
 .vscode/
+!.vscode/settings.json
 .idea/
 
 # Logs
