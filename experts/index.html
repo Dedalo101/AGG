@@ -5,73 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expert Property Search | AGG Homes</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <meta name="description" content="Expert property search services in Costa del Sol. Get personalized property recommendations from our experienced agents.">
+    <meta name="description" content="Extraordinary properties for extraordinary lives. Discover luxury real estate in Costa del Sol with AGG Homes.">
     <meta name="robots" content="index, follow">
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
+    <!-- Open Graph -->
     <meta property="og:title" content="Expert Property Search | AGG Homes">
-    <meta property="og:description" content="Expert property search services in Costa del Sol. Get personalized property recommendations from our experienced agents.">
-    <meta property="og:image" content="https://agg.homes/images/expert-search.jpg">
+    <meta property="og:description" content="Extraordinary properties for extraordinary lives. Discover luxury real estate in Costa del Sol.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
     <meta property="og:url" content="https://agg.homes/experts/">
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Expert Property Search | AGG Homes">
-    <meta name="twitter:description" content="Expert property search services in Costa del Sol. Get personalized property recommendations from our experienced agents.">
-    <meta name="twitter:image" content="https://agg.homes/images/expert-search.jpg">
-    
+    <meta name="twitter:description" content="Extraordinary properties for extraordinary lives. Discover luxury real estate in Costa del Sol.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
 </head>
-<body class="site-root">
-    <a href="/" class="home-link">← Back to AGG Homes</a>
+<body>
+    <div class="lang-switcher">
+        <a href="/">EN</a> | <a href="/es/">ES</a> | <a href="/nl/">NL</a>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero" role="banner">
+    <header class="hero" role="banner" aria-labelledby="hero-heading">
         <div class="hero-content">
-            <h1>Expert Property Search</h1>
-            <p>Our experienced agents use advanced MLS systems and local market knowledge to find properties that match your exact criteria and budget.</p>
-            <a href="#contact" class="cta-button">Start Your Search</a>
+            <h1 id="hero-heading">Extraordinary Properties</h1>
+            <p>For extraordinary lives. Discover luxury real estate in Costa del Sol with AGG Homes.</p>
+            <a href="#properties" class="cta-button" role="button">Explore Properties</a>
         </div>
-    </section>
+        <div class="sr-only">Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture</div>
+    </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Services Section -->
-        <section class="services-section">
+    <main role="main">
+        <section class="services-section" aria-labelledby="services-heading">
             <div class="container">
-                <div class="image-text-grid">
-                    <div class="text-content">
-                        <h2>Personalized Property Matching</h2>
-                        <p>We combine technology and deep local expertise to find your perfect property:</p>
-                        <ul>
-                            <li>Advanced MLS Database Access</li>
-                            <li>Real-time Market Updates</li>
-                            <li>Personalized Property Alerts</li>
-                            <li>Virtual Property Tours</li>
-                            <li>Local Area Insights</li>
-                        </ul>
-                    </div>
-                    <div class="image-content">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&auto=format&fit=crop&q=80" 
-                             alt="Expert agent analyzing property data"
-                             loading="lazy">
-                    </div>
+                <h2 id="services-heading">Our Expertise</h2>
+                <div class="services-grid">
+                    <a href="#properties" class="service-item">
+                        <h3>Property Search</h3>
+                        <p>Advanced MLS systems and local market knowledge to find properties that match your exact criteria.</p>
+                    </a>
+                    <a href="/market/" class="service-item">
+                        <h3>Market Intelligence</h3>
+                        <p>Comprehensive market insights and pricing strategies for informed real estate decisions.</p>
+                    </a>
+                    <a href="/negotiation/" class="service-item">
+                        <h3>Negotiation & Closing</h3>
+                        <p>Professional negotiation services and seamless transaction management.</p>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section class="contact-cta" id="contact">
+        <section class="contact-cta" id="properties">
             <div class="container">
-                <h2>Ready to find your dream property?</h2>
-                <p>Explore these premium villa properties and connect with our experts</p>
-                
-                <!-- Villa Gallery Section -->
+                <h2>Featured Properties</h2>
+                <p>Discover extraordinary properties in prime Costa del Sol locations</p>
+
                 <div class="villa-gallery">
-                    
-                    <!-- Villa 1: Luxury Villa Marbella -->
                     <div class="villa-card">
                         <div class="villa-image villa-image-1">
                             <div class="villa-overlay">
-                                <h4 class="villa-title">🏖️ Luxury Villa Marbella</h4>
+                                <h4 class="villa-title">Luxury Villa Marbella</h4>
                                 <p class="villa-price">€695,000</p>
                                 <small class="villa-location">Premium beachfront location</small>
                             </div>
@@ -81,11 +72,10 @@
                         </div>
                     </div>
 
-                    <!-- Villa 2: Modern House Nueva Andalucía -->
                     <div class="villa-card">
                         <div class="villa-image villa-image-2">
                             <div class="villa-overlay">
-                                <h4 class="villa-title">🏰 Modern House Nueva Andalucía</h4>
+                                <h4 class="villa-title">Modern House Nueva Andalucía</h4>
                                 <p class="villa-price">€850,000</p>
                                 <small class="villa-location">Golf valley location</small>
                             </div>
@@ -95,11 +85,10 @@
                         </div>
                     </div>
 
-                    <!-- Villa 3: Premium Apartment Puerto Banús -->
                     <div class="villa-card">
                         <div class="villa-image villa-image-3">
                             <div class="villa-overlay">
-                                <h4 class="villa-title">🏢 Premium Apartment Puerto Banús</h4>
+                                <h4 class="villa-title">Premium Apartment Puerto Banús</h4>
                                 <p class="villa-price">€620,000</p>
                                 <small class="villa-location">Marina views</small>
                             </div>
@@ -109,11 +98,10 @@
                         </div>
                     </div>
 
-                    <!-- Villa 4: Beachfront Penthouse -->
                     <div class="villa-card">
                         <div class="villa-image villa-image-4">
                             <div class="villa-overlay">
-                                <h4 class="villa-title">🌊 Beachfront Penthouse Golden Mile</h4>
+                                <h4 class="villa-title">Beachfront Penthouse Golden Mile</h4>
                                 <p class="villa-price">€1,200,000</p>
                                 <small class="villa-location">Exclusive beachfront location</small>
                             </div>
@@ -123,19 +111,36 @@
                         </div>
                     </div>
                 </div>
-                
-                <a href="/#contact" class="cta-button">Contact an Expert</a>
+
+                <a href="/#contact" class="cta-button">Get In Touch</a>
             </div>
         </section>
     </main>
 
-    <footer>
+    <footer class="footer" role="contentinfo">
         <div class="container">
-            <p>© 2025 Expert Property Search | AGG Homes</p>
+            <p>© 2025 AGG Homes. All rights reserved.</p>
+            <p><a href="tel:+31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com">agg@post.com</a></p>
+        </div>
+
+        <div id="admin-access">
+            <button id="admin-login-btn" title="Admin Access - Click to Login">
+                ⚙️
+            </button>
         </div>
     </footer>
 
-    <!-- Chat System Integration -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const adminBtn = document.getElementById('admin-login-btn');
+            if (adminBtn) {
+                adminBtn.addEventListener('click', function () {
+                    window.open('admin-login.html', '_blank');
+                });
+            }
+        });
+    </script>
+
     <link rel="stylesheet" href="/css/chat-system.css">
     <script src="/js/chat-system.js"></script>
 </body>
