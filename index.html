@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io https://widget.intercom.io https://api-iam.intercom.io https://js.intercomcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://api-iam.intercom.io https://widget.intercom.io;">
+            content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io https://widget.intercom.io https://api-iam.intercom.io https://js.intercomcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://api-iam.intercom.io https://widget.intercom.io wss://nexus-websocket-a.intercom.io;">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description"
@@ -21,6 +21,10 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
         <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
         <link rel="preconnect" href="https://widget.intercom.io" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <!-- Google Fonts stylesheet -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;600&display=swap" crossorigin>
 
         <!-- Preload LCP image for optimal performance -->
         <link rel="preload" as="image" href="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80">
@@ -199,7 +203,7 @@
                 <p>Extraordinary properties for extraordinary lives. Discover luxury real estate in Costa del Sol with AGG Homes.</p>
                 <button type="button" class="cta-button" onclick="window.location.href='/experts/'">Explore Properties</button>
             </div>
-            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&amp;fit=crop&amp;w=1350&amp;q=80" alt="Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture" loading="eager" decoding="async">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&amp;fit=crop&amp;w=1350&amp;q=80" alt="Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture" loading="eager" decoding="async" fetchpriority="high" width="1350" height="900">
             <div class="sr-only">Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture</div>
         </header>
 
