@@ -487,13 +487,13 @@ class PropertyMatchingSystem {
         const emptyState = document.getElementById('empty-state');
 
         if (!properties || properties.length === 0) {
-            propertiesSection.style.display = 'none';
-            emptyState.style.display = 'block';
+            propertiesSection.classList.add('hidden');
+            emptyState.classList.remove('hidden');
             return;
         }
 
-        emptyState.style.display = 'none';
-        propertiesSection.style.display = 'block';
+        emptyState.classList.add('hidden');
+        propertiesSection.classList.remove('hidden');
 
         propertiesGrid.innerHTML = '';
 
@@ -596,8 +596,8 @@ class PropertyMatchingSystem {
 
     showLoading() {
         document.getElementById('loading-section').style.display = 'block';
-        document.getElementById('properties-section').style.display = 'none';
-        document.getElementById('empty-state').style.display = 'none';
+        document.getElementById('properties-section').classList.add('hidden');
+        document.getElementById('empty-state').classList.add('hidden');
     }
 
     hideLoading() {

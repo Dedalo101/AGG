@@ -190,9 +190,11 @@ class AdminDashboard {
     }
 
     async loadStats() {
+        console.log('Loading dashboard stats...');
+
         try {
-            // In a real implementation, these would come from Intercom API
-            const stats = await this.fetchIntercomStats();
+            // Use mock data for now since we don't have a backend API
+            const stats = this.getMockStats();
 
             document.getElementById('active-chats').textContent = stats.activeChats;
             document.getElementById('total-messages').textContent = stats.totalMessages;
@@ -203,58 +205,6 @@ class AdminDashboard {
         } catch (error) {
             console.error('Error loading stats:', error);
             this.loadMockStats();
-        }
-    }
-
-    async fetchIntercomStats() {
-        try {
-            // Use real Intercom API with provided credentials
-            const response = await this.callIntercomAPI('/me');
-
-            if (response && response.app) {
-                // Get real stats from Intercom
-                const conversations = await this.callIntercomAPI('/conversations');
-                const admins = await this.callIntercomAPI('/admins');
-
-                return {
-                    activeChats: conversations?.pages?.total_pages || 0,
-                    totalMessages: conversations?.conversations?.length || 0,
-                    responseTime: '~2min', // This would need a separate API call to get real data
-                    satisfaction: '98%' // This would need customer satisfaction API
-                };
-            }
-        } catch (error) {
-            console.error('Intercom API error:', error);
-            // Fall back to mock data if API fails
-            return this.getMockStats();
-        }
-
-        return this.getMockStats();
-    }
-
-    async callIntercomAPI(endpoint) {
-        try {
-            // Note: Direct API calls from browser will fail due to CORS
-            // This would need to be implemented through a backend proxy
-            const proxyUrl = `/api/intercom${endpoint}`;
-
-            const response = await fetch(proxyUrl, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${this.intercomConfig.apiToken}`,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`API call failed: ${response.status}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.warn('Direct Intercom API call failed, using fallback data:', error);
-            throw error;
         }
     }
 
@@ -404,7 +354,11 @@ class AdminDashboard {
         const intercomEmbed = document.getElementById('intercom-embed');
 
         if (conversationsContainer) conversationsContainer.style.display = 'none';
-        if (intercomEmbed) intercomEmbed.style.display = 'flex';
+        if (intercomEmbed) {
+            intercomEmbed.style.display = 'flex';
+            // Load the actual Intercom interface
+            this.loadIntercomInterface();
+        }
 
         // Hide load conversations button
         const loadBtn = document.getElementById('load-conversations-btn');
@@ -416,15 +370,19 @@ class AdminDashboard {
     }
 
     handleQuickAction(actionIndex) {
-        const actions = [
-            () => window.open('https://app.intercom.com/a/apps/g28vli0s/inbox', '_blank'),
-            () => window.open('property-matching.html', '_blank'),
-            () => window.open('https://app.intercom.com/a/apps/g28vli0s/reports', '_blank'),
-            () => window.open('index.html', '_blank')
-        ];
-
-        if (actions[actionIndex]) {
-            actions[actionIndex]();
+        switch(actionIndex) {
+            case 0: // Live Chat Support
+                this.showLiveChatSupport();
+                break;
+            case 1: // Property Inquiries
+                this.showPropertyInquiries();
+                break;
+            case 2: // Analytics & Reports
+                this.showAnalyticsReports();
+                break;
+            case 3: // Website Management
+                this.showWebsiteManagement();
+                break;
         }
     }
 
@@ -624,7 +582,7 @@ class AdminDashboard {
     }
 
     async loadConversations() {
-        console.log('Loading conversations from Intercom...');
+        console.log('Loading conversations...');
 
         const conversationsContainer = document.getElementById('conversations-container');
         const conversationsList = document.getElementById('conversations-list');
@@ -645,63 +603,16 @@ class AdminDashboard {
         `;
 
         try {
-            // Try to load real conversations from Intercom API
-            const conversations = await this.fetchRealConversations();
-
-            if (conversations && conversations.length > 0) {
-                this.displayConversations(conversations);
-            } else {
-                // Fall back to mock data if no real conversations
-                const mockConversations = await this.fetchMockConversations();
-                this.displayConversations(mockConversations);
-            }
-        } catch (error) {
-            console.error('Error loading conversations:', error);
-            // Show error and fall back to mock data
-            this.showConversationsError();
+            // Use mock data for now since we don't have a backend API
             const mockConversations = await this.fetchMockConversations();
             this.displayConversations(mockConversations);
-        }
-    }
-
-    async fetchRealConversations() {
-        try {
-            // Use the backend proxy to get real conversations
-            const response = await fetch('/api/intercom/conversations', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${this.intercomConfig.apiToken}`,
-                    'Accept': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.conversations && Array.isArray(data.conversations)) {
-                return data.conversations.map(conv => ({
-                    id: conv.id,
-                    customerName: conv.source?.author?.name || 'Unknown User',
-                    subject: conv.source?.body || 'No subject',
-                    status: conv.state || 'open',
-                    priority: this.calculatePriority(conv),
-                    lastMessage: this.getLastMessage(conv),
-                    timestamp: conv.created_at,
-                    unreadCount: conv.read ? 0 : 1,
-                    userId: conv.source?.author?.id,
-                    conversation: conv
-                }));
-            }
-
-            return [];
         } catch (error) {
-            console.warn('Failed to fetch real conversations:', error);
-            throw error;
+            console.error('Error loading conversations:', error);
+            this.showConversationsError();
         }
     }
+
+
 
     async fetchMockConversations() {
         // Simulate API delay
@@ -874,32 +785,22 @@ class AdminDashboard {
     }
 
     async fetchConversationDetail(conversationId) {
-        try {
-            const response = await fetch(`/api/intercom/conversations/${conversationId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${this.intercomConfig.apiToken}`,
-                    'Accept': 'application/json'
-                }
-            });
+        console.log('Loading conversation detail for:', conversationId);
 
-            if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
-            }
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 800));
 
-            return await response.json();
-        } catch (error) {
-            console.warn('Failed to fetch conversation detail:', error);
-            // Return mock data
-            return {
-                id: conversationId,
-                customerName: 'Mock Customer',
-                messages: [
-                    { author: { name: 'Customer' }, body: 'Hello, I need help with property search', created_at: Date.now() - 3600000 },
-                    { author: { name: 'Admin' }, body: 'Hi! I\'d be happy to help you find the perfect property.', created_at: Date.now() - 1800000 }
-                ]
-            };
-        }
+        // Return mock conversation detail
+        return {
+            id: conversationId,
+            customerName: 'Mock Customer',
+            messages: [
+                { author: { name: 'Customer' }, body: 'Hello, I need help with property search', created_at: Date.now() - 3600000 },
+                { author: { name: 'Admin' }, body: 'Hi! I\'d be happy to help you find the perfect property.', created_at: Date.now() - 1800000 },
+                { author: { name: 'Customer' }, body: 'I\'m looking for a 3-bedroom villa in Marbella under €500k', created_at: Date.now() - 900000 },
+                { author: { name: 'Admin' }, body: 'Great! I have several options that match your criteria. Let me send you some details.', created_at: Date.now() - 600000 }
+            ]
+        };
     }
 
     displayConversationDetail(conversation) {
@@ -1078,9 +979,324 @@ class AdminDashboard {
         }, 3000);
     }
 
-    showSettings() {
-        // Show settings modal or panel
-        alert('Settings panel - Feature coming soon!\n\nYou can configure:\n- Auto-refresh intervals\n- Notification preferences\n- Chat routing rules\n- Admin permissions');
+    showLiveChatSupport() {
+        // Switch to dashboard mode and load conversations
+        const dashboardRadio = document.getElementById('mode-dashboard');
+        if (dashboardRadio) {
+            dashboardRadio.checked = true;
+            this.setChatMode('dashboard');
+            this.showDashboardMode();
+            this.loadConversations();
+        }
+
+        // Scroll to chat section
+        const intercomSection = document.querySelector('.intercom-section');
+        if (intercomSection) {
+            intercomSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    showPropertyInquiries() {
+        // Show property inquiries management section
+        this.showModal('Property Inquiries Management', `
+            <div style="padding: 20px;">
+                <h3 style="margin-bottom: 16px; color: #1e293b;">Property Inquiry Management</h3>
+                <p style="margin-bottom: 20px; color: #64748b;">Manage property-related questions and schedule viewings with potential clients.</p>
+
+                <div style="display: grid; gap: 16px;">
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Recent Inquiries</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">View and respond to new property inquiries from potential clients.</p>
+                        <button onclick="window.adminDashboard.loadConversations()" style="margin-top: 12px; padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; cursor: pointer;">View Inquiries</button>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Schedule Viewings</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Arrange property viewings and manage client appointments.</p>
+                        <button onclick="window.open('property-matching.html', '_blank')" style="margin-top: 12px; padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">Open Property Matching</button>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Client Database</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Access client information and property preferences.</p>
+                        <button onclick="alert('Client database feature coming soon!')" style="margin-top: 12px; padding: 8px 16px; background: #f59e0b; color: white; border: none; border-radius: 6px; cursor: pointer;">View Clients</button>
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+
+    showAnalyticsReports() {
+        // Show analytics and reports section
+        this.showModal('Analytics & Reports', `
+            <div style="padding: 20px;">
+                <h3 style="margin-bottom: 16px; color: #1e293b;">Conversation Analytics & Reports</h3>
+                <p style="margin-bottom: 20px; color: #64748b;">View conversation analytics, response times, and customer satisfaction metrics.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #1e293b;" id="analytics-active-chats">0</div>
+                        <div style="font-size: 12px; color: #64748b;">Active Chats</div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #1e293b;" id="analytics-messages">0</div>
+                        <div style="font-size: 12px; color: #64748b;">Messages Today</div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #1e293b;" id="analytics-response-time">~2min</div>
+                        <div style="font-size: 12px; color: #64748b;">Avg Response Time</div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #1e293b;" id="analytics-satisfaction">98%</div>
+                        <div style="font-size: 12px; color: #64748b;">Satisfaction</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; gap: 16px;">
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Detailed Reports</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Access comprehensive analytics and performance reports.</p>
+                        <button onclick="window.open('https://app.intercom.com/a/apps/g28vli0s/reports', '_blank')" style="margin-top: 12px; padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; cursor: pointer;">View Reports</button>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Export Data</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Export conversation data and analytics for external analysis.</p>
+                        <button onclick="alert('Export feature coming soon!')" style="margin-top: 12px; padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">Export Data</button>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        // Update analytics data
+        this.updateAnalyticsData();
+    }
+
+    showWebsiteManagement() {
+        // Show website management section
+        this.showModal('Website Management', `
+            <div style="padding: 20px;">
+                <h3 style="margin-bottom: 16px; color: #1e293b;">Website Management Tools</h3>
+                <p style="margin-bottom: 20px; color: #64748b;">Access your main website and property matching system for direct management.</p>
+
+                <div style="display: grid; gap: 16px;">
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Main Website</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Access and manage your main AGG Homes website.</p>
+                        <button onclick="window.open('index.html', '_blank')" style="margin-top: 12px; padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; cursor: pointer;">Open Website</button>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Property Matching System</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Manage the property matching and recommendation system.</p>
+                        <button onclick="window.open('property-matching.html', '_blank')" style="margin-top: 12px; padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">Open Property Matching</button>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">Content Management</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Update website content, images, and property listings.</p>
+                        <button onclick="alert('Content management feature coming soon!')" style="margin-top: 12px; padding: 8px 16px; background: #f59e0b; color: white; border: none; border-radius: 6px; cursor: pointer;">Manage Content</button>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e293b;">SEO & Analytics</h4>
+                        <p style="margin: 0; color: #64748b; font-size: 14px;">Monitor website performance and SEO metrics.</p>
+                        <button onclick="alert('SEO analytics feature coming soon!')" style="margin-top: 12px; padding: 8px 16px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer;">View Analytics</button>
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+
+    showModal(title, content) {
+        // Remove existing modal if present
+        const existingModal = document.querySelector('.admin-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Create modal
+        const modal = document.createElement('div');
+        modal.className = 'admin-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        `;
+
+        modal.innerHTML = `
+            <div style="
+                background: white;
+                border-radius: 12px;
+                max-width: 600px;
+                width: 100%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            ">
+                <div style="
+                    padding: 20px 24px;
+                    border-bottom: 1px solid #e2e8f0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                ">
+                    <h2 style="margin: 0; color: #1e293b; font-size: 18px;">${title}</h2>
+                    <button onclick="this.closest('.admin-modal').remove()" style="
+                        background: none;
+                        border: none;
+                        font-size: 24px;
+                        cursor: pointer;
+                        color: #64748b;
+                        padding: 0;
+                        width: 32px;
+                        height: 32px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 6px;
+                        transition: background-color 0.2s;
+                    " onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='transparent'">×</button>
+                </div>
+                ${content}
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    updateAnalyticsData() {
+        // Update analytics data in modal
+        const activeChats = document.getElementById('analytics-active-chats');
+        const messages = document.getElementById('analytics-messages');
+        const responseTime = document.getElementById('analytics-response-time');
+        const satisfaction = document.getElementById('analytics-satisfaction');
+
+        if (activeChats) activeChats.textContent = document.getElementById('active-chats')?.textContent || '0';
+        if (messages) messages.textContent = document.getElementById('total-messages')?.textContent || '0';
+        if (responseTime) responseTime.textContent = document.getElementById('response-time')?.textContent || '~2min';
+        if (satisfaction) satisfaction.textContent = document.getElementById('satisfaction')?.textContent || '98%';
+    }
+
+    loadIntercomInterface() {
+        const intercomEmbed = document.getElementById('intercom-embed');
+        if (!intercomEmbed) return;
+
+        // Clear existing content
+        intercomEmbed.innerHTML = '';
+
+        // Create loading state
+        const loadingDiv = document.createElement('div');
+        loadingDiv.style.cssText = `
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: #64748b;
+        `;
+        loadingDiv.innerHTML = `
+            <div style="margin-bottom: 16px; font-size: 24px;">🔄</div>
+            <div style="font-size: 16px; margin-bottom: 8px;">Loading Intercom Interface...</div>
+            <div style="font-size: 12px;">Please wait while we connect to your Intercom dashboard</div>
+        `;
+        intercomEmbed.appendChild(loadingDiv);
+
+        try {
+            // Create iframe to load Intercom interface
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://app.intercom.com/a/apps/${this.intercomConfig.appId}/inbox`;
+            iframe.style.cssText = `
+                width: 100%;
+                height: 600px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                background: white;
+            `;
+            iframe.onload = () => {
+                // Remove loading state when iframe loads
+                intercomEmbed.innerHTML = '';
+                intercomEmbed.appendChild(iframe);
+                console.log('Intercom interface loaded successfully');
+            };
+            iframe.onerror = () => {
+                // Show error state if iframe fails to load
+                this.showIntercomError();
+            };
+
+            // Set a timeout in case the iframe doesn't load
+            setTimeout(() => {
+                if (intercomEmbed.contains(loadingDiv)) {
+                    this.showIntercomError();
+                }
+            }, 10000); // 10 second timeout
+
+        } catch (error) {
+            console.error('Error loading Intercom interface:', error);
+            this.showIntercomError();
+        }
+    }
+
+    showIntercomError() {
+        const intercomEmbed = document.getElementById('intercom-embed');
+        if (!intercomEmbed) return;
+
+        intercomEmbed.innerHTML = `
+            <div style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 400px;
+                color: #ef4444;
+                text-align: center;
+                padding: 20px;
+            ">
+                <div style="margin-bottom: 16px; font-size: 24px;">⚠️</div>
+                <div style="font-size: 16px; margin-bottom: 8px; font-weight: 500;">Failed to load Intercom Interface</div>
+                <div style="font-size: 14px; margin-bottom: 16px; color: #64748b;">
+                    Unable to connect to the Intercom dashboard. This may be due to network restrictions or authentication issues.
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="window.adminDashboard.loadIntercomInterface()" style="
+                        padding: 8px 16px;
+                        background: #ef4444;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 14px;
+                    ">Retry</button>
+                    <button onclick="window.open('https://app.intercom.com/a/apps/${window.adminDashboard.intercomConfig.appId}/inbox', '_blank')" style="
+                        padding: 8px 16px;
+                        background: #4f46e5;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 14px;
+                    ">Open in New Tab</button>
+                </div>
+                <div style="margin-top: 16px; font-size: 12px; color: #94a3b8;">
+                    App ID: ${window.adminDashboard.intercomConfig.appId}
+                </div>
+            </div>
+        `;
     }
 
     async loadChatTickets() {

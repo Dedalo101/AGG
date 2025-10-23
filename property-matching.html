@@ -343,6 +343,57 @@
             margin-bottom: 20px;
         }
         
+        /* Filter Section Styles */
+        .filter-section h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .filter-section p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        /* Loading Section Styles */
+        .loading p:last-child {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        /* Properties Section Styles */
+        .properties-section {
+            padding: 40px 20px;
+        }
+        
+        .properties-section.hidden {
+            display: none;
+        }
+        
+        .properties-section h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+        
+        /* Empty State Styles */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state.hidden {
+            display: none;
+        }
+        
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 { font-size: 2rem; }
@@ -370,8 +421,8 @@
     <main>
         <section class="filter-section">
             <div class="container">
-                <h2 style="text-align: center; color: var(--primary); margin-bottom: 10px;">Find Your Perfect Property</h2>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Set your preferences and let our system find the best matches for you</p>
+                <h2>Find Your Perfect Property</h2>
+                <p>Set your preferences and let our system find the best matches for you</p>
                 
                 <form id="property-search-form">
                     <div class="filter-grid">
@@ -472,20 +523,20 @@
         <div class="loading" id="loading-section">
             <div class="loading-spinner"></div>
             <p>Searching for your perfect properties...</p>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">Scanning Idealista and Fotocasa databases</p>
+            <p>Scanning Idealista and Fotocasa databases</p>
         </div>
 
-        <section class="properties-section" id="properties-section" style="display: none;">
+        <section class="properties-section hidden" id="properties-section">
             <div class="container">
-                <h2 style="text-align: center; color: var(--primary); margin-bottom: 40px;">🎯 Properties Matched to Your Criteria</h2>
+                <h2>🎯 Properties Matched to Your Criteria</h2>
                 <div class="properties-grid" id="properties-grid">
                     <!-- Properties will be populated here -->
                 </div>
             </div>
         </section>
 
-        <div class="empty-state" id="empty-state" style="display: none;">
-            <div style="font-size: 4rem; margin-bottom: 20px;">🏠</div>
+        <div class="empty-state hidden" id="empty-state">
+            <div class="icon">🏠</div>
             <h3>No properties found</h3>
             <p>Try adjusting your search criteria to find more options</p>
         </div>

@@ -48,7 +48,115 @@
             </div>
         </div>
 
-        <script src="js/admin-login.js"></script>
+        <script>
+            // Immediate execution for debugging - INLINE SCRIPT VERSION
+            console.log('=== INLINE ADMIN LOGIN SCRIPT STARTING ===');
+
+            // Simple admin login system
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log('=== INLINE: DOM loaded, initializing login system ===');
+
+                const loginForm = document.getElementById('admin-login-form');
+                const loginButton = document.getElementById('login-button');
+
+                console.log('=== INLINE: Login form element:', loginForm);
+                console.log('=== INLINE: Login button element:', loginButton);
+
+                if (loginForm) {
+                    console.log('=== INLINE: Attaching form submit listener ===');
+                    loginForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        console.log('=== INLINE: Form submit event triggered ===');
+
+                        const username = document.getElementById('username').value.trim();
+                        const password = document.getElementById('password').value;
+
+                        console.log('=== INLINE: Username entered:', username);
+                        console.log('=== INLINE: Password length:', password.length);
+
+                        if (!username || !password) {
+                            showError('Please enter both username and password');
+                            return;
+                        }
+
+                        // Disable button during login
+                        if (loginButton) {
+                            loginButton.disabled = true;
+                            loginButton.textContent = 'Signing in...';
+                        }
+
+                        // Check credentials
+                        if (username === 'dedalo101' && password === 'qwerty') {
+                            console.log('=== INLINE: Login successful - correct credentials ===');
+                            handleSuccessfulLogin(username);
+                        } else {
+                            console.log('=== INLINE: Login failed - wrong credentials ===');
+                            showError('Invalid username or password');
+                            if (loginButton) {
+                                loginButton.disabled = false;
+                                loginButton.textContent = 'Sign In to Dashboard';
+                            }
+                        }
+                    });
+                } else {
+                    console.error('=== INLINE: Login form not found! ===');
+                }
+            });
+
+            function handleSuccessfulLogin(username) {
+                console.log('=== INLINE: Handling successful login for:', username, '===');
+
+                // Set session data
+                const sessionExpiry = new Date().getTime() + (8 * 60 * 60 * 1000); // 8 hours
+                localStorage.setItem('agg_admin_logged_in', 'true');
+                localStorage.setItem('agg_admin_username', username);
+                localStorage.setItem('agg_admin_session_expiry', sessionExpiry.toString());
+                localStorage.setItem('agg_admin_login_time', new Date().toISOString());
+
+                showSuccess('Login successful! Redirecting to dashboard...');
+
+                // Redirect after short delay
+                setTimeout(() => {
+                    console.log('=== INLINE: Redirecting to dashboard ===');
+                    window.location.href = '/admin-dashboard.html';
+                }, 1500);
+            }
+
+            function showError(message) {
+                console.log('=== INLINE: Showing error:', message, '===');
+                const errorDiv = document.getElementById('error-message');
+                const successDiv = document.getElementById('success-message');
+
+                if (errorDiv) {
+                    errorDiv.textContent = message;
+                    errorDiv.style.display = 'block';
+                }
+
+                if (successDiv) {
+                    successDiv.style.display = 'none';
+                }
+
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    if (errorDiv) errorDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            function showSuccess(message) {
+                console.log('=== INLINE: Showing success:', message, '===');
+                const successDiv = document.getElementById('success-message');
+                const errorDiv = document.getElementById('error-message');
+
+                if (successDiv) {
+                    successDiv.textContent = message;
+                    successDiv.style.display = 'block';
+                }
+
+                if (errorDiv) {
+                    errorDiv.style.display = 'none';
+                }
+            }
+        </script>
     </body>
 
 </html>
