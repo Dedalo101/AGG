@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io https://widget.intercom.io https://api-iam.intercom.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://api-iam.intercom.io https://widget.intercom.io;">
+            content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io https://widget.intercom.io https://api-iam.intercom.io https://js.intercomcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://api-iam.intercom.io https://widget.intercom.io;">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description"
@@ -60,7 +60,11 @@
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
     "name": "AGG Homes",
+    "alternateName": "AGG Real Estate",
+    "description": "Premier real estate agency specializing in luxury properties in Costa del Sol, Spain. Expert real estate services including property search, market analysis, negotiation, and closing assistance for international buyers.",
     "url": "https://agg.homes",
+    "logo": "https://agg.homes/images/logo.png",
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80",
     "telephone": "+31617622375",
     "email": "agg@post.com",
     "address": {
@@ -70,7 +74,85 @@
         "addressRegion": "Málaga",
         "postalCode": "29660",
         "addressCountry": "ES"
-    }
+    },
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "36.5101",
+        "longitude": "-4.8824"
+    },
+    "areaServed": [
+        {
+            "@type": "Place",
+            "name": "Costa del Sol"
+        },
+        {
+            "@type": "Place",
+            "name": "Marbella"
+        },
+        {
+            "@type": "Place",
+            "name": "Estepona"
+        },
+        {
+            "@type": "Place",
+            "name": "Spain"
+        }
+    ],
+    "serviceType": [
+        "Property Search",
+        "Market Intelligence",
+        "Negotiation Services",
+        "Property Valuation",
+        "Investment Consulting",
+        "Luxury Real Estate"
+    ],
+    "priceRange": "€€€",
+    "paymentAccepted": ["Cash", "Bank Transfer", "Mortgage"],
+    "currenciesAccepted": "EUR",
+    "openingHours": "Mo-Fr 09:00-18:00",
+    "availableLanguage": ["English", "Spanish", "Dutch"],
+    "knowsAbout": [
+        "Luxury Villas",
+        "Beachfront Properties",
+        "Investment Properties",
+        "Costa del Sol Real Estate",
+        "Spanish Property Market",
+        "International Property Investment"
+    ],
+    "slogan": "Find Your Dream Home",
+    "foundingDate": "2024",
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Luxury Properties in Costa del Sol",
+        "itemListElement": [
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "House",
+                    "name": "Luxury Beachfront Villa",
+                    "description": "Stunning 5-bedroom villa with panoramic sea views"
+                }
+            }
+        ]
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+31617622375",
+        "email": "agg@post.com",
+        "contactType": "Customer Service",
+        "availableLanguage": ["English", "Spanish", "Dutch"],
+        "hoursAvailable": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "18:00"
+        }
+    },
+    "sameAs": [
+        "https://www.instagram.com/agg.homes",
+        "https://www.linkedin.com/company/agg-homes",
+        "https://wa.me/31617622375"
+    ]
 }
         </script>
         <script type="application/ld+json">
@@ -91,6 +173,10 @@
         <!-- Critical CSS inlined for performance -->
         <style>
             *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f4f4f9;color:#333}.container{max-width:1200px;margin:0 auto;padding:0 20px}:root{--primary:#003d82;--accent:#1e7e34;--text-light:#fff;--text-dark:#1a1a1a}.lang-switcher{position:fixed;top:15px;right:15px;z-index:9999;background-color:var(--accent);padding:8px 12px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.2)}.lang-switcher a{color:#fff;text-decoration:none;margin:0 6px;font-size:12px;font-weight:700;transition:opacity .3s}.lang-switcher a:hover{opacity:.7}.hero{background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),url(https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80);background-size:cover;background-position:center;height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-light)}.hero-content h1{font-size:2.5rem;margin-bottom:1rem}.hero-content p{font-size:1.2rem;margin-bottom:1.5rem}.cta-button{background-color:var(--accent);color:#fff;padding:15px 30px;text-decoration:none;border-radius:8px;font-size:1.2rem;font-weight:700;border:2px solid var(--accent);transition:all .3s}.cta-button:hover{background-color:#fff;color:var(--accent)}
+            /* Modal Styles */
+            .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.7);z-index:10000;display:flex;align-items:center;justify-content:center}.modal-content{background-color:#fff;border-radius:12px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:modalFadeIn .3s ease-out}.modal-header{display:flex;justify-content:space-between;align-items:center;padding:20px 30px;border-bottom:1px solid #eee}.modal-header h3{margin:0;font-size:1.5rem;color:#333}.modal-close{background:none;border:none;font-size:2rem;cursor:pointer;color:#666;padding:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background-color .2s}.modal-close:hover{background-color:#f5f5f5}.modal-body{padding:30px}.contact-options{display:flex;flex-direction:column;gap:15px}.contact-option{display:flex;align-items:center;padding:20px;border:2px solid #eee;border-radius:10px;text-decoration:none;color:#333;background-color:#fff;transition:all .3s;cursor:pointer}.contact-option:hover{border-color:var(--accent);background-color:#f8f9fa;transform:translateY(-2px)}.contact-option.whatsapp:hover{background-color:#25d366;border-color:#25d366;color:#fff}.contact-icon{font-size:2rem;margin-right:20px}.contact-text h4{margin:0 0 5px 0;font-size:1.2rem}.contact-text p{margin:0;color:#666;font-size:.9rem}@keyframes modalFadeIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+            /* Mobile fixes */
+            @media (max-width: 768px) { .hero img { display: none !important; } }
         </style>
 
         <!-- Non-critical CSS loaded asynchronously -->
@@ -106,17 +192,17 @@
             <a href="/">EN</a> | <a href="/es/">ES</a> | <a href="/nl/">NL</a>
         </div>
 
-        <header class="hero" role="banner" aria-labelledby="hero-heading">
+        <header class="hero" aria-labelledby="hero-heading">
             <div class="hero-content">
                 <h1 id="hero-heading">Find Your Dream Home</h1>
                 <p>Extraordinary properties for extraordinary lives. Discover luxury real estate in Costa del Sol with AGG Homes.</p>
-                <a href="/experts/" class="cta-button" role="button">Explore Properties</a>
+                <button type="button" class="cta-button" onclick="window.location.href='/experts/'">Explore Properties</button>
             </div>
-            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80" alt="Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture" loading="eager" decoding="async" width="1350" height="900">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&amp;fit=crop&amp;w=1350&amp;q=80" alt="Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture" loading="eager" decoding="async">
             <div class="sr-only">Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture</div>
         </header>
 
-        <main role="main">
+        <main>
             <section class="services-section" aria-labelledby="services-heading">
                 <div class="container">
                     <h2 id="services-heading">Our Services</h2>
@@ -130,7 +216,7 @@
                             <p>Get comprehensive market insights and pricing strategies. Make informed decisions with our professional market analysis.</p>
                         </a>
                         <a href="/negotiation/" class="service-item">
-                            <h3>Negotiation & Closing</h3>
+                            <h3>Negotiation &amp; Closing</h3>
                             <p>Expert negotiation services and seamless transaction management. We handle every detail to ensure your success.</p>
                         </a>
                     </div>
@@ -141,7 +227,7 @@
                 <div class="container">
                     <h2 id="consultation-heading">Let's Find Your Dream Home</h2>
                     <p>Connect with our expert real estate professionals and discover properties that exceed your expectations.</p>
-                    <a href="https://formspree.io/f/mjkeqevn" class="contact-button" role="button">Get In Touch</a>
+                    <button type="button" class="contact-button" onclick="window.open('https://wa.me/31617622375', '_blank')">Get In Touch</button>
                 </div>
             </section>
 
@@ -149,7 +235,7 @@
                 <div class="container">
                     <h2 id="newsletter-heading">Stay Updated</h2>
                     <p>Be the first to know about new properties and market insights in Costa del Sol.</p>
-                    <form action="https://formspree.io/f/mjkeqevn" method="POST" role="form">
+                    <form action="https://formspree.io/f/mjkeqevn" method="POST">
                         <div class="newsletter-form">
                             <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required class="newsletter-input">
                             <button type="submit" class="cta-button newsletter-submit">Subscribe</button>
@@ -159,15 +245,14 @@
             </section>
         </main>
 
-        <footer class="footer" role="contentinfo">
+        <footer class="footer">
             <div class="container">
                 <p>© 2025 AGG Homes. All rights reserved.</p>
                 <p><a href="tel:+31617622375">(+31617622375)</a> | <a href="mailto:agg@post.com">agg@post.com</a></p>
             </div>
 
-            <!-- Discrete Admin Access -->
             <div id="admin-access">
-                <button id="admin-login-btn" title="Admin Access - Click to Login">
+                <button id="admin-login-btn" type="button" title="Admin Access - Click to Login">
                     ⚙️
                 </button>
             </div>
@@ -198,6 +283,51 @@
                 } else {
                     console.error('Admin login button NOT found!');
                 }
+            });
+
+            // Contact modal functionality
+            function openContactModal() {
+                const modal = document.getElementById('contact-modal');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+
+            function closeContactModal() {
+                const modal = document.getElementById('contact-modal');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }
+
+            function openChat() {
+                // Try to open Intercom chat if available
+                if (window.Intercom) {
+                    window.Intercom('show');
+                } else if (window.intercomSettings) {
+                    // Fallback for other chat systems
+                    console.log('Chat system not fully loaded yet');
+                } else {
+                    // Fallback: redirect to consultation page
+                    window.location.href = '/consultation/';
+                }
+            }
+
+            // Close modal when clicking outside
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('contact-modal');
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            closeContactModal();
+                        }
+                    });
+                }
+
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+                        closeContactModal();
+                    }
+                });
             });
 
             // Add pulse animation CSS
@@ -250,6 +380,34 @@
                 });
             }
         </script>
+
+        <!-- Contact Modal -->
+        <div id="contact-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Choose How to Contact Us</h3>
+                    <button class="modal-close" type="button" onclick="closeContactModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="contact-options">
+                        <a href="https://wa.me/31617622375" class="contact-option whatsapp" target="_blank" rel="noopener" onclick="closeContactModal()">
+                            <div class="contact-icon">💬</div>
+                            <div class="contact-text">
+                                <h4>WhatsApp</h4>
+                                <p>Chat with us instantly on WhatsApp</p>
+                            </div>
+                        </a>
+                        <button class="contact-option chat" type="button" onclick="openChat(); closeContactModal()">
+                            <span class="contact-icon">💭</span>
+                            <span class="contact-text">
+                                <span class="contact-title">Live Chat</span>
+                                <span class="contact-description">Start a conversation on our website</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 
 </html>

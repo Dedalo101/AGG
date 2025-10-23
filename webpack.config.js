@@ -94,8 +94,8 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: 'images', to: 'images' },
-        { from: '*.{ico,txt,xml,json}', to: '[name][ext]' },
+        { from: '*.{ico,txt,xml}', to: '[name][ext]' },
+        { from: 'manifest.json', to: 'manifest.json' },
         { from: 'api', to: 'api' },
         { from: 'en', to: 'en' },
         { from: 'es', to: 'es' },
@@ -146,5 +146,8 @@ module.exports = {
     compress: true,
     port: 8080,
     open: true,
+  },
+  performance: {
+    hints: false, // Disable performance warnings for this small site
   },
 };

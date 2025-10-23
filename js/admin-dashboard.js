@@ -822,7 +822,7 @@ class AdminDashboard {
                     <h3 style="margin: 0; font-size: 16px; color: #1e293b;">Conversation with ${conversation.customerName || 'Customer'}</h3>
                     <div>
                         <button onclick="window.adminDashboard.closeConversation()" style="padding: 8px 16px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; cursor: pointer; margin-right: 8px;">Back to List</button>
-                        <button onclick="window.adminDashboard.replyToConversation('${conversation.id}')" style="padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">Reply</button>
+                        <button onclick="window.adminDashboard.replyToConversation()" style="padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;">Reply</button>
                     </div>
                 </div>
                 <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
@@ -846,7 +846,7 @@ class AdminDashboard {
         if (conversationDetail) conversationDetail.style.display = 'none';
     }
 
-    replyToConversation(conversationId) {
+    replyToConversation() {
         const replyTextarea = document.getElementById('reply-message');
         if (replyTextarea) {
             replyTextarea.focus();

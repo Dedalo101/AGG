@@ -129,7 +129,7 @@ class PropertyMatchingSystem {
                     }
                 }
             } catch (corsError) {
-                console.warn('CORS restriction - using realistic fallback data');
+                console.warn('CORS restriction - using realistic fallback data:', corsError.message);
             }
 
             // Fallback to realistic properties
@@ -172,7 +172,7 @@ class PropertyMatchingSystem {
                     }
                 }
             } catch (corsError) {
-                console.warn('CORS restriction - using realistic fallback data');
+                console.warn('CORS restriction - using realistic fallback data:', corsError.message);
             }
 
             // Fallback to realistic properties
@@ -358,7 +358,7 @@ class PropertyMatchingSystem {
                 image: this.getPropertyImage(propertyType, i),
                 source: source,
                 features: this.generateFeatures(propertyType),
-                description: this.generateDescription(propertyType, locationKey)
+                description: this.generateDescription(propertyType)
             });
         }
 
@@ -430,7 +430,7 @@ class PropertyMatchingSystem {
         return features;
     }
 
-    generateDescription(type, location) {
+    generateDescription(type) {
         const descriptions = {
             villa: `Exceptional villa offering luxury living with stunning architecture and premium finishes.`,
             apartment: `Modern apartment with excellent amenities and prime location.`,
@@ -765,7 +765,7 @@ class PropertyMatchingSystem {
         if (!priceText) return 0;
 
         // Remove currency symbols and spaces, extract numbers
-        const cleanPrice = priceText.replace(/[€$£\s,\.]/g, '');
+        const cleanPrice = priceText.replace(/[€$£\s,.]/g, '');
         const match = cleanPrice.match(/(\d+)/);
         return match ? parseInt(match[1]) : 0;
     }

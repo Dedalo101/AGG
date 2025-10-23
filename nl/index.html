@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io https://widget.intercom.io https://api-iam.intercom.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://api-iam.intercom.io https://widget.intercom.io;">
+            content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://formspree.io https://widget.intercom.io https://api-iam.intercom.io https://js.intercomcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; font-src 'self' https:; connect-src 'self' https: https://api-iam.intercom.io https://widget.intercom.io;">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description"
@@ -269,6 +269,127 @@
                 }
             }
         </style>
+        <!-- Correct hreflang implementation -->
+        <link rel="alternate" hreflang="en" href="https://agg.homes/">
+        <link rel="alternate" hreflang="es" href="https://agg.homes/es/">
+        <link rel="alternate" hreflang="nl" href="https://agg.homes/nl/">
+        <link rel="alternate" hreflang="x-default" href="https://agg.homes/">
+
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "AGG Homes",
+    "alternateName": "AGG Vastgoed",
+    "description": "Vooraanstaande makelaarskantoor gespecialiseerd in luxe woningen aan de Costa del Sol, Spanje. Deskundige vastgoeddiensten inclusief woningzoektocht, marktanalyse, onderhandeling en afsluitingsondersteuning voor internationale kopers.",
+    "url": "https://agg.homes/nl/",
+    "logo": "https://agg.homes/images/logo.png",
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80",
+    "telephone": "+31617622375",
+    "email": "agg@post.com",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Nueva Andalucia",
+        "addressLocality": "Marbella",
+        "addressRegion": "Málaga",
+        "postalCode": "29660",
+        "addressCountry": "ES"
+    },
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "36.5101",
+        "longitude": "-4.8824"
+    },
+    "areaServed": [
+        {
+            "@type": "Place",
+            "name": "Costa del Sol"
+        },
+        {
+            "@type": "Place",
+            "name": "Marbella"
+        },
+        {
+            "@type": "Place",
+            "name": "Estepona"
+        },
+        {
+            "@type": "Place",
+            "name": "Spanje"
+        }
+    ],
+    "serviceType": [
+        "Woning Zoeken",
+        "Markt Intelligence",
+        "Onderhandelingsdiensten",
+        "Woning Taxatie",
+        "Investeringsadvisering",
+        "Luxe Vastgoed"
+    ],
+    "priceRange": "€€€",
+    "paymentAccepted": ["Contant", "Bankoverschrijving", "Hypotheek"],
+    "currenciesAccepted": "EUR",
+    "openingHours": "Ma-Vr 09:00-18:00",
+    "availableLanguage": ["Engels", "Spaans", "Nederlands"],
+    "knowsAbout": [
+        "Luxe Villas",
+        "Strandwoningen",
+        "Investeringswoningen",
+        "Costa del Sol Vastgoed",
+        "Spaanse Woningmarkt",
+        "Internationale Vastgoedinvesteringen"
+    ],
+    "slogan": "Vind Je Droomhuis",
+    "foundingDate": "2024",
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Luxe Woningen aan de Costa del Sol",
+        "itemListElement": [
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "House",
+                    "name": "Luxe Strandvilla",
+                    "description": "Prachtige 5-slaapkamer villa met panoramisch zeezicht"
+                }
+            }
+        ]
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+31617622375",
+        "email": "agg@post.com",
+        "contactType": "Klantenservice",
+        "availableLanguage": ["Engels", "Spaans", "Nederlands"],
+        "hoursAvailable": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "18:00"
+        }
+    },
+    "sameAs": [
+        "https://www.instagram.com/agg.homes",
+        "https://www.linkedin.com/company/agg-homes",
+        "https://wa.me/31617622375"
+    ]
+}
+        </script>
+        <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://agg.homes/nl/"
+        }
+    ]
+}
+        </script>
         <link rel="stylesheet" href="/css/cookie-consent.min.css" media="print" onload="this.media='all'">
         <script src="/js/cookie-consent.min.js" defer></script>
     </head>

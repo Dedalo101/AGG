@@ -308,7 +308,7 @@ class AGGChatSystem {
     getTimezone() {
         try {
             return Intl.DateTimeFormat().resolvedOptions().timeZone;
-        } catch (e) {
+        } catch {
             return 'Unknown';
         }
     }
