@@ -6,79 +6,19 @@
     <title>Expert Property Search | AGG Homes</title>
     <link rel="stylesheet" href="/css/styles.css">
     <meta name="description" content="Expert property search services in Costa del Sol. Get personalized property recommendations from our experienced agents.">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Expert Property Search | AGG Homes">
+    <meta property="og:description" content="Expert property search services in Costa del Sol. Get personalized property recommendations from our experienced agents.">
+    <meta property="og:image" content="https://agg.homes/images/expert-search.jpg">
+    <meta property="og:url" content="https://agg.homes/experts/">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Expert Property Search | AGG Homes">
+    <meta name="twitter:description" content="Expert property search services in Costa del Sol. Get personalized property recommendations from our experienced agents.">
+    <meta name="twitter:image" content="https://agg.homes/images/expert-search.jpg">
     
-    <!-- Additional styles for villa gallery -->
-    <style>
-        .villa-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-        
-        .villa-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .villa-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .villa-image {
-            position: relative;
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: flex-end;
-        }
-        
-        .villa-overlay {
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            width: 100%;
-            padding: 1.5rem;
-            color: white;
-        }
-        
-        .villa-title {
-            margin: 0;
-            font-size: 1.3rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .villa-price {
-            margin: 0.5rem 0;
-            font-size: 1rem;
-            font-weight: bold;
-        }
-        
-        .villa-location {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-        
-        .villa-details {
-            padding: 1rem;
-        }
-        
-        .villa-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 768px) {
-            .villa-gallery { 
-                grid-template-columns: 1fr; 
-                gap: 1rem; 
-                margin: 2rem 0; 
-            }
-        }
-    </style>
 </head>
 <body class="site-root">
     <a href="/" class="home-link">← Back to AGG Homes</a>
@@ -125,61 +65,61 @@
                 <p>Explore these premium villa properties and connect with our experts</p>
                 
                 <!-- Villa Gallery Section -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                <div class="villa-gallery">
                     
                     <!-- Villa 1: Luxury Villa Marbella -->
-                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                        <div style="position: relative; height: 200px; background-image: url('https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                            <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 1.5rem; color: white;">
-                                <h4 style="margin: 0; font-size: 1.3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🏖️ Luxury Villa Marbella</h4>
-                                <p style="margin: 0.5rem 0; font-size: 1rem; font-weight: bold;">€695,000</p>
-                                <small style="opacity: 0.9;">Premium beachfront location</small>
+                    <div class="villa-card">
+                        <div class="villa-image villa-image-1">
+                            <div class="villa-overlay">
+                                <h4 class="villa-title">🏖️ Luxury Villa Marbella</h4>
+                                <p class="villa-price">€695,000</p>
+                                <small class="villa-location">Premium beachfront location</small>
                             </div>
                         </div>
-                        <div style="padding: 1rem;">
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Stunning luxury villa with sea views, private pool, and modern amenities in prestigious Marbella location.</p>
+                        <div class="villa-details">
+                            <p class="villa-description">Stunning luxury villa with sea views, private pool, and modern amenities in prestigious Marbella location.</p>
                         </div>
                     </div>
 
                     <!-- Villa 2: Modern House Nueva Andalucía -->
-                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                        <div style="position: relative; height: 200px; background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                            <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 1.5rem; color: white;">
-                                <h4 style="margin: 0; font-size: 1.3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🏰 Modern House Nueva Andalucía</h4>
-                                <p style="margin: 0.5rem 0; font-size: 1rem; font-weight: bold;">€850,000</p>
-                                <small style="opacity: 0.9;">Golf valley location</small>
+                    <div class="villa-card">
+                        <div class="villa-image villa-image-2">
+                            <div class="villa-overlay">
+                                <h4 class="villa-title">🏰 Modern House Nueva Andalucía</h4>
+                                <p class="villa-price">€850,000</p>
+                                <small class="villa-location">Golf valley location</small>
                             </div>
                         </div>
-                        <div style="padding: 1rem;">
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Contemporary house with private garden, golf valley views, and luxury finishes in Nueva Andalucía.</p>
+                        <div class="villa-details">
+                            <p class="villa-description">Contemporary house with private garden, golf valley views, and luxury finishes in Nueva Andalucía.</p>
                         </div>
                     </div>
 
                     <!-- Villa 3: Premium Apartment Puerto Banús -->
-                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                        <div style="position: relative; height: 200px; background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                            <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 1.5rem; color: white;">
-                                <h4 style="margin: 0; font-size: 1.3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🏢 Premium Apartment Puerto Banús</h4>
-                                <p style="margin: 0.5rem 0; font-size: 1rem; font-weight: bold;">€620,000</p>
-                                <small style="opacity: 0.9;">Marina views</small>
+                    <div class="villa-card">
+                        <div class="villa-image villa-image-3">
+                            <div class="villa-overlay">
+                                <h4 class="villa-title">🏢 Premium Apartment Puerto Banús</h4>
+                                <p class="villa-price">€620,000</p>
+                                <small class="villa-location">Marina views</small>
                             </div>
                         </div>
-                        <div style="padding: 1rem;">
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Elegant apartment with sea and marina views, walking distance to luxury shops and restaurants.</p>
+                        <div class="villa-details">
+                            <p class="villa-description">Elegant apartment with sea and marina views, walking distance to luxury shops and restaurants.</p>
                         </div>
                     </div>
 
                     <!-- Villa 4: Beachfront Penthouse -->
-                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                        <div style="position: relative; height: 200px; background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                            <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 1.5rem; color: white;">
-                                <h4 style="margin: 0; font-size: 1.3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🌊 Beachfront Penthouse Golden Mile</h4>
-                                <p style="margin: 0.5rem 0; font-size: 1rem; font-weight: bold;">€1,200,000</p>
-                                <small style="opacity: 0.9;">Exclusive beachfront location</small>
+                    <div class="villa-card">
+                        <div class="villa-image villa-image-4">
+                            <div class="villa-overlay">
+                                <h4 class="villa-title">🌊 Beachfront Penthouse Golden Mile</h4>
+                                <p class="villa-price">€1,200,000</p>
+                                <small class="villa-location">Exclusive beachfront location</small>
                             </div>
                         </div>
-                        <div style="padding: 1rem;">
-                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Exclusive penthouse with panoramic sea views and direct beach access on the prestigious Golden Mile.</p>
+                        <div class="villa-details">
+                            <p class="villa-description">Exclusive penthouse with panoramic sea views and direct beach access on the prestigious Golden Mile.</p>
                         </div>
                     </div>
                 </div>

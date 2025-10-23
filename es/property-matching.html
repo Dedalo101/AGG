@@ -358,9 +358,9 @@
     <main>
         <section class="filter-section">
             <div class="container">
-                <h2 style="text-align: center; color: var(--primary); margin-bottom: 10px;">Encuentra Tu Propiedad Perfecta</h2>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Establece tus preferencias y deja que nuestro sistema encuentre las mejores opciones para ti</p>
-                
+                <h2 class="property-matching-title">Encuentra Tu Propiedad Perfecta</h2>
+                <p class="property-matching-subtitle">Establece tus preferencias y deja que nuestro sistema encuentre las mejores opciones para ti</p>
+
                 <form id="property-search-form">
                     <div class="filter-grid">
                         <div class="filter-group">
@@ -380,7 +380,7 @@
                                 <option value="sevilla">Sevilla</option>
                             </select>
                         </div>
-                        
+
                         <div class="filter-group">
                             <label for="property-type">🏡 Tipo de Propiedad</label>
                             <select id="property-type" name="property-type" required>
@@ -395,7 +395,7 @@
                                 <option value="commercial">Comercial</option>
                             </select>
                         </div>
-                        
+
                         <div class="filter-group">
                             <label for="min-price">💰 Precio Mínimo (€)</label>
                             <select id="min-price" name="min-price" required>
@@ -411,7 +411,7 @@
                                 <option value="2000000">€2,000,000</option>
                             </select>
                         </div>
-                        
+
                         <div class="filter-group">
                             <label for="max-price">💸 Precio Máximo (€)</label>
                             <select id="max-price" name="max-price" required>
@@ -427,7 +427,7 @@
                                 <option value="10000000">€10,000,000+</option>
                             </select>
                         </div>
-                        
+
                         <div class="filter-group">
                             <label for="bedrooms">🛏️ Dormitorios</label>
                             <select id="bedrooms" name="bedrooms">
@@ -439,7 +439,7 @@
                                 <option value="5">5+ Dormitorios</option>
                             </select>
                         </div>
-                        
+
                         <div class="filter-group">
                             <label for="bathrooms">🚿 Baños</label>
                             <select id="bathrooms" name="bathrooms">
@@ -451,7 +451,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <button type="submit" class="search-btn">🔍 Encuentra Mis Propiedades Perfectas</button>
                 </form>
             </div>
@@ -460,20 +460,20 @@
         <div class="loading" id="loading-section">
             <div class="loading-spinner"></div>
             <p>Buscando tus propiedades perfectas...</p>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">Escaneando bases de datos de Idealista y Fotocasa</p>
+            <p class="loading-subtitle">Escaneando bases de datos de Idealista y Fotocasa</p>
         </div>
 
-        <section class="properties-section" id="properties-section" style="display: none;">
+        <section class="properties-section hidden" id="properties-section">
             <div class="container">
-                <h2 style="text-align: center; color: var(--primary); margin-bottom: 40px;">🎯 Propiedades que Coinciden con tus Criterios</h2>
+                <h2 class="properties-title">🎯 Propiedades que Coinciden con tus Criterios</h2>
                 <div class="properties-grid" id="properties-grid">
                     <!-- Properties will be populated here -->
                 </div>
             </div>
         </section>
 
-        <div class="empty-state" id="empty-state" style="display: none;">
-            <div style="font-size: 4rem; margin-bottom: 20px;">🏠</div>
+        <div class="empty-state hidden" id="empty-state">
+            <div class="empty-icon">🏠</div>
             <h3>No se encontraron propiedades</h3>
             <p>Intenta ajustar tus criterios de búsqueda para encontrar más opciones</p>
         </div>

@@ -390,5 +390,6 @@
         "**/.git/subtree-cache/**": true,
         "**/test-results/**": true,
         "**/playwright-report/**": true
-    }
+    },
+    "chat.agent.maxRequests": 100
 }

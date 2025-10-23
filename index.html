@@ -14,10 +14,14 @@
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:title" content="Find Your Dream Home | Premier Real Estate Agency">
-        <meta property="og:description" content="Find your dream home with our expert real estate services. Get personalized property recommendations and market insights.">
+        <meta property="og:description" content="Find your dream home in Costa del Sol with AGG Homes. Expert real estate services, personalized property recommendations, market insights, and professional guidance for buying/selling properties in Marbella, Estepona, and throughout Spain's premier coastal region.">
+        <meta property="og:image" content="https://agg.homes/images/hero-property.jpg">
+        <meta property="og:url" content="https://agg.homes/">
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Find Your Dream Home | Premier Real Estate Agency">
+        <meta name="twitter:description" content="Find your dream home in Costa del Sol with AGG Homes. Expert real estate services, personalized property recommendations, market insights, and professional guidance for buying/selling properties in Marbella, Estepona, and throughout Spain's premier coastal region.">
+        <meta name="twitter:image" content="https://agg.homes/images/hero-property.jpg">
         <!-- Self-referential canonical for en version -->
         <link rel="canonical" href="https://agg.homes/">
         <!-- Correct hreflang implementation -->
@@ -42,6 +46,20 @@
         "postalCode": "29660",
         "addressCountry": "ES"
     }
+}
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://agg.homes/"
+        }
+    ]
 }
     </script>
         <style>
@@ -269,6 +287,18 @@
                     grid-template-columns: 1fr;
                 }
             }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
         </style>
         <link rel="stylesheet" href="css/cookie-consent.min.css" media="print" onload="this.media='all'">
         <script src="js/cookie-consent.min.js" defer></script>
@@ -279,14 +309,15 @@
             <a href="/">EN</a> / <a href="/es/">ES</a> / <a href="/nl/">NL</a>
         </div>
 
-        <header class="hero" role="banner">
+        <header class="hero" role="banner" aria-labelledby="hero-heading">
             <div class="hero-content">
-                <h1>Find Your Dream Home Today with Expert Real Estate Agents</h1>
+                <h1 id="hero-heading">Find Your Dream Home Today with Expert Real Estate Agents</h1>
                 <p>Discover exclusive property listings, get personalized market insights, and connect with our
                     certified real estate professionals. We specialize in helping families find their perfect home in
                     today's competitive market.</p>
                 <a href="/blog/" class="cta-button" role="button">Get Free Consultation</a>
             </div>
+            <div class="sr-only">Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture</div>
         </header>
 
         <main role="main">
@@ -294,17 +325,17 @@
                 <div class="container">
                     <h2 id="services-heading">Why Choose Our Real Estate Services?</h2>
                     <div class="services-grid">
-                        <a href="/en/experts" class="service-item">
+                        <a href="/experts/" class="service-item">
                             <h3>Expert Property Search</h3>
                             <p>Our experienced agents use advanced MLS systems and local market knowledge to find
                                 properties that perfectly match your criteria and budget.</p>
                         </a>
-                        <a href="/en/market" class="service-item">
+                        <a href="/market/" class="service-item">
                             <h3>Market Analysis & Pricing</h3>
                             <p>Get comprehensive market insights, property valuations, and pricing strategies to make
                                 informed real estate decisions.</p>
                         </a>
-                        <a href="/en/negotiation" class="service-item">
+                        <a href="/negotiation/" class="service-item">
                             <h3>Negotiation & Closing</h3>
                             <p>Professional negotiation services and seamless closing process to ensure you get the best
                                 deal for your dream home.</p>
