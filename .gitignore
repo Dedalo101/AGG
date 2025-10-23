@@ -50,3 +50,18 @@ TESTING.md
 deploy*.sh
 optimize.sh
 validate-setup.js
+
+# GitHub Actions and CI/CD
+.github/workflows/
+.github/copilot-instructions.md
+
+# Test artifacts and reports
+test-results/
+playwright-report/
+*.report/
+*.coverage/
+
+# Development and build artifacts
+.cache/
+dist/
+build/
