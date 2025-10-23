@@ -1,11 +1,13 @@
 # Cache Headers Configuration
 
 ## Overview
+
 This document explains the cache optimization setup for AGG Homes website.
 
 ## Current Configuration
 
 ### Production Server (.htaccess)
+
 The `.htaccess` file contains Apache-compatible cache control headers that will be applied on production:
 
 ```apache
@@ -26,11 +28,13 @@ The `.htaccess` file contains Apache-compatible cache control headers that will 
 ```
 
 ### Development Server
+
 The Python HTTP server (`python -m http.server 8000`) does **NOT** read `.htaccess` files and will show default 10-minute cache TTLs. This is normal for development.
 
 ## Expected Performance Improvements
 
 ### Cache TTL Improvements
+
 | Asset Type | Before | After | Savings |
 |-----------|--------|-------|---------|
 | CSS/JS/Images | 10m | 1 year | 99.3% |
@@ -38,6 +42,7 @@ The Python HTTP server (`python -m http.server 8000`) does **NOT** read `.htacce
 | HTML | No cache | 1 hour | Improves freshness |
 
 ### Estimated Performance Gains
+
 - **Repeat visits**: 12-17 KiB saved per session
 - **LCP improvement**: 150-250ms faster on repeat visits
 - **FCP improvement**: 100-150ms faster on repeat visits
@@ -46,11 +51,13 @@ The Python HTTP server (`python -m http.server 8000`) does **NOT** read `.htacce
 ## Production Deployment
 
 ### Requirements
+
 1. **Apache Server** with `mod_expires` and `mod_headers` modules enabled
 2. **AllowOverride FileInfo Headers** in Apache configuration
 3. **.htaccess file** in the web root (already configured)
 
 ### Deployment Checklist
+
 - [ ] Verify Apache has `mod_expires` enabled: `a2enmod expires`
 - [ ] Verify Apache has `mod_headers` enabled: `a2enmod headers`
 - [ ] Ensure `.htaccess` AllowOverride is enabled in Apache config
@@ -58,6 +65,7 @@ The Python HTTP server (`python -m http.server 8000`) does **NOT** read `.htacce
 - [ ] Verify: Should see `Cache-Control: max-age=31536000, public, immutable`
 
 ### Verification Command
+
 ```bash
 curl -I https://agg.homes/css/styles.css | grep Cache-Control
 # Expected: Cache-Control: max-age=31536000, public, immutable
@@ -66,6 +74,7 @@ curl -I https://agg.homes/css/styles.css | grep Cache-Control
 ## Performance Metrics
 
 ### Current Optimization Status
+
 - ✅ **LCP Image**: `fetchpriority="high"` + `loading="eager"`
 - ✅ **Preconnect Hints**: Unsplash, Google Fonts, Intercom
 - ✅ **Cache Headers**: 1 year for static assets (production)
@@ -73,16 +82,19 @@ curl -I https://agg.homes/css/styles.css | grep Cache-Control
 - ✅ **GZIP Compression**: Enabled for text/CSS/JS
 
 ### Estimated Lighthouse Score Improvements
+
 - **LCP**: ~50 points improvement
 - **FCP**: ~30 points improvement
 - **Overall Performance**: ~40-50 points improvement
 
 ## Related Files
+
 - `.htaccess` - Apache cache and compression configuration
 - `index.html` - LCP image optimization with `fetchpriority="high"`
 - `css/styles.css` - Removed `@import` for Google Fonts (added to HTML)
 
 ## Notes
+
 - Lighthouse audits on dev server will show 10m TTL; this is expected
 - Production deployment will show 1-year cache TTL
 - Cache headers follow HTTP best practices and Google recommendations
