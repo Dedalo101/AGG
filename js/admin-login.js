@@ -131,7 +131,7 @@ class AdminLogin {
 
     redirectToDashboard() {
         // Check if dashboard page exists, otherwise create it
-        window.location.href = 'admin-dashboard.html';
+        window.location.href = '/admin-dashboard.html';
     }
 
     showError(message) {
@@ -184,7 +184,7 @@ class AdminLogin {
 
         // Only redirect if we're not already on the login page
         if (!window.location.pathname.includes('admin-login.html')) {
-            window.location.href = 'admin-login.html';
+            window.location.href = '/admin-login.html';
         }
     }
 
