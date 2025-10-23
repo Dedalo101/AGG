@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;600&display=swap');
+
+/* Preload critical fonts */
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyCg4TYFv.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyC0TTYFv.ttf') format('truetype');
+}
+
 :root {
     --primary: #000000; /* Black */
     --secondary: #D4AF37; /* Gold */
@@ -8,7 +27,7 @@
     --background: #FFFFFF; /* White background */
     --background-dark: #000000; /* Black background */
     --spacing: clamp(1rem, 2vw, 2rem);
-    --font-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-primary: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-secondary: 'Times New Roman', serif;
 }
 

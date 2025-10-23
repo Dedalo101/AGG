@@ -407,7 +407,12 @@
         "Slaapkamers",
         "Badkamers",
         "Grootte",
-        "Benalmádena"
+        "Benalmádena",
+        "MSIE",
+        "Webfonts",
+        "fontobject",
+        "nosniff",
+        "HSTS"
     ],
     // File watchers for auto-reload during development
     "files.watcherExclude": {

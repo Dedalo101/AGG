@@ -11,6 +11,24 @@
         <meta name="keywords" content="real estate, properties, homes, buy house, sell property, real estate agent">
         <meta name="author" content="AGG.homes - Real Estate Agent">
         <meta name="robots" content="index, follow">
+
+        <!-- Performance optimizations -->
+        <link rel="dns-prefetch" href="//fonts.googleapis.com">
+        <link rel="dns-prefetch" href="//fonts.gstatic.com">
+        <link rel="dns-prefetch" href="//images.unsplash.com">
+        <link rel="dns-prefetch" href="//formspree.io">
+        <link rel="dns-prefetch" href="//widget.intercom.io">
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <!-- Preload critical resources -->
+        <link rel="preload" href="css/critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="preload" href="js/script.js" as="script">
+        <link rel="preload" href="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80" as="image">
+
+        <!-- Fallback for critical CSS -->
+        <noscript><link rel="stylesheet" href="css/critical.css"></noscript>
+
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:title" content="Find Your Dream Home | Premier Real Estate Agency">
@@ -22,6 +40,15 @@
         <meta name="twitter:title" content="Find Your Dream Home | Premier Real Estate Agency">
         <meta name="twitter:description" content="Find your dream home in Costa del Sol with AGG Homes. Expert real estate services, personalized property recommendations, market insights, and professional guidance for buying/selling properties in Marbella, Estepona, and throughout Spain's premier coastal region.">
         <meta name="twitter:image" content="https://agg.homes/images/hero-property.jpg">
+        <!-- Web App Manifest -->
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#D4AF37">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="AGG Homes">
+        <link rel="apple-touch-icon" href="/images/icon-192x192.png">
+        <title>Find Your Dream Home | Premier Real Estate Agency</title>
+
         <!-- Self-referential canonical for en version -->
         <link rel="canonical" href="https://agg.homes/">
         <!-- Correct hreflang implementation -->
@@ -29,7 +56,8 @@
         <link rel="alternate" hreflang="es" href="https://agg.homes/es/">
         <link rel="alternate" hreflang="nl" href="https://agg.homes/nl/">
         <link rel="alternate" hreflang="x-default" href="https://agg.homes/">
-        <title>Find Your Dream Home | Premier Real Estate Agency</title>
+
+        <!-- Structured Data -->
         <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -47,8 +75,8 @@
         "addressCountry": "ES"
     }
 }
-    </script>
-    <script type="application/ld+json">
+        </script>
+        <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -61,246 +89,18 @@
         }
     ]
 }
-    </script>
+        </script>
+
+        <!-- Critical CSS inlined for performance -->
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f9;
-                color: #333;
-            }
-
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 0 20px;
-            }
-
-            :root {
-                --primary: #003d82;
-                --accent: #1e7e34;
-                --text-light: #ffffff;
-                --text-dark: #1a1a1a;
-            }
-
-            /* Language Switcher */
-            .lang-switcher {
-                position: fixed;
-                top: 15px;
-                right: 15px;
-                z-index: 9999;
-                background-color: var(--accent);
-                padding: 8px 12px;
-                border-radius: 6px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            }
-
-            .lang-switcher a {
-                color: white;
-                text-decoration: none;
-                margin: 0 6px;
-                font-size: 12px;
-                font-weight: bold;
-                transition: opacity 0.3s;
-            }
-
-            .lang-switcher a:hover {
-                opacity: 0.7;
-            }
-
-            .hero {
-                background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                    url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80');
-                background-size: cover;
-                background-position: center;
-                height: 80vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                color: var(--text-light);
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-                margin-bottom: 1rem;
-            }
-
-            .hero-content p {
-                font-size: 1.2rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .cta-button {
-                background-color: var(--accent);
-                color: white;
-                padding: 15px 30px;
-                text-decoration: none;
-                border-radius: 8px;
-                font-size: 1.2rem;
-                font-weight: bold;
-                border: 2px solid var(--accent);
-                transition: all 0.3s;
-            }
-
-            .cta-button:hover {
-                background-color: white;
-                color: var(--accent);
-            }
-
-            .services-section {
-                padding: 60px 20px;
-                background-color: white;
-            }
-
-            .services-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 30px;
-                margin-top: 40px;
-            }
-
-            .service-item {
-                padding: 30px 20px;
-                border-radius: 10px;
-                background-color: #f8f9fa;
-                text-decoration: none;
-                color: inherit;
-                transition: transform 0.3s;
-            }
-
-            .service-item:hover {
-                transform: translateY(-5px);
-            }
-
-            .service-item h3 {
-                color: var(--primary);
-                margin-bottom: 15px;
-                font-size: 1.3rem;
-            }
-
-            #consultation {
-                text-align: center;
-                padding: 50px 20px;
-                background-color: var(--primary);
-                color: white;
-                margin-top: 40px;
-                border-radius: 12px;
-            }
-
-            #consultation h2 {
-                font-size: 2rem;
-                margin-bottom: 20px;
-            }
-
-            #consultation p {
-                font-size: 1.1rem;
-                margin: 0 auto 30px;
-                max-width: 600px;
-            }
-
-            .contact-button {
-                display: inline-block;
-                padding: 15px 30px;
-                background-color: var(--accent);
-                color: white;
-                text-decoration: none;
-                border-radius: 8px;
-                font-size: 1.1rem;
-                font-weight: bold;
-                border: 2px solid var(--accent);
-                transition: all 0.3s;
-            }
-
-            .contact-button:hover {
-                background-color: white;
-                color: var(--accent);
-            }
-
-            .form-section {
-                padding: 50px 20px;
-                background-color: #f8f9fa;
-                margin: 0 auto;
-                max-width: 600px;
-                border-radius: 10px;
-            }
-
-            .form-group {
-                margin-bottom: 1.5rem;
-            }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 0.5rem;
-                font-weight: bold;
-            }
-
-            .form-group input,
-            .form-group select {
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 6px;
-                font-size: 1rem;
-            }
-
-            .submit-button {
-                width: 100%;
-                padding: 15px;
-                background-color: var(--accent);
-                color: white;
-                border: 2px solid var(--accent);
-                border-radius: 8px;
-                font-size: 1.1rem;
-                font-weight: bold;
-                cursor: pointer;
-                transition: all 0.3s;
-            }
-
-            .submit-button:hover {
-                background-color: white;
-                color: var(--accent);
-            }
-
-            .footer {
-                text-align: center;
-                padding: 20px;
-                margin-top: 2rem;
-                color: #666;
-            }
-
-            @media (max-width: 768px) {
-                .hero {
-                    height: 300px;
-                }
-
-                .hero-content h1 {
-                    font-size: 1.8rem;
-                }
-
-                .services-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            .sr-only {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                margin: -1px;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                white-space: nowrap;
-                border: 0;
-            }
+            *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f4f4f9;color:#333}.container{max-width:1200px;margin:0 auto;padding:0 20px}:root{--primary:#003d82;--accent:#1e7e34;--text-light:#fff;--text-dark:#1a1a1a}.lang-switcher{position:fixed;top:15px;right:15px;z-index:9999;background-color:var(--accent);padding:8px 12px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.2)}.lang-switcher a{color:#fff;text-decoration:none;margin:0 6px;font-size:12px;font-weight:700;transition:opacity .3s}.lang-switcher a:hover{opacity:.7}.hero{background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),url(https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80);background-size:cover;background-position:center;height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-light)}.hero-content h1{font-size:2.5rem;margin-bottom:1rem}.hero-content p{font-size:1.2rem;margin-bottom:1.5rem}.cta-button{background-color:var(--accent);color:#fff;padding:15px 30px;text-decoration:none;border-radius:8px;font-size:1.2rem;font-weight:700;border:2px solid var(--accent);transition:all .3s}.cta-button:hover{background-color:#fff;color:var(--accent)}
         </style>
-        <link rel="stylesheet" href="css/cookie-consent.min.css" media="print" onload="this.media='all'">
+
+        <!-- Non-critical CSS loaded asynchronously -->
+        <link rel="stylesheet" href="css/styles.css" media="print" onload="this.media='all'; this.onload=null;">
+        <link rel="stylesheet" href="css/cookie-consent.min.css" media="print" onload="this.media='all'; this.onload=null;">
+
+        <!-- Scripts loaded with defer for better performance -->
         <script src="js/cookie-consent.min.js" defer></script>
     </head>
 
@@ -315,6 +115,7 @@
                 <p>Extraordinary properties for extraordinary lives. Discover luxury real estate in Costa del Sol with AGG Homes.</p>
                 <a href="/experts/" class="cta-button" role="button">Explore Properties</a>
             </div>
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1350&q=80" alt="Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture" loading="eager" decoding="async" width="1350" height="900">
             <div class="sr-only">Luxury beachfront property in Costa del Sol, Spain - panoramic Mediterranean sea views with modern architecture</div>
         </header>
 
@@ -417,6 +218,21 @@
         <!-- Chat System Integration -->
         <!-- Official Intercom Chat Integration -->
         <script src="js/chat-system-new.js"></script>
+
+        <!-- Service Worker Registration -->
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('SW registered: ', registration);
+                        })
+                        .catch(function(registrationError) {
+                            console.log('SW registration failed: ', registrationError);
+                        });
+                });
+            }
+        </script>
     </body>
 
 </html>
