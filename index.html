@@ -270,8 +270,8 @@
                 }
             }
         </style>
-        <link rel="stylesheet" href="/css/cookie-consent.min.css" media="print" onload="this.media='all'">
-        <script src="/js/cookie-consent.min.js" defer></script>
+        <link rel="stylesheet" href="css/cookie-consent.min.css" media="print" onload="this.media='all'">
+        <script src="js/cookie-consent.min.js" defer></script>
     </head>
 
     <body>
@@ -370,23 +370,8 @@
                     href="mailto:agg@post.com">agg@post.com</a></p>
 
             <!-- Discrete Admin Access -->
-            <div id="admin-access" style="position: fixed; bottom: 10px; left: 10px; z-index: 9999;">
-                <button id="admin-login-btn" style="
-                background: rgba(102, 126, 234, 0.4);
-                border: 2px solid rgba(102, 126, 234, 0.6);
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                cursor: pointer;
-                opacity: 0.7;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 16px;
-                color: white;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            " title="Admin Access - Click to Login">
+            <div id="admin-access">
+                <button id="admin-login-btn" title="Admin Access - Click to Login">
                     ⚙️
                 </button>
             </div>
@@ -400,19 +385,6 @@
 
                 if (adminBtn) {
                     console.log('Admin login button found and initialized');
-
-                    adminBtn.addEventListener('mouseover', function () {
-                        this.style.opacity = '1';
-                        this.style.background = 'rgba(102, 126, 234, 0.8)';
-                        this.style.transform = 'scale(1.1)';
-                        console.log('Admin button hovered');
-                    });
-
-                    adminBtn.addEventListener('mouseout', function () {
-                        this.style.opacity = '0.7';
-                        this.style.background = 'rgba(102, 126, 234, 0.4)';
-                        this.style.transform = 'scale(1)';
-                    });
 
                     adminBtn.addEventListener('click', function () {
                         console.log('Admin button clicked - opening login page');

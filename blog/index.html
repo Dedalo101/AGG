@@ -229,6 +229,108 @@
             .services-grid { grid-template-columns: 1fr; }
             .blog-content { padding: 20px; margin: 20px auto; }
         }
+
+        /* Additional blog-specific styles for inline style removal */
+        .blog-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .properties-container {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .property-image {
+            position: relative;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .property-overlay {
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            width: 100%;
+            padding: 2rem;
+            color: white;
+        }
+
+        .property-title {
+            margin: 0;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .property-price {
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .property-subtitle {
+            opacity: 0.9;
+        }
+
+        .property-content {
+            padding: 1.5rem;
+        }
+
+        .property-features-header {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .property-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .property-feature-item {
+            background: #f8f9fa;
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
+
+        .property-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .request-viewing-btn:hover {
+            background: #b8952a;
+        }
+
+        /* Individual property background images */
+        .property-image-villa {
+            background-image: url('https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80');
+        }
+
+        .property-image-house {
+            background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80');
+        }
+
+        .property-image-apartment {
+            background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+        }
+
+        .property-image-penthouse {
+            background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80');
+        }
     </style>
     <link rel="stylesheet" href="/css/cookie-consent.min.css" media="print" onload="this.media='all'">
     <script src="/js/cookie-consent.min.js" defer></script>
@@ -364,7 +466,7 @@
             
             <h3>Luxury Villas (€1M - €10M+)</h3>
             <p>The luxury villa market has seen exceptional growth, with properties in prime locations appreciating by up to 20% annually. These properties offer:</p>
-            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+            <ul>
                 <li>Privacy and exclusivity</li>
                 <li>Large plots with mature gardens</li>
                 <li>Sea and mountain views</li>
@@ -374,7 +476,7 @@
 
             <h3>Luxury Apartments (€300K - €2M)</h3>
             <p>Modern luxury apartments, particularly those with sea views and premium amenities, have shown consistent appreciation. Key features include:</p>
-            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+            <ul>
                 <li>Prime beachfront or golf course locations</li>
                 <li>Modern amenities (spas, concierge, security)</li>
                 <li>Easy maintenance and management</li>
@@ -384,7 +486,7 @@
 
             <h3>Penthouses (€500K - €5M)</h3>
             <p>The penthouse market has been particularly strong, offering the perfect blend of luxury living and investment potential:</p>
-            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+            <ul>
                 <li>Panoramic sea and mountain views</li>
                 <li>Large terraces and outdoor living spaces</li>
                 <li>Premium locations in established developments</li>
@@ -429,7 +531,7 @@
             <p>Our market analysis indicates continued strong performance for the Costa del Sol real estate market, driven by several key factors:</p>
 
             <h3>Positive Market Drivers</h3>
-            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+            <ul>
                 <li><strong>Infrastructure Development:</strong> New high-speed rail connections to Madrid and improved airports</li>
                 <li><strong>Limited Supply:</strong> Strict planning regulations limiting new construction in prime areas</li>
                 <li><strong>Quality of Life:</strong> Excellent climate, healthcare, and international schools</li>
@@ -451,117 +553,117 @@
 
             <h3>Featured Premium Marbella Properties</h3>
             <p>Explore these carefully selected premium properties directly below with detailed images and information:</p>
-            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+            <div class="properties-container">
                 
                 <!-- Property 1: Luxury Villa -->
-                <div style="background: white; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div style="position: relative; height: 300px; background-image: url('https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                        <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 2rem; color: white;">
-                            <h4 style="margin: 0; font-size: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🏖️ Luxury Villa in Marbella</h4>
-                            <p style="margin: 0.5rem 0; font-size: 1.1rem; font-weight: bold;">€695,000</p>
-                            <small style="opacity: 0.9;">Premium location with sea views</small>
+                <div class="property-card">
+                    <div class="property-image property-image-villa">
+                        <div class="property-overlay">
+                            <h4 class="property-title">🏖️ Luxury Villa in Marbella</h4>
+                            <p class="property-price">€695,000</p>
+                            <small class="property-subtitle">Premium location with sea views</small>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <h5 style="color: #d4af37; margin-bottom: 1rem; font-size: 1.2rem;">Property Features</h5>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                    <div class="property-content">
+                        <h5 class="property-features-header">Property Features</h5>
+                        <div class="property-features-grid">
+                            <div class="property-feature-item">
                                 <strong>🏠 Type:</strong> Luxury Villa<br>
                                 <strong>📐 Size:</strong> 350m²<br>
                                 <strong>🛏️ Bedrooms:</strong> 4
                             </div>
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                            <div class="property-feature-item">
                                 <strong>🚗 Parking:</strong> Private garage<br>
                                 <strong>🏊 Pool:</strong> Private swimming pool<br>
                                 <strong>🌡️ Climate:</strong> A/C & heating
                             </div>
                         </div>
-                        <p style="color: #666; margin-bottom: 1rem;">This stunning luxury villa features air conditioning, heating, private parking, spacious terrace, elevator access, swimming pool, and comes fully furnished. Located in one of Marbella's most prestigious areas.</p>
-                        <a href="/consultation/" style="background: #d4af37; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Request Viewing</a>
+                        <p class="property-description">This stunning luxury villa features air conditioning, heating, private parking, spacious terrace, elevator access, swimming pool, and comes fully furnished. Located in one of Marbella's most prestigious areas.</p>
+                        <a href="/consultation/" class="request-viewing-btn">Request Viewing</a>
                     </div>
                 </div>
 
                 <!-- Property 2: House in Nueva Andalucía -->
-                <div style="background: white; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div style="position: relative; height: 300px; background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                        <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 2rem; color: white;">
-                            <h4 style="margin: 0; font-size: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🏰 Luxury House Nueva Andalucía</h4>
-                            <p style="margin: 0.5rem 0; font-size: 1.1rem; font-weight: bold;">€850,000</p>
-                            <small style="opacity: 0.9;">Golf valley location</small>
+                <div class="property-card">
+                    <div class="property-image property-image-house">
+                        <div class="property-overlay">
+                            <h4 class="property-title">🏰 Luxury House Nueva Andalucía</h4>
+                            <p class="property-price">€850,000</p>
+                            <small class="property-subtitle">Golf valley location</small>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <h5 style="color: #d4af37; margin-bottom: 1rem; font-size: 1.2rem;">Property Features</h5>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                    <div class="property-content">
+                        <h5 class="property-features-header">Property Features</h5>
+                        <div class="property-features-grid">
+                            <div class="property-feature-item">
                                 <strong>🏠 Type:</strong> Modern House<br>
                                 <strong>📐 Size:</strong> 420m²<br>
                                 <strong>🛏️ Bedrooms:</strong> 5
                             </div>
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                            <div class="property-feature-item">
                                 <strong>🌳 Garden:</strong> Private garden<br>
                                 <strong>⛳ Location:</strong> Golf valley<br>
                                 <strong>🚗 Parking:</strong> 2-car garage
                             </div>
                         </div>
-                        <p style="color: #666; margin-bottom: 1rem;">Exceptional modern house with private swimming pool, landscaped garden, secure parking, and contemporary amenities. Situated in the prestigious golf valley of Nueva Andalucía.</p>
-                        <a href="/consultation/" style="background: #d4af37; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Request Viewing</a>
+                        <p class="property-description">Exceptional modern house with private swimming pool, landscaped garden, secure parking, and contemporary amenities. Situated in the prestigious golf valley of Nueva Andalucía.</p>
+                        <a href="/consultation/" class="request-viewing-btn">Request Viewing</a>
                     </div>
                 </div>
 
                 <!-- Property 3: Apartment Puerto Banús -->
-                <div style="background: white; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div style="position: relative; height: 300px; background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                        <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 2rem; color: white;">
-                            <h4 style="margin: 0; font-size: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🏢 Premium Apartment Puerto Banús</h4>
-                            <p style="margin: 0.5rem 0; font-size: 1.1rem; font-weight: bold;">€620,000</p>
-                            <small style="opacity: 0.9;">Marina views</small>
+                <div class="property-card">
+                    <div class="property-image property-image-apartment">
+                        <div class="property-overlay">
+                            <h4 class="property-title">🏢 Premium Apartment Puerto Banús</h4>
+                            <p class="property-price">€620,000</p>
+                            <small class="property-subtitle">Marina views</small>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <h5 style="color: #d4af37; margin-bottom: 1rem; font-size: 1.2rem;">Property Features</h5>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                    <div class="property-content">
+                        <h5 class="property-features-header">Property Features</h5>
+                        <div class="property-features-grid">
+                            <div class="property-feature-item">
                                 <strong>🏠 Type:</strong> Luxury Apartment<br>
                                 <strong>📐 Size:</strong> 180m²<br>
                                 <strong>🛏️ Bedrooms:</strong> 3
                             </div>
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                            <div class="property-feature-item">
                                 <strong>🌊 Views:</strong> Sea & marina<br>
                                 <strong>🏖️ Beach:</strong> 100m walk<br>
                                 <strong>🍽️ Dining:</strong> Luxury restaurants nearby
                             </div>
                         </div>
-                        <p style="color: #666; margin-bottom: 1rem;">Sophisticated apartment with stunning sea views, spacious terrace, secure parking, and luxury finishes throughout. Walking distance to Puerto Banús marina and exclusive beaches.</p>
-                        <a href="/consultation/" style="background: #d4af37; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Request Viewing</a>
+                        <p class="property-description">Sophisticated apartment with stunning sea views, spacious terrace, secure parking, and luxury finishes throughout. Walking distance to Puerto Banús marina and exclusive beaches.</p>
+                        <a href="/consultation/" class="request-viewing-btn">Request Viewing</a>
                     </div>
                 </div>
 
                 <!-- Property 4: Beachfront Penthouse -->
-                <div style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;">
-                    <div style="position: relative; height: 300px; background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end;">
-                        <div style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%; padding: 2rem; color: white;">
-                            <h4 style="margin: 0; font-size: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🌊 Beachfront Penthouse Golden Mile</h4>
-                            <p style="margin: 0.5rem 0; font-size: 1.1rem; font-weight: bold;">€1,200,000</p>
-                            <small style="opacity: 0.9;">Exclusive beachfront location</small>
+                <div class="property-card">
+                    <div class="property-image property-image-penthouse">
+                        <div class="property-overlay">
+                            <h4 class="property-title">🌊 Beachfront Penthouse Golden Mile</h4>
+                            <p class="property-price">€1,200,000</p>
+                            <small class="property-subtitle">Exclusive beachfront location</small>
                         </div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <h5 style="color: #d4af37; margin-bottom: 1rem; font-size: 1.2rem;">Property Features</h5>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                    <div class="property-content">
+                        <h5 class="property-features-header">Property Features</h5>
+                        <div class="property-features-grid">
+                            <div class="property-feature-item">
                                 <strong>🏠 Type:</strong> Beachfront Penthouse<br>
                                 <strong>📐 Size:</strong> 250m²<br>
                                 <strong>🛏️ Bedrooms:</strong> 4
                             </div>
-                            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px;">
+                            <div class="property-feature-item">
                                 <strong>🌅 Views:</strong> Panoramic sea views<br>
                                 <strong>🏖️ Beach:</strong> Direct beach access<br>
                                 <strong>🍾 Amenities:</strong> Concierge, spa, gym
                             </div>
                         </div>
-                        <p style="color: #666; margin-bottom: 1rem;">Exclusive beachfront penthouse with panoramic sea views, luxury amenities, and direct beach access. Located on the prestigious Golden Mile with world-class facilities and concierge services.</p>
-                        <a href="/consultation/" style="background: #d4af37; color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">Request Viewing</a>
+                        <p class="property-description">Exclusive beachfront penthouse with panoramic sea views, luxury amenities, and direct beach access. Located on the prestigious Golden Mile with world-class facilities and concierge services.</p>
+                        <a href="/consultation/" class="request-viewing-btn">Request Viewing</a>
                     </div>
                 </div>
             </div>
@@ -589,7 +691,7 @@
             <h2>🎯 Why Choose AGG Homes?</h2>
             <p>As Costa del Sol's premier real estate consultancy, AGG Homes offers unparalleled market expertise and exclusive access to the finest properties. Our comprehensive services include:</p>
             
-            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+            <ul>
                 <li>Exclusive off-market property access</li>
                 <li>Comprehensive market analysis and investment advice</li>
                 <li>Legal and financial guidance throughout the purchase process</li>

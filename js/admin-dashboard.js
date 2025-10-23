@@ -75,7 +75,10 @@ class AdminDashboard {
         // First check if user is logged in
         if (!AdminLogin.isLoggedIn()) {
             console.log('User not logged in, redirecting to login page');
-            window.location.href = 'admin-login.html';
+            // Only redirect if we're not already on the login page
+            if (!window.location.pathname.includes('admin-login.html')) {
+                window.location.href = 'admin-login.html';
+            }
             return false;
         }
 
@@ -83,13 +86,17 @@ class AdminDashboard {
         const currentUser = AdminLogin.getCurrentUser();
         if (!currentUser) {
             console.warn('No current user data found, redirecting to login');
-            window.location.href = 'admin-login.html';
+            if (!window.location.pathname.includes('admin-login.html')) {
+                window.location.href = 'admin-login.html';
+            }
             return false;
         }
 
         if (currentUser.username !== 'dedalo101') {
             console.warn('Unauthorized access attempt to admin dashboard by user:', currentUser.username);
-            window.location.href = 'admin-login.html';
+            if (!window.location.pathname.includes('admin-login.html')) {
+                window.location.href = 'admin-login.html';
+            }
             return false;
         }
 
@@ -110,13 +117,14 @@ class AdminDashboard {
     logoutToMainSite() {
         console.log('Logging out admin user and redirecting to main site...');
 
-        // Set flag to prevent further authentication checks
+        // Immediately set logout flag to prevent any further operations
         this.isLoggingOut = true;
 
-        // Clear the refresh interval to prevent further checks
+        // Clear the refresh interval immediately and definitively
         if (this.refreshInterval) {
             clearInterval(this.refreshInterval);
             this.refreshInterval = null;
+            console.log('Refresh interval cleared during logout');
         }
 
         // Clear all auth data
@@ -127,11 +135,18 @@ class AdminDashboard {
 
         // Shutdown Intercom if initialized
         if (window.Intercom && typeof window.Intercom === 'function') {
-            window.Intercom('shutdown');
+            try {
+                window.Intercom('shutdown');
+            } catch (error) {
+                console.warn('Error shutting down Intercom:', error);
+            }
         }
 
-        // Redirect to main site instead of login page
-        window.location.href = 'index.html';
+        // Small delay to ensure cleanup is complete before redirect
+        setTimeout(() => {
+            console.log('Redirecting to main site after logout cleanup');
+            window.location.href = 'index.html';
+        }, 100);
     }
 
     initializeDashboard() {
@@ -420,6 +435,7 @@ class AdminDashboard {
         const refreshData = () => {
             // Skip refresh if user is logging out
             if (this.isLoggingOut) {
+                console.log('Skipping refresh - user is logging out');
                 return;
             }
 
@@ -430,7 +446,10 @@ class AdminDashboard {
                     clearInterval(this.refreshInterval);
                     this.refreshInterval = null;
                 }
-                window.location.href = 'admin-login.html';
+                // Only redirect if we're not already on the login page
+                if (!window.location.pathname.includes('admin-login.html')) {
+                    window.location.href = 'admin-login.html';
+                }
                 return;
             }
 

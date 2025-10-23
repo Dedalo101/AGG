@@ -8,7 +8,7 @@
 window.AGG_CONFIG = {
     // Intercom Configuration
     // Priority: Environment variable > hardcoded fallback (for development only)
-    intercomToken: '[REDACTED - Set INTERCOM_API_TOKEN environment variable]', // TEMPORARY: Replace with env var in production
+    intercomToken: process?.env?.INTERCOM_API_TOKEN || 'dev_token_placeholder', // TEMPORARY: Replace with env var in production
     intercomAppId: 'g28vli0s',
     intercomApiBase: 'https://api.intercom.io',
 
