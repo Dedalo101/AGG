@@ -1,28 +1,5 @@
 class AdminLogin {
     constructor() {
-        // Wait for config to load before initializing
-        this.waitForConfig().then(() => {
-            this.initializeAfterConfig();
-        });
-    }
-
-    async waitForConfig() {
-        // Wait for config.js to load
-        return new Promise((resolve) => {
-            const checkConfig = () => {
-                if (window.AGG_CONFIG && window.AGG_CONFIG.loaded) {
-                    console.log('Config loaded for login system');
-                    resolve();
-                } else {
-                    console.log('Waiting for config to load in login...');
-                    setTimeout(checkConfig, 100);
-                }
-            };
-            checkConfig();
-        });
-    }
-
-    initializeAfterConfig() {
         this.initializeLogin();
         this.setupEventListeners();
     }
@@ -92,10 +69,10 @@ class AdminLogin {
         // Single admin user access for AGG Homes administration
         // Only dedalo101 is authorized as per user requirements
 
-        // Get credentials from secure config
+        // Get credentials from secure config or use defaults
         const authorizedAdmin = {
-            username: (window.AGG_CONFIG && window.AGG_CONFIG.adminUsername) || 'dedalo101',
-            password: (window.AGG_CONFIG && window.AGG_CONFIG.adminPassword) || 'qwerty'
+            username: 'dedalo101',
+            password: 'qwerty'
         };
 
         // Simulate API call delay for security
