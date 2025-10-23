@@ -1,73 +1,7 @@
 {
-    // VS Code Settings for AGG Homes Project
-    "editor.formatOnSave": true,
-    "editor.insertSpaces": true,
-    "editor.tabSize": 4,
-    "editor.detectIndentation": true,
-    "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 1000,
-    // HTML/CSS/JS specific settings
-    "html.format.indentInnerHtml": true,
-    "html.format.indentHandlebars": true,
-    "css.validate": true,
-    "javascript.validate.enable": true,
-    "javascript.format.enable": true,
-    // Live Server settings for development
-    "liveServer.settings.port": 8000,
-    "liveServer.settings.CustomBrowser": "chrome",
-    "liveServer.settings.root": "/",
-    "liveServer.settings.donotShowInfoMsg": true,
-    // File associations
-    "files.associations": {
-        "*.html": "html",
-        "*.css": "css",
-        "*.js": "javascript",
-        "*.json": "jsonc"
-    },
-    // Exclude patterns for better performance
-    "files.exclude": {
-        "**/node_modules": true,
-        "**/.git": false,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "**/*.log": true,
-        "**/test-results": true,
-        "**/playwright-report": true
-    },
-    // Search exclude patterns
-    "search.exclude": {
-        "**/node_modules": true,
-        "**/test-results": true,
-        "**/playwright-report": true,
-        "**/*.min.js": true,
-        "**/*.min.css": true
-    },
-    // Emmet settings for faster HTML/CSS development
-    "emmet.includeLanguages": {
-        "javascript": "javascriptreact",
-        "html": "html"
-    },
-    "emmet.triggerExpansionOnTab": true,
-    // Git settings
-    "git.enableSmartCommit": true,
-    "git.confirmSync": false,
-    "git.autofetch": true,
-    // Extensions recommendations
-    "extensions.ignoreRecommendations": false,
-    // Terminal settings
-    "terminal.integrated.defaultProfile.windows": "PowerShell",
-    "terminal.integrated.cwd": "${workspaceFolder}",
-    // Debug settings
-    "debug.terminal.clearBeforeReusing": true,
-    "debug.console.closeOnEnd": false,
-    // Playwright specific settings
-    "playwright.reuseBrowser": false,
-    "playwright.showTrace": false,
-    // Intercom/Chat development helpers
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.preferences.quoteStyle": "single",
-    // cSpell settings for custom words
-    "cSpell.words": [
+    "version": "0.2",
+    "language": "en",
+    "words": [
         "dedalo",
         "Flexbox",
         "Formspree",
@@ -413,19 +347,21 @@
         "fontobject",
         "nosniff",
         "HSTS",
+        "webp",
+        "opentype",
         "Mozjpeg",
         "mozjpeg",
         "Pngquant",
         "Gifsicle",
         "gifsicle"
     ],
-    // File watchers for auto-reload during development
-    "files.watcherExclude": {
-        "**/node_modules/**": true,
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/test-results/**": true,
-        "**/playwright-report/**": true
-    },
-    "chat.agent.maxRequests": 100
+    "ignorePaths": [
+        "node_modules/**",
+        "dist/**",
+        "build/**",
+        "test-results/**",
+        "playwright-report/**",
+        "*.min.js",
+        "*.min.css"
+    ]
 }
