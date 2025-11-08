@@ -427,5 +427,6 @@
         "**/test-results/**": true,
         "**/playwright-report/**": true
     },
-    "chat.agent.maxRequests": 100
+    "chat.agent.maxRequests": 100,
+    "editor.linkedEditing": true
 }

@@ -4,9 +4,12 @@
   "scripts": {
     "build": "webpack --mode=production",
     "build:dev": "webpack --mode=development",
+    "build:production": "npm run strip-logs && npm run build && npm run test",
     "optimize": "node optimize.js",
     "optimize:images": "imagemin images/**/*.{jpg,jpeg,png,gif,svg} --out-dir=images/optimized --plugin=mozjpeg --plugin=pngquant --plugin=gifsicle --plugin=svgo",
     "optimize:critical-css": "critical --base . --src index.html --dest css/critical.css --minify --width 1920 --height 1080",
+    "strip-logs": "node strip-console-logs.js",
+    "restore-logs": "node strip-console-logs.js --restore",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
@@ -18,6 +21,7 @@
     "test:report": "playwright show-report",
     "test:install": "playwright install",
     "validate-setup": "node validate-setup.js",
+    "predeploy": "npm run build:production",
     "deploy": "npm run optimize && git add . && git commit -m 'Optimize for performance' && git push"
   },
   "devDependencies": {
@@ -29,6 +33,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "eslint": "^9.38.0",
     "html-webpack-plugin": "^5.5.3",
+    "http-server": "^14.1.1",
     "imagemin": "^8.0.1",
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-mozjpeg": "^10.0.0",
