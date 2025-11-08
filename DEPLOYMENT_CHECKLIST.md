@@ -7,6 +7,7 @@ Use this checklist before deploying AGG.homes to production.
 ### 1. Security Configuration
 
 - [ ] Set environment variables on hosting platform:
+
   ```bash
   INTERCOM_API_TOKEN=your_actual_token
   ADMIN_USERNAME=your_username
@@ -52,7 +53,7 @@ Use this checklist before deploying AGG.homes to production.
 - [ ] Verify all images have alt attributes
 - [ ] Check meta descriptions on all pages
 - [ ] Validate structured data (JSON-LD):
-  - Use: https://search.google.com/test/rich-results
+  - Use: <https://search.google.com/test/rich-results>
 - [ ] Verify canonical URLs are correct
 - [ ] Check hreflang tags for multi-language:
   - [ ] English (/)
@@ -112,6 +113,7 @@ Use this checklist before deploying AGG.homes to production.
 ### Option A: Static Hosting (GitHub Pages, Netlify, Vercel)
 
 1. **Build the project:**
+
    ```bash
    npm run build
    ```
@@ -130,6 +132,7 @@ Use this checklist before deploying AGG.homes to production.
 ### Option B: Traditional Web Hosting
 
 1. **Build the project:**
+
    ```bash
    npm run build
    ```
@@ -137,6 +140,7 @@ Use this checklist before deploying AGG.homes to production.
 2. **Upload dist/ contents via FTP/SFTP**
 
 3. **Configure .htaccess for clean URLs:**
+
    ```apache
    RewriteEngine On
    RewriteCond %{REQUEST_FILENAME} !-f
@@ -148,7 +152,7 @@ Use this checklist before deploying AGG.homes to production.
 
 ## ✅ Post-Deployment Verification
 
-### Immediately After Deployment:
+### Immediately After Deployment
 
 - [ ] Visit homepage and verify it loads
 - [ ] Check all language versions (/, /es/, /nl/)
@@ -158,7 +162,7 @@ Use this checklist before deploying AGG.homes to production.
 - [ ] Check admin dashboard login
 - [ ] Verify service worker registers (check DevTools > Application)
 
-### Within 24 Hours:
+### Within 24 Hours
 
 - [ ] Monitor error logs
 - [ ] Check Google Search Console for crawl errors
@@ -166,7 +170,7 @@ Use this checklist before deploying AGG.homes to production.
 - [ ] Test from different geographic locations
 - [ ] Check loading speeds from different networks
 
-### Within 1 Week:
+### Within 1 Week
 
 - [ ] Submit sitemap to Google Search Console
 - [ ] Submit sitemap to Bing Webmaster Tools
@@ -179,6 +183,7 @@ Use this checklist before deploying AGG.homes to production.
 If something goes wrong:
 
 1. **Keep previous version backup:**
+
    ```bash
    cp -r dist/ dist-backup/
    ```
@@ -191,7 +196,7 @@ If something goes wrong:
 
 ## 📊 Monitoring & Maintenance
 
-### Regular Checks:
+### Regular Checks
 
 - [ ] Weekly: Review error logs
 - [ ] Monthly: Update dependencies (`npm outdated`)
@@ -199,7 +204,7 @@ If something goes wrong:
 - [ ] Quarterly: Performance audit with Lighthouse
 - [ ] Quarterly: Accessibility audit
 
-### Analytics to Monitor:
+### Analytics to Monitor
 
 - Page load times
 - Bounce rates
@@ -222,7 +227,7 @@ If something goes wrong:
 - Hosting Support: [Your hosting provider]
 - Domain Registrar: [Your domain provider]
 - Developer: [Your contact info]
-- Intercom Support: help@intercom.com
+- Intercom Support: <help@intercom.com>
 
 ---
 
