@@ -11,10 +11,10 @@ class AdminDashboard {
         return new Promise((resolve) => {
             const checkConfig = () => {
                 if (window.AGG_CONFIG && window.AGG_CONFIG.loaded) {
-                    console.log('Config loaded successfully');
+// console.log('Config loaded successfully'); // Removed for production
                     resolve();
                 } else {
-                    console.log('Waiting for config to load...');
+// console.log('Waiting for config to load...'); // Removed for production
                     setTimeout(checkConfig, 100);
                 }
             };
@@ -57,7 +57,7 @@ class AdminDashboard {
         }
 
         // Method 3: Fallback for development
-        console.warn('Intercom API token not found. Please ensure config.js is loaded with proper configuration.');
+// console.warn('Intercom API token not found. Please ensure config.js is loaded with proper configuration.'); // Removed for production
 
         // Return placeholder for development - replace with actual secure token
         return 'your_secure_token_here';
@@ -70,11 +70,11 @@ class AdminDashboard {
         }
         this.authChecked = true;
 
-        console.log('Checking admin authentication...');
+// console.log('Checking admin authentication...'); // Removed for production
 
         // First check if user is logged in
         if (!AdminLogin.isLoggedIn()) {
-            console.log('User not logged in, redirecting to login page');
+// console.log('User not logged in, redirecting to login page'); // Removed for production
             // Only redirect if we're not already on the login page
             if (!window.location.pathname.includes('admin-login.html')) {
                 window.location.href = 'admin-login.html';
@@ -85,7 +85,7 @@ class AdminDashboard {
         // Additional security: Check if user is dedalo101
         const currentUser = AdminLogin.getCurrentUser();
         if (!currentUser) {
-            console.warn('No current user data found, redirecting to login');
+// console.warn('No current user data found, redirecting to login'); // Removed for production
             if (!window.location.pathname.includes('admin-login.html')) {
                 window.location.href = 'admin-login.html';
             }
@@ -93,14 +93,14 @@ class AdminDashboard {
         }
 
         if (currentUser.username !== 'dedalo101') {
-            console.warn('Unauthorized access attempt to admin dashboard by user:', currentUser.username);
+// console.warn('Unauthorized access attempt to admin dashboard by user:', currentUser.username); // Removed for production
             if (!window.location.pathname.includes('admin-login.html')) {
                 window.location.href = 'admin-login.html';
             }
             return false;
         }
 
-        console.log('Authentication successful for user:', currentUser.username);
+// console.log('Authentication successful for user:', currentUser.username); // Removed for production
         return true;
     }
 
@@ -115,7 +115,7 @@ class AdminDashboard {
 
     // Logout method that redirects to main site
     logoutToMainSite() {
-        console.log('Logging out admin user and redirecting to main site...');
+// console.log('Logging out admin user and redirecting to main site...'); // Removed for production
 
         // Immediately set logout flag to prevent any further operations
         this.isLoggingOut = true;
@@ -124,7 +124,7 @@ class AdminDashboard {
         if (this.refreshInterval) {
             clearInterval(this.refreshInterval);
             this.refreshInterval = null;
-            console.log('Refresh interval cleared during logout');
+// console.log('Refresh interval cleared during logout'); // Removed for production
         }
 
         // Clear all auth data
@@ -138,13 +138,13 @@ class AdminDashboard {
             try {
                 window.Intercom('shutdown');
             } catch (error) {
-                console.warn('Error shutting down Intercom:', error);
+// console.warn('Error shutting down Intercom:', error); // Removed for production
             }
         }
 
         // Small delay to ensure cleanup is complete before redirect
         setTimeout(() => {
-            console.log('Redirecting to main site after logout cleanup');
+// console.log('Redirecting to main site after logout cleanup'); // Removed for production
             window.location.href = 'index.html';
         }, 100);
     }
@@ -152,12 +152,12 @@ class AdminDashboard {
     initializeDashboard() {
         // Double-check authentication before proceeding
         if (!this.authChecked || !AdminLogin.isLoggedIn()) {
-            console.error('Authentication check failed during dashboard initialization');
+// console.error('Authentication check failed during dashboard initialization'); // Removed for production
             this.forceLogout();
             return;
         }
 
-        console.log('Admin Dashboard Initialized for dedalo101');
+// console.log('Admin Dashboard Initialized for dedalo101'); // Removed for production
 
         // Initialize Intercom for admin use
         this.initializeIntercomForAdmin();
@@ -168,13 +168,13 @@ class AdminDashboard {
         // Connect to Intercom API
         this.connectToIntercomAPI().then(result => {
             if (result.success) {
-                console.log('✅ Intercom API connected successfully');
+// console.log('✅ Intercom API connected successfully'); // Removed for production
                 // Auto-load conversations if dashboard mode is selected
                 if (this.getChatMode() === 'dashboard') {
                     this.loadConversations();
                 }
             } else {
-                console.warn('⚠️ Intercom API connection failed:', result.error);
+// console.warn('⚠️ Intercom API connection failed:', result.error); // Removed for production
             }
         });
 
@@ -190,7 +190,7 @@ class AdminDashboard {
     }
 
     async loadStats() {
-        console.log('Loading dashboard stats...');
+// console.log('Loading dashboard stats...'); // Removed for production
 
         try {
             // Use mock data for now since we don't have a backend API
@@ -201,7 +201,7 @@ class AdminDashboard {
             document.getElementById('response-time').textContent = stats.responseTime;
             document.getElementById('satisfaction').textContent = stats.satisfaction;
 
-            console.log('Dashboard stats loaded:', stats);
+// console.log('Dashboard stats loaded:', stats); // Removed for production
         } catch (error) {
             console.error('Error loading stats:', error);
             this.loadMockStats();
@@ -259,7 +259,7 @@ class AdminDashboard {
                 }
             });
 
-            console.log('Intercom initialized for admin dashboard');
+// console.log('Intercom initialized for admin dashboard'); // Removed for production
         } else {
             // Load Intercom if not already loaded
             this.loadIntercomScript();
@@ -272,7 +272,7 @@ class AdminDashboard {
         script.src = 'https://widget.intercom.io/widget/g28vli0s';
 
         script.onload = () => {
-            console.log('Intercom script loaded for admin');
+// console.log('Intercom script loaded for admin'); // Removed for production
             this.initializeIntercomForAdmin();
         };
 
@@ -330,7 +330,7 @@ class AdminDashboard {
 
     setChatMode(mode) {
         localStorage.setItem('agg_admin_chat_mode', mode);
-        console.log('Chat mode set to:', mode);
+// console.log('Chat mode set to:', mode); // Removed for production
     }
 
     showDashboardMode() {
@@ -346,7 +346,7 @@ class AdminDashboard {
             loadBtn.style.display = 'inline-flex';
         }
 
-        console.log('Switched to dashboard chat mode');
+// console.log('Switched to dashboard chat mode'); // Removed for production
     }
 
     showIntercomMode() {
@@ -366,7 +366,7 @@ class AdminDashboard {
             loadBtn.style.display = 'none';
         }
 
-        console.log('Switched to Intercom chat mode');
+// console.log('Switched to Intercom chat mode'); // Removed for production
     }
 
     handleQuickAction(actionIndex) {
@@ -393,13 +393,13 @@ class AdminDashboard {
         const refreshData = () => {
             // Skip refresh if user is logging out
             if (this.isLoggingOut) {
-                console.log('Skipping refresh - user is logging out');
+// console.log('Skipping refresh - user is logging out'); // Removed for production
                 return;
             }
 
             // Check authentication before refreshing
             if (!AdminLogin.isLoggedIn()) {
-                console.log('User session expired during refresh, stopping refresh and redirecting to login');
+// console.log('User session expired during refresh, stopping refresh and redirecting to login'); // Removed for production
                 if (this.refreshInterval) {
                     clearInterval(this.refreshInterval);
                     this.refreshInterval = null;
@@ -434,11 +434,11 @@ class AdminDashboard {
     }
 
     async manualRefresh() {
-        console.log('Manual refresh triggered by admin...');
+// console.log('Manual refresh triggered by admin...'); // Removed for production
 
         // Check authentication before proceeding
         if (!AdminLogin.isLoggedIn()) {
-            console.log('User not authenticated for manual refresh, logging out');
+// console.log('User not authenticated for manual refresh, logging out'); // Removed for production
             this.forceLogout();
             return;
         }
@@ -455,13 +455,13 @@ class AdminDashboard {
             // Restart the controlled refresh
             this.setupControlledRefresh();
         } catch (error) {
-            console.error('Manual refresh failed:', error);
+// console.error('Manual refresh failed:', error); // Removed for production
             this.showRefreshError();
         }
     }
 
     async refreshStats() {
-        console.log('Refreshing dashboard stats...');
+// console.log('Refreshing dashboard stats...'); // Removed for production
 
         try {
             await this.loadStats();
@@ -528,14 +528,14 @@ class AdminDashboard {
             // For security, Intercom API calls should go through your backend
             // Direct browser calls are blocked by CORS
 
-            console.log('Connecting to Intercom with App ID:', this.intercomConfig.appId);
+// console.log('Connecting to Intercom with App ID:', this.intercomConfig.appId); // Removed for production
 
             // Use the Intercom widget's built-in methods instead of direct API
             if (window.Intercom && typeof window.Intercom === 'function') {
                 // Get unread count using widget
                 window.Intercom('onUnreadCountChange', (unreadCount) => {
                     document.getElementById('active-chats').textContent = unreadCount;
-                    console.log('Intercom unread count updated:', unreadCount);
+// console.log('Intercom unread count updated:', unreadCount); // Removed for production
                 });
 
                 // Update admin interface
@@ -557,7 +557,7 @@ class AdminDashboard {
             return { success: false, error: 'Widget not loaded' };
 
         } catch (error) {
-            console.error('Intercom integration error:', error);
+// console.error('Intercom integration error:', error); // Removed for production
             return { success: false, error: error.message };
         }
     }
@@ -582,13 +582,13 @@ class AdminDashboard {
     }
 
     async loadConversations() {
-        console.log('Loading conversations...');
+// console.log('Loading conversations...'); // Removed for production
 
         const conversationsContainer = document.getElementById('conversations-container');
         const conversationsList = document.getElementById('conversations-list');
 
         if (!conversationsContainer || !conversationsList) {
-            console.error('Conversations container not found');
+// console.error('Conversations container not found'); // Removed for production
             return;
         }
 
@@ -749,7 +749,7 @@ class AdminDashboard {
     }
 
     openConversation(conversationId) {
-        console.log('Opening conversation:', conversationId);
+// console.log('Opening conversation:', conversationId); // Removed for production
 
         // Hide conversations list and show conversation detail
         const conversationsList = document.getElementById('conversations-list');
@@ -785,7 +785,7 @@ class AdminDashboard {
     }
 
     async fetchConversationDetail(conversationId) {
-        console.log('Loading conversation detail for:', conversationId);
+// console.log('Loading conversation detail for:', conversationId); // Removed for production
 
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 800));
@@ -901,7 +901,7 @@ class AdminDashboard {
 
             return await response.json();
         } catch (error) {
-            console.warn('Failed to send reply via API:', error);
+// console.warn('Failed to send reply via API:', error); // Removed for production
             // For demo purposes, just simulate success
             await new Promise(resolve => setTimeout(resolve, 500));
         }
@@ -1232,7 +1232,7 @@ class AdminDashboard {
                 // Remove loading state when iframe loads
                 intercomEmbed.innerHTML = '';
                 intercomEmbed.appendChild(iframe);
-                console.log('Intercom interface loaded successfully');
+// console.log('Intercom interface loaded successfully'); // Removed for production
             };
             iframe.onerror = () => {
                 // Show error state if iframe fails to load
@@ -1300,7 +1300,7 @@ class AdminDashboard {
     }
 
     async loadChatTickets() {
-        console.log('Loading live chat tickets...');
+// console.log('Loading live chat tickets...'); // Removed for production
 
         // Use the new conversation loading method
         await this.loadConversations();
@@ -1449,7 +1449,7 @@ class AdminDashboard {
     }
 
     openTicket(ticketId) {
-        console.log('Opening ticket:', ticketId);
+// console.log('Opening ticket:', ticketId); // Removed for production
         // Open the Intercom inbox with proper URL
         window.open(`https://app.intercom.com/a/apps/${this.intercomConfig.appId}/inbox`, '_blank');
     }
@@ -1508,7 +1508,7 @@ class AdminDashboard {
 
 // Initialize admin dashboard
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Initializing Admin Dashboard...');
+// console.log('Initializing Admin Dashboard...'); // Removed for production
     window.adminDashboard = new AdminDashboard();
 });
 
@@ -1516,7 +1516,7 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('beforeunload', function () {
     if (window.adminDashboard && window.adminDashboard.refreshInterval) {
         clearInterval(window.adminDashboard.refreshInterval);
-        console.log('Admin dashboard cleanup completed');
+// console.log('Admin dashboard cleanup completed'); // Removed for production
     }
 });
 

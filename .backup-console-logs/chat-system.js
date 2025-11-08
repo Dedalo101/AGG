@@ -13,7 +13,7 @@ class AGGChatSystem {
     }
 
     init() {
-        console.log('Initializing AGG Chat System with WhatsApp focus...');
+// console.log('Initializing AGG Chat System with WhatsApp focus...'); // Removed for production
 
         // Initialize WhatsApp button (simpler, more prominent)
         this.initWhatsAppBubble();
@@ -22,13 +22,13 @@ class AGGChatSystem {
         this.loadIntercomSDK();
 
         // Debug information
-        console.log('Chat system initialized with WhatsApp focus, App ID:', this.appId);
+// console.log('Chat system initialized with WhatsApp focus, App ID:', this.appId); // Removed for production
     }
 
     loadIntercomSDK() {
         // Load the official Intercom widget script
         if (document.getElementById('intercom-script')) {
-            console.log('Intercom script already loaded');
+// console.log('Intercom script already loaded'); // Removed for production
             this.initializeIntercom();
             return;
         }
@@ -46,14 +46,14 @@ class AGGChatSystem {
         script.src = `https://widget.intercom.io/widget/${this.appId}`;
 
         script.onload = () => {
-            console.log('Intercom widget loaded successfully');
+// console.log('Intercom widget loaded successfully'); // Removed for production
             setTimeout(() => {
                 this.initializeIntercom();
             }, 500);
         };
 
         script.onerror = () => {
-            console.error('Failed to load Intercom widget');
+// console.error('Failed to load Intercom widget'); // Removed for production
             // Try alternative loading method
             this.loadIntercomAlternative();
         };
@@ -73,7 +73,7 @@ class AGGChatSystem {
     initializeIntercom() {
         // Initialize Intercom with the official SDK approach
         if (typeof window.Intercom !== 'undefined') {
-            console.log('Initializing Intercom with SDK...');
+// console.log('Initializing Intercom with SDK...'); // Removed for production
 
             // Get user data dynamically
             const userData = this.getUserData();
@@ -101,7 +101,7 @@ class AGGChatSystem {
             });
 
             this.isIntercomLoaded = true;
-            console.log('Intercom initialized successfully');
+// console.log('Intercom initialized successfully'); // Removed for production
 
             // Set up event listeners
             this.setupIntercomEventListeners();
@@ -118,7 +118,7 @@ class AGGChatSystem {
             created_at: this.getOrSetUserCreatedAt()
         };
 
-        console.log('User data for Intercom:', userData);
+// console.log('User data for Intercom:', userData); // Removed for production
         return userData;
     }
 
@@ -145,16 +145,16 @@ class AGGChatSystem {
     setupIntercomEventListeners() {
         // Listen for Intercom events
         window.Intercom('onShow', () => {
-            console.log('Intercom messenger opened');
+// console.log('Intercom messenger opened'); // Removed for production
             this.hideOptions();
         });
 
         window.Intercom('onHide', () => {
-            console.log('Intercom messenger closed');
+// console.log('Intercom messenger closed'); // Removed for production
         });
 
         window.Intercom('onUnreadCountChanged', (unreadCount) => {
-            console.log('Intercom unread count:', unreadCount);
+// console.log('Intercom unread count:', unreadCount); // Removed for production
             // You could update UI to show unread message indicator
         });
     }
@@ -297,19 +297,19 @@ class AGGChatSystem {
 
     addChatToggle() {
         // Removed complex chat selector - now using simple WhatsApp bubble
-        console.log('Chat toggle functionality removed - using simple WhatsApp bubble');
+// console.log('Chat toggle functionality removed - using simple WhatsApp bubble'); // Removed for production
     }
 
     startIntercom() {
-        console.log('Starting Intercom chat (secondary option)...');
+// console.log('Starting Intercom chat (secondary option)...'); // Removed for production
 
         // Check if Intercom is loaded and available
         if (this.isIntercomLoaded && typeof window.Intercom === 'function') {
-            console.log('Showing Intercom messenger');
+// console.log('Showing Intercom messenger'); // Removed for production
             this.updateUserData();
             window.Intercom('show');
         } else {
-            console.log('Intercom not available, redirecting to WhatsApp');
+// console.log('Intercom not available, redirecting to WhatsApp'); // Removed for production
             this.openWhatsApp();
         }
     }
@@ -332,7 +332,7 @@ class AGGChatSystem {
                 }
             });
 
-            console.log('Updated Intercom user data:', userData);
+// console.log('Updated Intercom user data:', userData); // Removed for production
         }
     }
 
@@ -344,7 +344,7 @@ class AGGChatSystem {
     }
 
     openPropertyMatching() {
-        console.log('Opening Property Matching system...');
+// console.log('Opening Property Matching system...'); // Removed for production
         this.hideOptions();
 
         // Navigate to property matching page
@@ -407,28 +407,28 @@ class AGGChatSystem {
 
     // Debug method to test Intercom status
     debugIntercom() {
-        console.log('=== Intercom Debug Info (Updated SDK) ===');
-        console.log('App ID:', this.appId);
-        console.log('Intercom function available:', typeof window.Intercom);
-        console.log('Is loaded:', this.isIntercomLoaded);
-        console.log('User ID:', this.generateOrGetUserId());
-        console.log('User data:', this.getUserData());
-        console.log('Current language:', this.detectLanguage());
-        console.log('Page URL:', window.location.href);
+// console.log('=== Intercom Debug Info (Updated SDK) ==='); // Removed for production
+// console.log('App ID:', this.appId); // Removed for production
+// console.log('Intercom function available:', typeof window.Intercom); // Removed for production
+// console.log('Is loaded:', this.isIntercomLoaded); // Removed for production
+// console.log('User ID:', this.generateOrGetUserId()); // Removed for production
+// console.log('User data:', this.getUserData()); // Removed for production
+// console.log('Current language:', this.detectLanguage()); // Removed for production
+// console.log('Page URL:', window.location.href); // Removed for production
 
         if (typeof window.Intercom === 'function') {
-            console.log('Attempting to show Intercom...');
+// console.log('Attempting to show Intercom...'); // Removed for production
             this.updateUserData();
             window.Intercom('show');
         } else {
-            console.log('Intercom not available - checking SDK load status');
+// console.log('Intercom not available - checking SDK load status'); // Removed for production
         }
-        console.log('=========================================');
+// console.log('========================================='); // Removed for production
     }
 
     // Utility method to restart Intercom if needed
     restartIntercom() {
-        console.log('Restarting Intercom...');
+// console.log('Restarting Intercom...'); // Removed for production
         this.isIntercomLoaded = false;
 
         if (typeof window.Intercom === 'function') {
@@ -443,17 +443,17 @@ class AGGChatSystem {
 
 // Initialize chat system when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM loaded, initializing AGG Chat System with Official Intercom SDK...');
+// console.log('DOM loaded, initializing AGG Chat System with Official Intercom SDK...'); // Removed for production
     window.AGGChat = new AGGChatSystem();
 
     // Add global debug functions
     window.debugIntercom = () => window.AGGChat.debugIntercom();
     window.restartIntercom = () => window.AGGChat.restartIntercom();
 
-    console.log('Chat system ready with Official Intercom SDK!');
-    console.log('Available debug commands:');
-    console.log('- debugIntercom() - Check Intercom status and show messenger');
-    console.log('- restartIntercom() - Restart Intercom if having issues');
+// console.log('Chat system ready with Official Intercom SDK!'); // Removed for production
+// console.log('Available debug commands:'); // Removed for production
+// console.log('- debugIntercom() - Check Intercom status and show messenger'); // Removed for production
+// console.log('- restartIntercom() - Restart Intercom if having issues'); // Removed for production
 });
 
 // Export for manual initialization if needed

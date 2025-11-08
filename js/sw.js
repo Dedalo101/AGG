@@ -18,11 +18,11 @@ const STATIC_ASSETS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-// console.log('[ServiceWorker] Install'); // Removed for production
+  console.log('[ServiceWorker] Install');
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
-// console.log('[ServiceWorker] Caching static assets'); // Removed for production
+        console.log('[ServiceWorker] Caching static assets');
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => self.skipWaiting())
@@ -31,13 +31,13 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-// console.log('[ServiceWorker] Activate'); // Removed for production
+  console.log('[ServiceWorker] Activate');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-// console.log('[ServiceWorker] Deleting old cache:', cacheName); // Removed for production
+            console.log('[ServiceWorker] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -94,7 +94,7 @@ async function cacheFirst(request) {
     }
     return networkResponse;
   } catch (error) {
-// console.log('[ServiceWorker] Cache-first failed:', error); // Removed for production
+    console.log('[ServiceWorker] Cache-first failed:', error);
     return caches.match('/offline.html');
   }
 }
@@ -109,7 +109,7 @@ async function networkFirst(request) {
     }
     return networkResponse;
   } catch (error) {
-// console.log('[ServiceWorker] Network-first failed, trying cache:', error); // Removed for production
+    console.log('[ServiceWorker] Network-first failed, trying cache:', error);
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
       return cachedResponse;
@@ -133,7 +133,7 @@ self.addEventListener('sync', (event) => {
 
 async function doBackgroundSync() {
   // Handle offline form submissions
-// console.log('[ServiceWorker] Background sync triggered'); // Removed for production
+  console.log('[ServiceWorker] Background sync triggered');
 }
 
 // Push notifications (if needed in future)

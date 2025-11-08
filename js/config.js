@@ -7,34 +7,31 @@
 // Secure configuration - DO NOT commit actual secrets to version control
 window.AGG_CONFIG = {
     // Intercom Configuration
-    // Priority: Environment variable > hardcoded fallback (for development only)
-    intercomToken: process?.env?.INTERCOM_API_TOKEN || 'dev_token_placeholder', // TEMPORARY: Replace with env var in production
+    // Priority: Environment variable > secure placeholder
+    intercomToken: process?.env?.INTERCOM_API_TOKEN || '[REDACTED - Set INTERCOM_API_TOKEN environment variable]',
     intercomAppId: 'g28vli0s',
     intercomApiBase: 'https://api.intercom.io',
 
     // Admin Configuration
-    adminUsername: 'dedalo101',
-    adminPassword: 'qwerty',
+    // IMPORTANT: Use secure authentication in production
+    adminUsername: process?.env?.ADMIN_USERNAME || '[REDACTED - Set ADMIN_USERNAME environment variable]',
+    adminPassword: process?.env?.ADMIN_PASSWORD || '[REDACTED - Set ADMIN_PASSWORD environment variable]',
 
     // Environment
-    environment: 'development', // 'development', 'staging', 'production'
-    debug: true,
+    environment: process?.env?.NODE_ENV || 'development',
+    debug: process?.env?.NODE_ENV !== 'production',
 
     // Config loading status
     loaded: true
 };
 
 // Security warning for development
-if (window.AGG_CONFIG.intercomToken === '[REDACTED - Set INTERCOM_API_TOKEN environment variable]') {
-    console.warn('⚠️ SECURITY WARNING: Intercom API token not configured. Please set INTERCOM_API_TOKEN environment variable.');
-}
-
-// Ensure config is marked as loaded
-window.AGG_CONFIG.loaded = true;
-
-// Security warning for development
-if (window.AGG_CONFIG.intercomToken === 'your_secure_token_here') {
-    console.warn('⚠️ SECURITY WARNING: Intercom API token not configured. Please set INTERCOM_API_TOKEN environment variable.');
+if (window.AGG_CONFIG.intercomToken.includes('[REDACTED]') ||
+    window.AGG_CONFIG.adminPassword.includes('[REDACTED]')) {
+    console.warn('⚠️ SECURITY WARNING: Configuration not fully set up. Please set environment variables:');
+    console.warn('  - INTERCOM_API_TOKEN');
+    console.warn('  - ADMIN_USERNAME');
+    console.warn('  - ADMIN_PASSWORD');
 }
 
 // Export for module use (if needed)

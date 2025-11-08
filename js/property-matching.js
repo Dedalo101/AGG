@@ -13,7 +13,7 @@ class PropertyMatchingSystem {
     }
 
     init() {
-        console.log('Initializing Property Matching System...');
+// console.log('Initializing Property Matching System...'); // Removed for production
         this.bindEvents();
         this.setupProxyServices();
     }
@@ -35,20 +35,20 @@ class PropertyMatchingSystem {
         this.showLoading();
 
         const criteria = this.getSearchCriteria();
-        console.log('Search criteria:', criteria);
+// console.log('Search criteria:', criteria); // Removed for production
 
         try {
             // First attempt real scraping, fallback to mock data
             let properties = await this.scrapeProperties(criteria);
 
             if (!properties || properties.length === 0) {
-                console.log('No real properties found, using enhanced mock data...');
+// console.log('No real properties found, using enhanced mock data...'); // Removed for production
                 properties = this.getFilteredMockProperties(criteria);
             }
 
             this.displayProperties(properties);
         } catch (error) {
-            console.error('Property search error:', error);
+// console.error('Property search error:', error); // Removed for production
             // Fallback to mock data on error
             const properties = this.getFilteredMockProperties(criteria);
             this.displayProperties(properties);
@@ -73,7 +73,7 @@ class PropertyMatchingSystem {
     }
 
     async scrapeProperties(criteria) {
-        console.log('Starting real property scraping...');
+// console.log('Starting real property scraping...'); // Removed for production
 
         const properties = [];
 
@@ -87,11 +87,11 @@ class PropertyMatchingSystem {
             properties.push(...idealistaProperties, ...fotocasaProperties);
 
             if (properties.length > 0) {
-                console.log(`Found ${properties.length} real properties`);
+// console.log(`Found ${properties.length} real properties`); // Removed for production
                 return this.processScrapedProperties(properties, criteria);
             }
         } catch (error) {
-            console.log('Real scraping failed, trying alternative methods:', error.message);
+// console.log('Real scraping failed, trying alternative methods:', error.message); // Removed for production
         }
 
         // Fallback to enhanced realistic data generation
@@ -99,12 +99,12 @@ class PropertyMatchingSystem {
     }
 
     async scrapeIdealista(criteria) {
-        console.log('Scraping Idealista with real data extraction...');
+// console.log('Scraping Idealista with real data extraction...'); // Removed for production
 
         try {
             // Build Idealista search URL
             const searchUrl = this.buildIdealistaURL(criteria);
-            console.log('Idealista URL:', searchUrl);
+// console.log('Idealista URL:', searchUrl); // Removed for production
 
             // Attempt real scraping first
             try {
@@ -129,25 +129,25 @@ class PropertyMatchingSystem {
                     }
                 }
             } catch (corsError) {
-                console.warn('CORS restriction - using realistic fallback data:', corsError.message);
+// console.warn('CORS restriction - using realistic fallback data:', corsError.message); // Removed for production
             }
 
             // Fallback to realistic properties
             return this.generateRealisticIdealistaProperties(criteria);
 
         } catch (error) {
-            console.log('Idealista scraping error:', error);
+// console.log('Idealista scraping error:', error); // Removed for production
             return this.generateRealisticIdealistaProperties(criteria);
         }
     }
 
     async scrapeFotocasa(criteria) {
-        console.log('Scraping Fotocasa with real data extraction...');
+// console.log('Scraping Fotocasa with real data extraction...'); // Removed for production
 
         try {
             // Build Fotocasa search URL
             const searchUrl = this.buildFotocasaURL(criteria);
-            console.log('Fotocasa URL:', searchUrl);
+// console.log('Fotocasa URL:', searchUrl); // Removed for production
 
             // Attempt real scraping first
             try {
@@ -172,14 +172,14 @@ class PropertyMatchingSystem {
                     }
                 }
             } catch (corsError) {
-                console.warn('CORS restriction - using realistic fallback data:', corsError.message);
+// console.warn('CORS restriction - using realistic fallback data:', corsError.message); // Removed for production
             }
 
             // Fallback to realistic properties
             return this.generateRealisticFotocasaProperties(criteria);
 
         } catch (error) {
-            console.log('Fotocasa scraping error:', error);
+// console.log('Fotocasa scraping error:', error); // Removed for production
             return this.generateRealisticFotocasaProperties(criteria);
         }
     }
@@ -203,8 +203,8 @@ class PropertyMatchingSystem {
             }
         };
 
-        console.log('Real property scraping services configured');
-        console.log('Scraping engines: Idealista + Fotocasa');
+// console.log('Real property scraping services configured'); // Removed for production
+// console.log('Scraping engines: Idealista + Fotocasa'); // Removed for production
     }
 
     buildIdealistaURL(criteria) {
@@ -443,7 +443,7 @@ class PropertyMatchingSystem {
     }
 
     getFilteredMockProperties(criteria) {
-        console.log('Filtering mock properties with criteria:', criteria);
+// console.log('Filtering mock properties with criteria:', criteria); // Removed for production
 
         let filtered = this.mockProperties.filter(property => {
             // Filter by location
@@ -585,7 +585,7 @@ class PropertyMatchingSystem {
                 chatOptions.style.display = 'block';
             }
 
-            console.log('Property inquiry prepared:', propertyInfo);
+// console.log('Property inquiry prepared:', propertyInfo); // Removed for production
         } else {
             // Fallback to direct contact
             const message = `Hello! I'm interested in ${property.title} in ${property.location} priced at €${property.price.toLocaleString()}. Property ID: ${propertyId}. Could you provide more information?`;
@@ -620,7 +620,7 @@ class PropertyMatchingSystem {
             const properties = [];
             const propertyCards = doc.querySelectorAll('article.item, .item-info-container, .property-card');
 
-            console.log(`Found ${propertyCards.length} property cards on Idealista`);
+// console.log(`Found ${propertyCards.length} property cards on Idealista`); // Removed for production
 
             propertyCards.forEach((card, index) => {
                 try {
@@ -674,11 +674,11 @@ class PropertyMatchingSystem {
                         properties.push(property);
                     }
                 } catch (cardError) {
-                    console.warn(`Error extracting property card ${index} from Idealista:`, cardError);
+// console.warn(`Error extracting property card ${index} from Idealista:`, cardError); // Removed for production
                 }
             });
 
-            console.log(`Successfully extracted ${properties.length} properties from Idealista`);
+// console.log(`Successfully extracted ${properties.length} properties from Idealista`); // Removed for production
             return properties;
 
         } catch (error) {
@@ -695,7 +695,7 @@ class PropertyMatchingSystem {
             const properties = [];
             const propertyCards = doc.querySelectorAll('.re-CardPackPremium, .re-CardPackBasic, .fc-item, .property-item');
 
-            console.log(`Found ${propertyCards.length} property cards on Fotocasa`);
+// console.log(`Found ${propertyCards.length} property cards on Fotocasa`); // Removed for production
 
             propertyCards.forEach((card, index) => {
                 try {
@@ -748,11 +748,11 @@ class PropertyMatchingSystem {
                         properties.push(property);
                     }
                 } catch (cardError) {
-                    console.warn(`Error extracting property card ${index} from Fotocasa:`, cardError);
+// console.warn(`Error extracting property card ${index} from Fotocasa:`, cardError); // Removed for production
                 }
             });
 
-            console.log(`Successfully extracted ${properties.length} properties from Fotocasa`);
+// console.log(`Successfully extracted ${properties.length} properties from Fotocasa`); // Removed for production
             return properties;
 
         } catch (error) {
@@ -777,7 +777,7 @@ class PropertyMatchingSystem {
     }
 
     generateRealisticIdealistaProperties(criteria) {
-        console.log('Generating realistic Idealista properties...');
+// console.log('Generating realistic Idealista properties...'); // Removed for production
 
         const locations = {
             'costa-del-sol': ['Marbella', 'Estepona', 'Fuengirola', 'Benalmádena', 'Torremolinos'],
@@ -821,7 +821,7 @@ class PropertyMatchingSystem {
     }
 
     generateRealisticFotocasaProperties(criteria) {
-        console.log('Generating realistic Fotocasa properties...');
+// console.log('Generating realistic Fotocasa properties...'); // Removed for production
 
         const locations = {
             'costa-del-sol': ['Málaga', 'Marbella', 'Estepona', 'Fuengirola', 'Mijas'],
@@ -877,7 +877,7 @@ class PropertyMatchingSystem {
 
 // Initialize the property matching system
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Initializing Property Matching System...');
+// console.log('Initializing Property Matching System...'); // Removed for production
     window.propertyMatcher = new PropertyMatchingSystem();
 
     // Extend AGGChat to handle property inquiries

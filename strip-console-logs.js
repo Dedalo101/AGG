@@ -19,6 +19,7 @@ const BACKUP_DIR = '.backup-console-logs';
 function stripConsoleLogs(content) {
     // Remove console.log, console.warn, console.error, but keep console.error in catch blocks
     const lines = content.split('\n');
+    let removedCount = 0;
     const processedLines = lines.map(line => {
         // Skip if line is in a catch block (keep error logging)
         if (line.trim().startsWith('console.error') && 
@@ -26,16 +27,19 @@ function stripConsoleLogs(content) {
             return line;
         }
         
-        // Remove standalone console statements
+        // Remove standalone console statements (handle indented lines)
         if (line.trim().startsWith('console.log') || 
-            line.trim().startsWith('console.warn')) {
+            line.trim().startsWith('console.warn') ||
+            line.trim().startsWith('console.error')) {
+            removedCount++;
             return '// ' + line.trim() + ' // Removed for production';
         }
         
         return line;
     });
     
-    return processedLines.join('\n');
+    // Return both the processed content and the count
+    return { content: processedLines.join('\n'), removedCount };
 }
 
 function createBackup(filePath, content) {
@@ -62,12 +66,9 @@ function processFile(filePath) {
     createBackup(filePath, content);
     
     // Process content
-    const processedContent = stripConsoleLogs(content);
-    
-    // Count removed logs
-    const originalLogCount = (content.match(/console\.(log|warn)/g) || []).length;
-    const remainingLogCount = (processedContent.match(/console\.(log|warn)/g) || []).length;
-    const removedCount = originalLogCount - remainingLogCount;
+    const result = stripConsoleLogs(content);
+    const processedContent = result.content;
+    const removedCount = result.removedCount;
     
     if (removedCount > 0) {
         fs.writeFileSync(fullPath, processedContent, 'utf8');
