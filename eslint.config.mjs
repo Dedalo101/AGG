@@ -44,5 +44,27 @@ export default [
       'no-unused-vars': 'off',
       'no-empty': 'off'
     }
+  },
+  {
+    files: ['strip-console-logs.js', 'optimize.js', 'generate-critical-css.js', 'debug-overflow.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+      globals: {
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        process: 'readonly',
+        console: 'readonly',
+        Buffer: 'readonly',
+        global: 'readonly'
+      }
+    },
+    rules: {
+      'no-undef': 'off',
+      'no-unused-vars': 'warn'
+    }
   }
 ];
