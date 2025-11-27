@@ -491,108 +491,120 @@
         
         // ============ PROCEDURAL GENERATION ============
         function generateCityBlock(centerGx, centerGy) {
-            const blockSize = CONFIG.BLOCK_SIZE;
+            const blockSize = 20; // Larger block for screen fill
             const roadMap = new Map();
             const visited = new Set();
             
-            // Enhanced wave propagation for better road networks
-            const queue = [[centerGx, centerGy, 0]]; // [x, y, distance]
+            // Queue-based BFS for road generation
+            const queue = [[centerGx, centerGy, 0]];
             visited.add(`${centerGx},${centerGy}`);
             roadMap.set(`${centerGx},${centerGy}`, true);
             
-            let queueIndex = 0;
+            let processedCount = 0;
+            const maxProcessed = 1000; // Prevent infinite loops
             
-            while (queueIndex < queue.length) {
-                const [x, y, distance] = queue[queueIndex++];
+            while (queue.length > 0 && processedCount < maxProcessed) {
+                processedCount++;
+                const [x, y, depth] = queue.shift();
                 
-                if (distance > blockSize) continue;
+                // Roads propagate outward with decreasing probability
+                if (depth > blockSize) continue;
                 
-                // Multi-directional preference with noise
-                const noiseValue = noise2D(x, y, 10);
-                const directions = [];
+                // Get noise seed for this position
+                const seed = noise2D(x, y, 42);
                 
-                // Cardinal directions (higher priority)
-                directions.push({ dx: 1, dy: 0, weight: 2 });
-                directions.push({ dx: -1, dy: 0, weight: 2 });
-                directions.push({ dx: 0, dy: 1, weight: 2 });
-                directions.push({ dx: 0, dy: -1, weight: 2 });
+                // Define 8 directions with specific weights
+                const directions = [
+                    { dx: 1, dy: 0, name: 'E' },   // East
+                    { dx: -1, dy: 0, name: 'W' },  // West
+                    { dx: 0, dy: 1, name: 'S' },   // South
+                    { dx: 0, dy: -1, name: 'N' },  // North
+                    { dx: 1, dy: 1, name: 'SE' },  // Southeast
+                    { dx: -1, dy: -1, name: 'NW' }, // Northwest
+                    { dx: 1, dy: -1, name: 'NE' },  // Northeast
+                    { dx: -1, dy: 1, name: 'SW' }   // Southwest
+                ];
                 
-                // Diagonal directions (secondary)
-                directions.push({ dx: 1, dy: 1, weight: 1.2 });
-                directions.push({ dx: -1, dy: -1, weight: 1.2 });
-                directions.push({ dx: 1, dy: -1, weight: 1.2 });
-                directions.push({ dx: -1, dy: 1, weight: 1.2 });
-                
-                // Sort by noise-weighted preference
+                // Sort directions by noise to create patterns
                 directions.sort((a, b) => {
-                    const noiseA = (noise2D(x + a.dx, y + a.dy, 20) * a.weight);
-                    const noiseB = (noise2D(x + b.dx, y + b.dy, 20) * b.weight);
-                    return noiseB - noiseA;
+                    return noise2D(x + b.dx, y + b.dy, 100) - noise2D(x + a.dx, y + a.dy, 100);
                 });
                 
-                // Attempt to branch in preferred directions
-                const maxBranches = Math.max(2, Math.floor(noise2D(x, y, 30) * 4));
-                
-                for (let i = 0; i < Math.min(maxBranches, directions.length); i++) {
-                    const { dx, dy, weight } = directions[i];
-                    const nx = x + dx;
-                    const ny = y + dy;
-                    const key = `${nx},${ny}`;
-                    const newDistance = Math.hypot(nx - centerGx, ny - centerGy);
+                // Propagate to up to 3 neighboring cells
+                let branches = 0;
+                for (let dir of directions) {
+                    if (branches >= 3) break;
                     
-                    if (newDistance <= blockSize && !visited.has(key)) {
-                        // Distance-based decay: roads are more likely closer to center
-                        const decay = 0.85 - (newDistance / blockSize) * 0.35;
-                        const noiseThreshold = noise2D(nx, ny, 15);
-                        const weightFactor = (weight - 1) * 0.2 + 1; // 1.0 to 1.2
-                        
-                        if (noiseThreshold < decay * weightFactor) {
-                            visited.add(key);
-                            roadMap.set(key, true);
-                            queue.push([nx, ny, newDistance]);
-                        }
+                    const nx = x + dir.dx;
+                    const ny = y + dir.dy;
+                    const key = `${nx},${ny}`;
+                    
+                    if (visited.has(key)) continue;
+                    
+                    const dist = Math.hypot(nx - centerGx, ny - centerGy);
+                    if (dist > blockSize) continue;
+                    
+                    // Probability decreases with distance
+                    const baseProbability = 0.9 - (dist / blockSize) * 0.4;
+                    const noise = noise2D(nx, ny, 12);
+                    
+                    if (noise < baseProbability) {
+                        visited.add(key);
+                        roadMap.set(key, true);
+                        queue.push([nx, ny, depth + 1]);
+                        branches++;
                     }
                 }
             }
             
-            // Place buildings
-            for (let x = centerGx - blockSize; x <= centerGx + blockSize; x++) {
-                for (let y = centerGy - blockSize; y <= centerGy + blockSize; y++) {
+            // Place buildings adjacent to roads
+            for (let x = centerGx - blockSize - 2; x <= centerGx + blockSize + 2; x++) {
+                for (let y = centerGy - blockSize - 2; y <= centerGy + blockSize + 2; y++) {
                     const key = `${x},${y}`;
-                    if (gameState.buildings.has(key) || gameState.roads.has(key) || gameState.trees.has(key)) continue;
+                    
+                    // Skip if already occupied
+                    if (gameState.buildings.has(key) || gameState.roads.has(key) || gameState.trees.has(key)) {
+                        continue;
+                    }
                     
                     if (!roadMap.has(key)) {
-                        let minRoadDist = 999;
-                        for (let dx = -3; dx <= 3; dx++) {
-                            for (let dy = -3; dy <= 3; dy++) {
+                        // Check proximity to roads
+                        let nearRoad = false;
+                        for (let dx = -2; dx <= 2; dx++) {
+                            for (let dy = -2; dy <= 2; dy++) {
                                 if (roadMap.has(`${x + dx},${y + dy}`)) {
-                                    minRoadDist = Math.min(minRoadDist, Math.hypot(dx, dy));
+                                    nearRoad = true;
+                                    break;
                                 }
                             }
+                            if (nearRoad) break;
                         }
                         
-                        if (minRoadDist > 0 && minRoadDist <= 3 && noise2D(x, y, 50) > 0.15) {
+                        // Place building with probability
+                        if (nearRoad && noise2D(x, y, 50) > 0.25) {
                             gameState.buildings.set(key, new Building(x, y));
-                            if (gameState.buildings.size > CONFIG.MAX_BUILDINGS) break;
                         }
                     }
                 }
-                if (gameState.buildings.size > CONFIG.MAX_BUILDINGS) break;
             }
             
-            // Place trees
-            for (let x = centerGx - blockSize; x <= centerGx + blockSize; x++) {
-                for (let y = centerGy - blockSize; y <= centerGy + blockSize; y++) {
+            // Place FEWER trees - much lower density
+            for (let x = centerGx - blockSize - 2; x <= centerGx + blockSize + 2; x++) {
+                for (let y = centerGy - blockSize - 2; y <= centerGy + blockSize + 2; y++) {
                     const key = `${x},${y}`;
-                    if (gameState.buildings.has(key) || gameState.roads.has(key) || gameState.trees.has(key)) continue;
                     
-                    if (noise2D(x, y, 100) > 0.35) {
+                    if (gameState.buildings.has(key) || gameState.roads.has(key) || gameState.trees.has(key)) {
+                        continue;
+                    }
+                    
+                    // Only 10-15% chance of trees (was 35-40%)
+                    if (noise2D(x, y, 200) > 0.85) {
                         gameState.trees.set(key, new Tree(x, y));
                     }
                 }
             }
             
-            // Place roads
+            // Place all roads from roadMap
             roadMap.forEach((_, key) => {
                 if (!gameState.roads.has(key)) {
                     const [x, y] = key.split(',').map(Number);
@@ -719,11 +731,45 @@
         canvas.addEventListener('click', (e) => {
             const now = Date.now();
             if (now - gameState.lastClick.time < 300) {
+                // Double click: clear all
                 clearAll();
+                showNotification('Map cleared!');
             } else {
+                // Single click: regenerate at that location
                 const world = screenToWorld(e.clientX, e.clientY);
                 const grid = worldToGrid(world.x, world.y);
+                
+                // Clear nearby area first
+                const clearRadius = 20;
+                const keysToDelete = [];
+                gameState.buildings.forEach((_, key) => {
+                    const [bx, by] = key.split(',').map(Number);
+                    if (Math.hypot(bx - grid.x, by - grid.y) < clearRadius) {
+                        keysToDelete.push(key);
+                    }
+                });
+                gameState.roads.forEach((_, key) => {
+                    const [rx, ry] = key.split(',').map(Number);
+                    if (Math.hypot(rx - grid.x, ry - grid.y) < clearRadius) {
+                        keysToDelete.push(key);
+                    }
+                });
+                gameState.trees.forEach((_, key) => {
+                    const [tx, ty] = key.split(',').map(Number);
+                    if (Math.hypot(tx - grid.x, ty - grid.y) < clearRadius) {
+                        keysToDelete.push(key);
+                    }
+                });
+                
+                keysToDelete.forEach(key => {
+                    gameState.buildings.delete(key);
+                    gameState.roads.delete(key);
+                    gameState.trees.delete(key);
+                });
+                
+                // Generate new layout
                 generateCityBlock(grid.x, grid.y);
+                showNotification('New layout generated!');
             }
             gameState.lastClick.time = now;
         });
@@ -929,7 +975,17 @@
         }
         
         // ============ INITIALIZATION ============
+        // Generate initial city at multiple centers to fill screen
         generateCityBlock(0, 0);
+        generateCityBlock(15, 0);
+        generateCityBlock(-15, 0);
+        generateCityBlock(0, 15);
+        generateCityBlock(0, -15);
+        generateCityBlock(15, 15);
+        generateCityBlock(-15, -15);
+        generateCityBlock(15, -15);
+        generateCityBlock(-15, 15);
+        
         updateUI();
         animate();
         
