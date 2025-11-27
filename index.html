@@ -14,65 +14,53 @@
         body {
             width: 100%;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             overflow: hidden;
-            cursor: pointer;
+            background: #1a1a2e;
         }
 
-        .container {
-            position: relative;
+        #canvas {
+            display: block;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        canvas {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
         }
 
         .content {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            z-index: 10;
+            z-index: 100;
             pointer-events: none;
         }
 
         .text {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 300;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             color: white;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             animation: fadeInScale 1s ease-out;
+            margin-bottom: 1rem;
         }
 
         .subtitle {
             font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 1rem;
+            color: rgba(255, 255, 255, 0.7);
             letter-spacing: 1px;
             animation: fadeInScale 1.2s ease-out;
         }
 
-        .click-hint {
-            position: absolute;
-            bottom: 3rem;
+        .hint {
+            position: fixed;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.5);
             animation: pulse 2s infinite;
+            z-index: 100;
         }
 
         @keyframes fadeInScale {
@@ -87,37 +75,14 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
-                opacity: 0.6;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes ripple {
-            0% {
-                width: 0;
-                height: 0;
-                opacity: 1;
-            }
-            100% {
-                width: 500px;
-                height: 500px;
-                opacity: 0;
-            }
-        }
-
-        .ripple {
-            position: absolute;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            animation: ripple 0.8s ease-out;
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         @media (max-width: 768px) {
             .text {
                 font-size: 2rem;
+                letter-spacing: 2px;
             }
             .subtitle {
                 font-size: 1rem;
@@ -126,14 +91,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <canvas id="canvas"></canvas>
-        <div class="content">
-            <div class="text">Under Construction</div>
-            <div class="subtitle">Something amazing is coming...</div>
-        </div>
-        <div class="click-hint">Click anywhere for animation</div>
+    <canvas id="canvas"></canvas>
+    <div class="content">
+        <div class="text">AGG.homes</div>
+        <div class="subtitle">Under Construction</div>
     </div>
+    <div class="hint">Click to generate buildings • Scroll to explore</div>
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -142,169 +105,213 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let particles = [];
-        let isometricObjects = [];
+        // City generation parameters
+        let cityBuildings = [];
+        let cameraX = 0;
+        let cameraY = 0;
         let time = 0;
+        let mouseX = canvas.width / 2;
+        let mouseY = canvas.height / 2;
 
-        // Isometric projection helper
-        function isometric(x, y, z) {
-            const angle = Math.PI / 6; // 30 degrees
-            const scale = 1;
-            
-            const isoX = (x - y) * Math.cos(angle) * scale;
-            const isoY = (x + y) * Math.sin(angle) * scale - z * scale;
-            
-            return { x: isoX, y: isoY };
+        // Perlin-like noise for procedural generation
+        function pseudoNoise(x, y, seed = 0) {
+            const n = Math.sin(x * 12.9898 + y * 78.233 + seed) * 43758.5453;
+            return n - Math.floor(n);
         }
 
-        // Draw isometric cube
-        function drawIsometricCube(centerX, centerY, size, color, offset = 0) {
-            const s = size;
-            const wobble = Math.sin(time * 0.02 + offset) * 2;
-            
-            const topLeft = isometric(-s, -s, s);
-            const topRight = isometric(s, -s, s);
-            const bottomRight = isometric(s, s, s);
-            const bottomLeft = isometric(-s, s, s);
-            
-            const bottomTopLeft = isometric(-s, -s, -s);
-            const bottomTopRight = isometric(s, -s, -s);
-            const bottomBottomRight = isometric(s, s, -s);
-            const bottomBottomLeft = isometric(-s, s, -s);
-
-            // Draw top face
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.moveTo(centerX + topLeft.x, centerY + topLeft.y + wobble);
-            ctx.lineTo(centerX + topRight.x, centerY + topRight.y + wobble);
-            ctx.lineTo(centerX + bottomRight.x, centerY + bottomRight.y + wobble);
-            ctx.lineTo(centerX + bottomLeft.x, centerY + bottomLeft.y + wobble);
-            ctx.closePath();
-            ctx.fill();
-
-            // Draw left face
-            ctx.fillStyle = adjustBrightness(color, -20);
-            ctx.beginPath();
-            ctx.moveTo(centerX + topLeft.x, centerY + topLeft.y + wobble);
-            ctx.lineTo(centerX + bottomLeft.x, centerY + bottomLeft.y + wobble);
-            ctx.lineTo(centerX + bottomBottomLeft.x, centerY + bottomBottomLeft.y + wobble);
-            ctx.lineTo(centerX + bottomTopLeft.x, centerY + bottomTopLeft.y + wobble);
-            ctx.closePath();
-            ctx.fill();
-
-            // Draw right face
-            ctx.fillStyle = adjustBrightness(color, -40);
-            ctx.beginPath();
-            ctx.moveTo(centerX + topRight.x, centerY + topRight.y + wobble);
-            ctx.lineTo(centerX + bottomTopRight.x, centerY + bottomTopRight.y + wobble);
-            ctx.lineTo(centerX + bottomBottomRight.x, centerY + bottomBottomRight.y + wobble);
-            ctx.lineTo(centerX + bottomRight.x, centerY + bottomRight.y + wobble);
-            ctx.closePath();
-            ctx.fill();
-
-            // Draw stroke
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(centerX + topLeft.x, centerY + topLeft.y + wobble);
-            ctx.lineTo(centerX + topRight.x, centerY + topRight.y + wobble);
-            ctx.lineTo(centerX + bottomRight.x, centerY + bottomRight.y + wobble);
-            ctx.lineTo(centerX + bottomLeft.x, centerY + bottomLeft.y + wobble);
-            ctx.closePath();
-            ctx.stroke();
+        function getTerrainHeight(x, y) {
+            return (pseudoNoise(x * 0.1, y * 0.1) + 
+                    pseudoNoise(x * 0.05, y * 0.05) * 0.5 +
+                    pseudoNoise(x * 0.02, y * 0.02) * 0.25) / 1.75;
         }
 
-        function adjustBrightness(color, percent) {
-            const num = parseInt(color.replace("#", ""), 16);
-            const amt = Math.round(2.55 * percent);
-            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-            const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
-            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-            return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
-        }
-
-        // Particle system
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.vx = (Math.random() - 0.5) * 8;
-                this.vy = (Math.random() - 0.5) * 8 - 2;
-                this.life = 1;
-                this.size = Math.random() * 3 + 2;
-                this.color = `hsl(${Math.random() * 60 + 200}, 100%, 60%)`;
+        // Building structure
+        class Building {
+            constructor(gridX, gridY) {
+                this.gridX = gridX;
+                this.gridY = gridY;
+                this.x = gridX * 60 - 30;
+                this.y = gridY * 60 - 30;
+                
+                const noise = pseudoNoise(gridX, gridY, 1);
+                this.height = Math.floor(3 + noise * 7);
+                
+                this.width = 40 + pseudoNoise(gridX, gridY, 2) * 20;
+                this.depth = 40 + pseudoNoise(gridX, gridY, 3) * 20;
+                
+                this.roofColor = this.getColor(pseudoNoise(gridX, gridY, 4));
+                this.wallColor = this.darken(this.roofColor, 0.7);
+                this.windows = Math.floor(this.height * 2);
+                
+                this.wobble = 0;
+                this.wobbleSpeed = 0.01 + pseudoNoise(gridX, gridY, 5) * 0.02;
             }
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.vy += 0.2; // gravity
-                this.life -= 0.02;
+            getColor(val) {
+                const colors = [
+                    '#E8A87C', '#D97534', '#C85A2C',
+                    '#B8634F', '#A0826D', '#9B7653'
+                ];
+                return colors[Math.floor(val * colors.length)];
             }
 
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.life;
+            darken(color, factor) {
+                const hex = color.replace('#', '');
+                const r = Math.floor(parseInt(hex.substr(0, 2), 16) * factor);
+                const g = Math.floor(parseInt(hex.substr(2, 2), 16) * factor);
+                const b = Math.floor(parseInt(hex.substr(4, 2), 16) * factor);
+                return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+            }
+
+            lighten(color, factor) {
+                const hex = color.replace('#', '');
+                const r = Math.floor(Math.min(255, parseInt(hex.substr(0, 2), 16) * (1 + factor)));
+                const g = Math.floor(Math.min(255, parseInt(hex.substr(2, 2), 16) * (1 + factor)));
+                const b = Math.floor(Math.min(255, parseInt(hex.substr(4, 2), 16) * (1 + factor)));
+                return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+            }
+
+            update(time) {
+                this.wobble = Math.sin(time * this.wobbleSpeed) * 0.5;
+            }
+
+            draw(ctx, offsetX, offsetY) {
+                const x = this.x - cameraX + offsetX;
+                const y = this.y - cameraY + offsetY;
+
+                const iso = {
+                    // Front
+                    tl: { x: x - this.width / 2, y: y - this.height - this.depth / 2 },
+                    tr: { x: x + this.width / 2, y: y - this.height - this.depth / 2 },
+                    bl: { x: x - this.width / 2, y: y - this.depth / 2 },
+                    br: { x: x + this.width / 2, y: y - this.depth / 2 },
+                    // Top
+                    tl2: { x: x - this.width / 2, y: y - this.height - this.depth },
+                    tr2: { x: x + this.width / 2, y: y - this.height - this.depth },
+                };
+
+                // Draw front face (walls)
+                ctx.fillStyle = this.wallColor;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.moveTo(iso.tl.x, iso.tl.y);
+                ctx.lineTo(iso.tr.x, iso.tr.y);
+                ctx.lineTo(iso.br.x, iso.br.y);
+                ctx.lineTo(iso.bl.x, iso.bl.y);
+                ctx.closePath();
                 ctx.fill();
+                ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Draw windows
+                const windowColor = '#FFD700';
+                const windowSize = 4;
+                const windowSpacing = 6;
+                for (let i = 0; i < this.windows; i++) {
+                    const row = Math.floor(i / 4);
+                    const col = i % 4;
+                    const wX = iso.tl.x + this.width / 5 + col * windowSpacing;
+                    const wY = iso.tl.y + 5 + row * windowSpacing;
+                    if (wY < iso.bl.y) {
+                        ctx.fillStyle = windowColor;
+                        ctx.fillRect(wX, wY, windowSize, windowSize);
+                        ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+                        ctx.lineWidth = 0.5;
+                        ctx.strokeRect(wX, wY, windowSize, windowSize);
+                    }
+                }
+
+                // Draw top/roof
+                ctx.fillStyle = this.roofColor;
+                ctx.beginPath();
+                ctx.moveTo(iso.tl.x, iso.tl.y);
+                ctx.lineTo(iso.tl2.x, iso.tl2.y);
+                ctx.lineTo(iso.tr2.x, iso.tr2.y);
+                ctx.lineTo(iso.tr.x, iso.tr.y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Draw roof highlight
+                ctx.fillStyle = this.lighten(this.roofColor, 0.2);
+                ctx.globalAlpha = 0.4;
+                ctx.fillRect(iso.tl.x, iso.tl.y, iso.tr.x - iso.tl.x, (iso.tl2.y - iso.tl.y) * 0.3);
                 ctx.globalAlpha = 1;
             }
         }
 
-        function createExplosion(x, y) {
-            for (let i = 0; i < 50; i++) {
-                particles.push(new Particle(x, y));
+        function generateCity(centerGridX, centerGridY, radius = 5) {
+            cityBuildings = [];
+            for (let x = centerGridX - radius; x <= centerGridX + radius; x++) {
+                for (let y = centerGridY - radius; y <= centerGridY + radius; y++) {
+                    if (Math.random() > 0.3) { // 70% chance of building
+                        cityBuildings.push(new Building(x, y));
+                    }
+                }
             }
-            
-            // Create ripple
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.style.marginLeft = '-250px';
-            ripple.style.marginTop = '-250px';
-            document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 800);
+            // Sort by distance to camera for proper rendering
+            cityBuildings.sort((a, b) => {
+                const distA = Math.hypot(a.gridX - cameraX/60, a.gridY - cameraY/60);
+                const distB = Math.hypot(b.gridX - cameraX/60, b.gridY - cameraY/60);
+                return distA - distB;
+            });
+        }
+
+        function updateCity() {
+            const gridX = Math.floor(cameraX / 60);
+            const gridY = Math.floor(cameraY / 60);
+            generateCity(gridX, gridY, 4);
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#0f0f1e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw sky gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1a2a3a');
+            gradient.addColorStop(1, '#2a3a4a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw ground
+            ctx.fillStyle = '#3a4a5a';
+            ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+
+            // Update and draw buildings
+            cityBuildings.forEach(building => {
+                building.update(time);
+                building.draw(ctx, canvas.width / 2, canvas.height / 2);
+            });
+
+            time += 0.016; // ~60fps
         }
 
         function animate() {
-            // Clear canvas
-            ctx.fillStyle = 'rgba(102, 126, 234, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Update and draw particles
-            particles = particles.filter(p => p.life > 0);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            // Draw isometric grid of cubes
-            const gridSize = 5;
-            const cubeSize = 15;
-            const spacing = 40;
-            const startX = canvas.width / 2;
-            const startY = canvas.height / 2;
-
-            for (let i = -gridSize; i <= gridSize; i++) {
-                for (let j = -gridSize; j <= gridSize; j++) {
-                    const x = startX + i * spacing;
-                    const y = startY + j * spacing;
-                    const offset = (i + j) * 0.1;
-                    const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe'];
-                    const color = colors[(i + j + gridSize) % colors.length];
-                    drawIsometricCube(x, y, cubeSize, color, offset);
-                }
-            }
-
-            time++;
+            draw();
             requestAnimationFrame(animate);
         }
 
         // Event listeners
         document.addEventListener('click', (e) => {
-            createExplosion(e.clientX, e.clientY);
+            cameraX = e.clientX - canvas.width / 2;
+            cameraY = e.clientY - canvas.height / 2;
+            updateCity();
+        });
+
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            cameraY += e.deltaY * 0.5;
+            cameraX += e.deltaX * 0.5;
+            updateCity();
+        }, { passive: false });
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
         window.addEventListener('resize', () => {
@@ -312,6 +319,8 @@
             canvas.height = window.innerHeight;
         });
 
+        // Initialize
+        generateCity(0, 0, 4);
         animate();
     </script>
 </body>
