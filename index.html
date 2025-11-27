@@ -63,6 +63,9 @@
         <div>Click to place buildings</div>
         <div>Drag to move • Scroll to zoom</div>
         <div style="margin-top: 10px; color: #666;">Right-click to remove</div>
+        <div style="margin-top: 10px; font-size: 10px; color: #555;">
+            6 building types • 3 road types • Trees auto-generate
+        </div>
     </div>
     <div id="info">
         Buildings: <span id="buildingCount">0</span> | FPS: <span id="fps">60</span>
@@ -77,6 +80,8 @@
 
         // Game state
         let buildings = new Map();
+        let roads = new Map();
+        let trees = new Map();
         let camera = { x: 0, y: 0, zoom: 1 };
         let isDragging = false;
         let dragStart = { x: 0, y: 0 };
@@ -134,15 +139,49 @@
                 this.gridX = gridX;
                 this.gridY = gridY;
                 
+                const hash0 = pseudoHash(gridX, gridY, 0);
                 const hash1 = pseudoHash(gridX, gridY, 1);
                 const hash2 = pseudoHash(gridX, gridY, 2);
                 const hash3 = pseudoHash(gridX, gridY, 3);
                 const hash4 = pseudoHash(gridX, gridY, 4);
                 
-                this.height = 2 + Math.floor(hash1 * 6);
-                this.width = 30 + hash2 * 8;
-                this.depth = 25 + hash3 * 10;
-                this.color = BUILDING_COLORS[Math.floor(hash4 * BUILDING_COLORS.length)];
+                // Determine building type
+                this.type = Math.floor(hash0 * 6);
+                
+                // Type-specific properties
+                if (this.type === BUILDING_TYPES.RESIDENTIAL) {
+                    this.height = 3 + Math.floor(hash1 * 5);
+                    this.width = 28 + hash2 * 10;
+                    this.depth = 28 + hash3 * 10;
+                    this.color = '#D9A066';
+                } else if (this.type === BUILDING_TYPES.COMMERCIAL) {
+                    this.height = 5 + Math.floor(hash1 * 6);
+                    this.width = 35 + hash2 * 8;
+                    this.depth = 30 + hash3 * 8;
+                    this.color = '#B8634F';
+                } else if (this.type === BUILDING_TYPES.INDUSTRIAL) {
+                    this.height = 2 + Math.floor(hash1 * 3);
+                    this.width = 50 + hash2 * 15;
+                    this.depth = 45 + hash3 * 15;
+                    this.color = '#808080';
+                } else if (this.type === BUILDING_TYPES.OFFICE) {
+                    this.height = 8 + Math.floor(hash1 * 8);
+                    this.width = 32 + hash2 * 6;
+                    this.depth = 32 + hash3 * 6;
+                    this.color = '#A0A0C0';
+                } else if (this.type === BUILDING_TYPES.APARTMENT) {
+                    this.height = 6 + Math.floor(hash1 * 6);
+                    this.width = 26 + hash2 * 8;
+                    this.depth = 26 + hash3 * 8;
+                    this.color = '#E8A87C';
+                } else {
+                    // WAREHOUSE
+                    this.height = 3 + Math.floor(hash1 * 2);
+                    this.width = 55 + hash2 * 10;
+                    this.depth = 50 + hash3 * 10;
+                    this.color = '#707070';
+                }
+                
                 this.rotation = 0;
             }
 
@@ -150,6 +189,7 @@
                 return {
                     gridX: this.gridX,
                     gridY: this.gridY,
+                    type: this.type,
                     height: this.height,
                     width: this.width,
                     depth: this.depth,
@@ -220,20 +260,22 @@
                 ctx.fill();
                 ctx.stroke();
 
-                // Windows
-                const windowColor = '#FFE000';
-                const windows = Math.ceil(this.height * 1.5);
-                for (let i = 0; i < windows; i++) {
-                    const row = Math.floor(i / 3);
-                    const col = i % 3;
-                    const wX = baseX + (corners.tfl.x + (corners.tfr.x - corners.tfl.x) * (col + 1) / 4) * zoom;
-                    const wY = baseY + (corners.tfl.y + (corners.bfl.y - corners.tfl.y) * (row + 1) / (windows + 1)) * zoom;
-                    
-                    ctx.fillStyle = windowColor;
-                    ctx.fillRect(wX - 2 * zoom, wY - 2 * zoom, 4 * zoom, 4 * zoom);
-                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-                    ctx.lineWidth = 0.5;
-                    ctx.strokeRect(wX - 2 * zoom, wY - 2 * zoom, 4 * zoom, 4 * zoom);
+                // Windows/details based on type
+                if (this.type === BUILDING_TYPES.RESIDENTIAL || this.type === BUILDING_TYPES.COMMERCIAL || this.type === BUILDING_TYPES.OFFICE || this.type === BUILDING_TYPES.APARTMENT) {
+                    const windowColor = this.type === BUILDING_TYPES.OFFICE ? '#FFE6B3' : '#FFE000';
+                    const windows = Math.ceil(this.height * 1.5);
+                    for (let i = 0; i < windows; i++) {
+                        const row = Math.floor(i / 3);
+                        const col = i % 3;
+                        const wX = baseX + (corners.tfl.x + (corners.tfr.x - corners.tfl.x) * (col + 1) / 4) * zoom;
+                        const wY = baseY + (corners.tfl.y + (corners.bfl.y - corners.tfl.y) * (row + 1) / (windows + 1)) * zoom;
+                        
+                        ctx.fillStyle = windowColor;
+                        ctx.fillRect(wX - 2 * zoom, wY - 2 * zoom, 4 * zoom, 4 * zoom);
+                        ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                        ctx.lineWidth = 0.5;
+                        ctx.strokeRect(wX - 2 * zoom, wY - 2 * zoom, 4 * zoom, 4 * zoom);
+                    }
                 }
 
                 ctx.restore();
@@ -256,26 +298,188 @@
             }
         }
 
+        class Road {
+            constructor(gridX, gridY) {
+                this.gridX = gridX;
+                this.gridY = gridY;
+                const hash = pseudoHash(gridX, gridY, 100);
+                this.type = Math.floor(hash * 3);
+            }
+
+            getColor() {
+                const colors = ['#4A4A4A', '#9A8860', '#B0B0A8'];
+                return colors[this.type];
+            }
+
+            draw(ctx, camX, camY, zoom) {
+                const worldPos = getWorldCoords(this.gridX, this.gridY);
+                const screenX = (worldPos.x - camX) * zoom + canvas.width / 2;
+                const screenY = (worldPos.y - camY) * zoom + canvas.height / 2;
+                
+                // Draw road as isometric square
+                const size = GRID_SIZE * 0.9 * zoom;
+                const angle = Math.PI / 6;
+                
+                // Road corners in isometric
+                const corners = [
+                    { x: -GRID_SIZE / 2, y: -GRID_SIZE / 2 },
+                    { x: GRID_SIZE / 2, y: -GRID_SIZE / 2 },
+                    { x: GRID_SIZE / 2, y: GRID_SIZE / 2 },
+                    { x: -GRID_SIZE / 2, y: GRID_SIZE / 2 }
+                ];
+                
+                ctx.save();
+                ctx.fillStyle = this.getColor();
+                ctx.globalAlpha = 0.85;
+                
+                ctx.beginPath();
+                for (let i = 0; i < corners.length; i++) {
+                    const corner = corners[i];
+                    const isoX = (corner.x - corner.y) * Math.cos(angle);
+                    const isoY = (corner.x + corner.y) * Math.sin(angle);
+                    const screenCornerX = screenX + isoX * zoom;
+                    const screenCornerY = screenY + isoY * zoom;
+                    
+                    if (i === 0) ctx.moveTo(screenCornerX, screenCornerY);
+                    else ctx.lineTo(screenCornerX, screenCornerY);
+                }
+                ctx.closePath();
+                ctx.fill();
+                
+                // Road markings
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+        }
+
+        class Tree {
+            constructor(gridX, gridY) {
+                this.gridX = gridX;
+                this.gridY = gridY;
+                const hash1 = pseudoHash(gridX, gridY, 200);
+                const hash2 = pseudoHash(gridX, gridY, 201);
+                this.height = 4 + Math.floor(hash1 * 4);
+                this.size = 12 + hash2 * 8;
+            }
+
+            draw(ctx, camX, camY, zoom) {
+                const worldPos = getWorldCoords(this.gridX, this.gridY);
+                const baseX = (worldPos.x - camX) * zoom + canvas.width / 2;
+                const baseY = (worldPos.y - camY) * zoom + canvas.height / 2;
+
+                ctx.save();
+                
+                // Trunk
+                ctx.fillStyle = '#654321';
+                const trunkWidth = 4 * zoom;
+                const trunkHeight = this.height * 3 * zoom;
+                ctx.fillRect(baseX - trunkWidth / 2, baseY - trunkHeight, trunkWidth, trunkHeight);
+                
+                // Foliage (circular from isometric view)
+                ctx.fillStyle = '#228B22';
+                ctx.globalAlpha = 0.8;
+                const canopyRadius = this.size * zoom;
+                ctx.beginPath();
+                ctx.arc(baseX, baseY - this.height * 3 * zoom - canopyRadius / 2, canopyRadius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Darker foliage layer
+                ctx.fillStyle = '#1a5c1a';
+                ctx.globalAlpha = 0.4;
+                ctx.beginPath();
+                ctx.arc(baseX - 3 * zoom, baseY - this.height * 3 * zoom - canopyRadius / 3, canopyRadius * 0.7, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }
+
         function placeBuilding(worldX, worldY) {
             const grid = getGridCoords(worldX, worldY);
             const key = `${grid.x},${grid.y}`;
-            if (!buildings.has(key)) {
+            
+            // Check for existing structures
+            if (!buildings.has(key) && !roads.has(key) && !trees.has(key)) {
                 buildings.set(key, new Building(grid.x, grid.y));
-                updateBuildingCount();
+                
+                // Auto-generate connecting roads
+                if (Math.random() > 0.6) {
+                    generateConnectingRoads(grid.x, grid.y);
+                }
+                
+                updateCounts();
+            }
+        }
+
+        function generateConnectingRoads(centerX, centerY) {
+            // Find nearby buildings
+            const nearbyBuildings = [];
+            for (let x = centerX - 3; x <= centerX + 3; x++) {
+                for (let y = centerY - 3; y <= centerY + 3; y++) {
+                    if (buildings.has(`${x},${y}`) && !(x === centerX && y === centerY)) {
+                        nearbyBuildings.push({ x, y });
+                    }
+                }
+            }
+            
+            // Connect to closest building with roads
+            if (nearbyBuildings.length > 0) {
+                nearbyBuildings.sort((a, b) => 
+                    Math.hypot(a.x - centerX, a.y - centerY) - Math.hypot(b.x - centerX, b.y - centerY)
+                );
+                
+                const target = nearbyBuildings[0];
+                const dx = Math.sign(target.x - centerX);
+                const dy = Math.sign(target.y - centerY);
+                
+                let currentX = centerX + dx;
+                let currentY = centerY + dy;
+                
+                // Create road path
+                while (currentX !== target.x || currentY !== target.y) {
+                    const key = `${currentX},${currentY}`;
+                    if (!buildings.has(key) && !roads.has(key)) {
+                        roads.set(key, new Road(currentX, currentY));
+                    }
+                    
+                    if (currentX !== target.x) currentX += Math.sign(target.x - currentX);
+                    if (currentY !== target.y) currentY += Math.sign(target.y - currentY);
+                }
+            }
+            
+            // Randomly place trees
+            for (let i = 0; i < 2; i++) {
+                const treeX = centerX + Math.floor((Math.random() - 0.5) * 4);
+                const treeY = centerY + Math.floor((Math.random() - 0.5) * 4);
+                const treeKey = `${treeX},${treeY}`;
+                
+                if (!buildings.has(treeKey) && !roads.has(treeKey) && !trees.has(treeKey)) {
+                    trees.set(treeKey, new Tree(treeX, treeY));
+                }
             }
         }
 
         function removeBuilding(worldX, worldY) {
             const grid = getGridCoords(worldX, worldY);
             const key = `${grid.x},${grid.y}`;
+            
             if (buildings.has(key)) {
                 buildings.delete(key);
-                updateBuildingCount();
+                updateCounts();
+            } else if (roads.has(key)) {
+                roads.delete(key);
+                updateCounts();
+            } else if (trees.has(key)) {
+                trees.delete(key);
+                updateCounts();
             }
         }
 
-        function updateBuildingCount() {
-            document.getElementById('buildingCount').textContent = buildings.size;
+        function updateCounts() {
+            document.getElementById('buildingCount').textContent = buildings.size + roads.size + trees.size;
         }
 
         function screenToWorld(screenX, screenY) {
@@ -315,12 +519,28 @@
                 ctx.stroke();
             }
 
-            // Sort and draw buildings by depth
-            const buildingArray = Array.from(buildings.values());
-            buildingArray.sort((a, b) => (a.gridX + a.gridY) - (b.gridX + b.gridY));
+            // Draw all structures sorted by depth
+            const allItems = [];
             
-            buildingArray.forEach(building => {
-                building.draw(ctx, camera.x, camera.y, camera.zoom);
+            // Add roads
+            roads.forEach(road => {
+                allItems.push({ type: 'road', obj: road, depth: road.gridX + road.gridY });
+            });
+            
+            // Add buildings
+            buildings.forEach(building => {
+                allItems.push({ type: 'building', obj: building, depth: building.gridX + building.gridY });
+            });
+            
+            // Add trees
+            trees.forEach(tree => {
+                allItems.push({ type: 'tree', obj: tree, depth: tree.gridX + tree.gridY });
+            });
+            
+            allItems.sort((a, b) => a.depth - b.depth);
+            
+            allItems.forEach(item => {
+                item.obj.draw(ctx, camera.x, camera.y, camera.zoom);
             });
 
             time += 0.016;
@@ -466,14 +686,15 @@
         });
 
         // Initialize with some buildings
-        for (let x = -2; x <= 2; x++) {
-            for (let y = -2; y <= 2; y++) {
-                if (Math.random() > 0.4) {
+        for (let x = -3; x <= 3; x++) {
+            for (let y = -3; y <= 3; y++) {
+                if (Math.random() > 0.5) {
                     buildings.set(`${x},${y}`, new Building(x, y));
+                    generateConnectingRoads(x, y);
                 }
             }
         }
-        updateBuildingCount();
+        updateCounts();
 
         animate();
     </script>
