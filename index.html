@@ -10,434 +10,525 @@
     <title>Procedural City Generator</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0a0e27; color: #fff; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #0a0e27 0%, #0f1f3a 100%); color: #fff; overflow: hidden; font-family: 'Segoe UI', 'Roboto', sans-serif; }
         canvas { display: block; touch-action: none; }
         
-        /* UI Panel */
-        #ui { position: fixed; top: 12px; left: 12px; z-index: 1000; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); padding: 16px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.2); font-size: 13px; color: #94a3b8; min-width: 280px; }
-        #ui > div { margin: 6px 0; line-height: 1.5; }
-        #ui .title { color: #e2e8f0; font-weight: 600; margin-bottom: 10px; }
-        #ui .control { color: #cbd5e1; font-size: 12px; }
-        #ui .stat { color: #64748b; font-size: 11px; margin-top: 8px; }
+        /* Main UI Panel */
+        #ui { 
+            position: fixed; top: 12px; left: 12px; z-index: 1000; 
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(20, 30, 50, 0.95) 100%);
+            backdrop-filter: blur(8px); 
+            padding: 18px; 
+            border-radius: 12px; 
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+            transition: all 0.3s ease;
+        }
+        #ui:hover { border-color: rgba(59, 130, 246, 0.6); box-shadow: 0 12px 48px rgba(59, 130, 246, 0.2); }
         
-        /* Stats */
-        #stats { position: fixed; bottom: 12px; right: 12px; z-index: 1000; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); padding: 12px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.2); font-size: 11px; color: #94a3b8; font-family: 'Courier New', monospace; }
-        #stats div { margin: 3px 0; }
+        #ui > div { margin: 7px 0; line-height: 1.6; }
+        #ui .title { 
+            color: #3b82f6; 
+            font-weight: 700; 
+            margin-bottom: 14px; 
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+        #ui .control { 
+            color: #cbd5e1; 
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #ui .control::before { content: '▸'; color: #3b82f6; font-weight: bold; }
+        #ui .stat { 
+            color: #64748b; 
+            font-size: 11px; 
+            margin-top: 10px;
+            padding: 6px 0;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            padding-top: 8px;
+        }
+        #ui .stat strong { color: #3b82f6; }
+        
+        /* Toolbar */
+        #toolbar {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            max-width: 400px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.8) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(37, 99, 235, 1) 100%);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn:active { transform: translateY(0); }
+        .btn.secondary { background: rgba(75, 85, 99, 0.7); border-color: rgba(148, 163, 184, 0.3); }
+        .btn.secondary:hover { background: rgba(100, 116, 139, 0.9); }
+        
+        /* Stats Panel */
+        #stats { 
+            position: fixed; 
+            bottom: 12px; 
+            right: 12px; 
+            z-index: 1000; 
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(20, 30, 50, 0.95) 100%);
+            backdrop-filter: blur(8px); 
+            padding: 14px 16px; 
+            border-radius: 12px; 
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            font-size: 11px; 
+            color: #94a3b8; 
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            min-width: 140px;
+        }
+        #stats div { 
+            margin: 4px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        #stats div strong { color: #22c55e; font-weight: 600; }
+        #stats div span { text-align: right; }
         
         /* Loading overlay */
-        #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 39, 0.8); display: flex; align-items: center; justify-content: center; z-index: 2000; color: #94a3b8; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        #loading { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(10, 14, 39, 0.9); 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            z-index: 2000; 
+            color: #3b82f6; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.3s;
+            backdrop-filter: blur(4px);
+        }
         #loading.show { opacity: 1; pointer-events: all; }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        #loading-text {
+            font-size: 14px;
+            letter-spacing: 2px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        /* Legend/Info */
+        .info-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-top: 8px;
+            color: #a5b4fc;
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #ui { animation: slideIn 0.3s ease-out; }
     </style>
 </head> 
 <body>
     <canvas id="canvas"></canvas>
     
     <div id="ui">
-        <div class="title">🏙 City Generator Pro</div>
-        <div class="control">Click: Generate City Block</div>
-        <div class="control">Drag: Pan Camera</div>
+        <div class="title">🏙️ City Generator</div>
+        <div class="control">Click: Generate</div>
+        <div class="control">Drag: Pan</div>
         <div class="control">Scroll: Zoom</div>
         <div class="control">Right-click: Remove</div>
-        <div class="control">Double-click: Clear All</div>
-        <div class="stat" style="margin-top: 12px;">Objects: <strong id="buildingCount">0</strong></div>
+        <div class="stat">Objects: <strong id="buildingCount">0</strong></div>
         <div class="stat">Density: <strong id="density">0%</strong></div>
+        <div class="info-badge">Double-click to clear</div>
+    </div>
+    
+    <div id="toolbar">
+        <button class="btn" id="btnGenerate">+ Generate</button>
+        <button class="btn secondary" id="btnClear">🗑️ Clear All</button>
+        <button class="btn secondary" id="btnReset">↻ Reset</button>
+        <button class="btn secondary" id="btnToggleGrid">⊞ Grid</button>
     </div>
     
     <div id="stats">
         <div>FPS: <span id="fps">60</span></div>
         <div>Zoom: <span id="zoomLevel">1.0</span>x</div>
-        <div>Pos: <span id="camPos">0,0</span></div>
+        <div>Map: <span id="camPos">0,0</span></div>
+        <div style="border-top: 1px solid rgba(148, 163, 184, 0.2); margin-top: 6px; padding-top: 6px;">Size: <span id="mapSize">0KB</span></div>
     </div>
     
     <div id="loading">
-        <div>Generating city...</div>
+        <div class="spinner"></div>
+        <div id="loading-text">Generating...</div>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        // ============ ENHANCED CITY GENERATOR ============
         
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
-        // Game state
-        let buildings = new Map();
-        let roads = new Map();
-        let trees = new Map();
-        let camera = { x: 0, y: 0, zoom: 1 };
-        let isDragging = false;
-        let dragStart = { x: 0, y: 0 };
-        let time = 0;
-        let fps = 60;
-        let frameCount = 0;
-        let lastFpsTime = Date.now();
-
-        const GRID_SIZE = 40;
-        const BUILDING_COLORS = [
-            '#E8A87C', '#D97534', '#C85A2C',
-            '#B8634F', '#A0826D', '#9B7653',
-            '#C4915A', '#D9A066'
-        ];
         
-        // Building types
-        const BUILDING_TYPES = {
-            RESIDENTIAL: 0,
-            COMMERCIAL: 1,
-            INDUSTRIAL: 2,
-            OFFICE: 3,
-            APARTMENT: 4,
-            WAREHOUSE: 5
+        // ============ CONSTANTS ============
+        const CONFIG = {
+            GRID_SIZE: 40,
+            BLOCK_SIZE: 16,
+            MAX_ZOOM: 4,
+            MIN_ZOOM: 0.25,
+            ISOMETRIC_ANGLE: Math.PI / 6,
+            MAX_BUILDINGS: 5000,
+            ROAD_WIDTH_RATIO: 0.95
         };
         
-        // Road types
-        const ROAD_TYPES = {
-            ASPHALT: 0,
-            COBBLESTONE: 1,
-            CONCRETE: 2
+        const BUILDING_TYPES = { RESIDENTIAL: 0, COMMERCIAL: 1, INDUSTRIAL: 2, OFFICE: 3, APARTMENT: 4, WAREHOUSE: 5 };
+        const ROAD_TYPES = { ASPHALT: 0, COBBLESTONE: 1, CONCRETE: 2 };
+        const BUILDING_COLORS = {
+            0: '#E8A87C', 1: '#D97534', 2: '#C85A2C',
+            3: '#B8634F', 4: '#A0826D', 5: '#9B7653'
         };
-
-        // Procedural functions
-        function pseudoHash(x, y, seed = 0) {
-            const n = Math.sin(x * 12.9898 + y * 78.233 + seed) * 43758.5453;
+        
+        // ============ GAME STATE ============
+        const gameState = {
+            buildings: new Map(),
+            roads: new Map(),
+            trees: new Map(),
+            camera: { x: 0, y: 0, zoom: 1 },
+            time: 0,
+            isDragging: false,
+            lastClick: { x: 0, y: 0, time: 0 }
+        };
+        
+        // ============ PERFORMANCE MONITORING ============
+        const perf = {
+            fps: 60,
+            frameCount: 0,
+            lastTime: Date.now(),
+            avgFrameTime: 0
+        };
+        
+        // ============ OPTIMIZED NOISE FUNCTION ============
+        function noise2D(x, y, seed = 0) {
+            const n = Math.sin(x * 12.9898 + y * 78.233 + seed * 45.164) * 43758.5453;
             return n - Math.floor(n);
         }
-
-        function getGridCoords(worldX, worldY) {
+        
+        // ============ COORDINATE CONVERSION ============
+        function gridToWorld(gx, gy) {
+            return { x: gx * CONFIG.GRID_SIZE, y: gy * CONFIG.GRID_SIZE };
+        }
+        
+        function worldToGrid(wx, wy) {
+            return { x: Math.floor(wx / CONFIG.GRID_SIZE), y: Math.floor(wy / CONFIG.GRID_SIZE) };
+        }
+        
+        function screenToWorld(sx, sy) {
             return {
-                x: Math.floor(worldX / GRID_SIZE),
-                y: Math.floor(worldY / GRID_SIZE)
+                x: (sx - canvas.width / 2) / gameState.camera.zoom + gameState.camera.x,
+                y: (sy - canvas.height / 2) / gameState.camera.zoom + gameState.camera.y
             };
         }
-
-        function getWorldCoords(gridX, gridY) {
+        
+        function worldToScreen(wx, wy) {
             return {
-                x: gridX * GRID_SIZE,
-                y: gridY * GRID_SIZE
+                x: (wx - gameState.camera.x) * gameState.camera.zoom + canvas.width / 2,
+                y: (wy - gameState.camera.y) * gameState.camera.zoom + canvas.height / 2
             };
         }
-
+        
+        // ============ ISOMETRIC PROJECTION ============
+        function isometric(x, y, z = 0) {
+            const angle = CONFIG.ISOMETRIC_ANGLE;
+            return {
+                x: (x - y) * Math.cos(angle),
+                y: (x + y) * Math.sin(angle) - z
+            };
+        }
+        
+        // ============ COLOR UTILITIES ============
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        }
+        
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, '0')).join('');
+        }
+        
+        function darken(color, factor) {
+            const rgb = hexToRgb(color);
+            return rgbToHex(rgb.r * factor, rgb.g * factor, rgb.b * factor);
+        }
+        
+        function lighten(color, factor) {
+            const rgb = hexToRgb(color);
+            return rgbToHex(rgb.r * (1 + factor), rgb.g * (1 + factor), rgb.b * (1 + factor));
+        }
+        
+        // ============ BUILDING CLASS ============
         class Building {
-            constructor(gridX, gridY) {
-                this.gridX = gridX;
-                this.gridY = gridY;
+            constructor(gx, gy) {
+                this.gx = gx;
+                this.gy = gy;
+                const h0 = noise2D(gx, gy, 0);
+                const h1 = noise2D(gx, gy, 1);
+                const h2 = noise2D(gx, gy, 2);
                 
-                const hash0 = pseudoHash(gridX, gridY, 0);
-                const hash1 = pseudoHash(gridX, gridY, 1);
-                const hash2 = pseudoHash(gridX, gridY, 2);
-                const hash3 = pseudoHash(gridX, gridY, 3);
-                const hash4 = pseudoHash(gridX, gridY, 4);
+                this.type = Math.floor(h0 * 6);
+                this.color = BUILDING_COLORS[this.type];
                 
-                // Determine building type
-                this.type = Math.floor(hash0 * 6);
+                // Type-specific dimensions
+                const typeProps = [
+                    { h: 3 + Math.floor(h1 * 5), w: 28 + h2 * 10, d: 28 + h2 * 10 },  // RESIDENTIAL
+                    { h: 5 + Math.floor(h1 * 6), w: 35 + h2 * 8, d: 30 + h2 * 8 },    // COMMERCIAL
+                    { h: 2 + Math.floor(h1 * 3), w: 50 + h2 * 15, d: 45 + h2 * 15 },  // INDUSTRIAL
+                    { h: 8 + Math.floor(h1 * 8), w: 32 + h2 * 6, d: 32 + h2 * 6 },    // OFFICE
+                    { h: 6 + Math.floor(h1 * 6), w: 26 + h2 * 8, d: 26 + h2 * 8 },    // APARTMENT
+                    { h: 3 + Math.floor(h1 * 2), w: 55 + h2 * 10, d: 50 + h2 * 10 }   // WAREHOUSE
+                ];
                 
-                // Type-specific properties
-                if (this.type === BUILDING_TYPES.RESIDENTIAL) {
-                    this.height = 3 + Math.floor(hash1 * 5);
-                    this.width = 28 + hash2 * 10;
-                    this.depth = 28 + hash3 * 10;
-                    this.color = '#D9A066';
-                } else if (this.type === BUILDING_TYPES.COMMERCIAL) {
-                    this.height = 5 + Math.floor(hash1 * 6);
-                    this.width = 35 + hash2 * 8;
-                    this.depth = 30 + hash3 * 8;
-                    this.color = '#B8634F';
-                } else if (this.type === BUILDING_TYPES.INDUSTRIAL) {
-                    this.height = 2 + Math.floor(hash1 * 3);
-                    this.width = 50 + hash2 * 15;
-                    this.depth = 45 + hash3 * 15;
-                    this.color = '#808080';
-                } else if (this.type === BUILDING_TYPES.OFFICE) {
-                    this.height = 8 + Math.floor(hash1 * 8);
-                    this.width = 32 + hash2 * 6;
-                    this.depth = 32 + hash3 * 6;
-                    this.color = '#A0A0C0';
-                } else if (this.type === BUILDING_TYPES.APARTMENT) {
-                    this.height = 6 + Math.floor(hash1 * 6);
-                    this.width = 26 + hash2 * 8;
-                    this.depth = 26 + hash3 * 8;
-                    this.color = '#E8A87C';
-                } else {
-                    // WAREHOUSE
-                    this.height = 3 + Math.floor(hash1 * 2);
-                    this.width = 55 + hash2 * 10;
-                    this.depth = 50 + hash3 * 10;
-                    this.color = '#707070';
-                }
-                
-                this.rotation = 0;
+                const props = typeProps[this.type];
+                this.height = props.h;
+                this.width = props.w;
+                this.depth = props.d;
             }
-
-            toJSON() {
-                return {
-                    gridX: this.gridX,
-                    gridY: this.gridY,
-                    type: this.type,
-                    height: this.height,
-                    width: this.width,
-                    depth: this.depth,
-                    color: this.color
-                };
-            }
-
-            isometric(x, y, z) {
-                const angle = Math.PI / 6;
-                const sx = (x - y) * Math.cos(angle);
-                const sy = (x + y) * Math.sin(angle) - z;
-                return { x: sx, y: sy };
-            }
-
-            draw(ctx, camX, camY, zoom) {
-                const worldPos = getWorldCoords(this.gridX, this.gridY);
-                const baseX = (worldPos.x - camX) * zoom + canvas.width / 2;
-                const baseY = (worldPos.y - camY) * zoom + canvas.height / 2;
-
-                // Define corners in 3D space
+            
+            draw(ctx) {
+                const world = gridToWorld(this.gx, this.gy);
+                const screen = worldToScreen(world.x, world.y);
                 const w = this.width / 2;
                 const d = this.depth / 2;
                 const h = this.height * 8;
-
+                
                 const corners = {
-                    tfl: this.isometric(-w, -d, h),
-                    tfr: this.isometric(w, -d, h),
-                    tbl: this.isometric(-w, d, h),
-                    tbr: this.isometric(w, d, h),
-                    bfl: this.isometric(-w, -d, 0),
-                    bfr: this.isometric(w, -d, 0),
-                    bbl: this.isometric(-w, d, 0),
-                    bbr: this.isometric(w, d, 0)
+                    tfl: isometric(-w, -d, h),
+                    tfr: isometric(w, -d, h),
+                    tbl: isometric(-w, d, h),
+                    tbr: isometric(w, d, h),
+                    bfl: isometric(-w, -d, 0),
+                    bfr: isometric(w, -d, 0),
+                    bbl: isometric(-w, d, 0),
+                    bbr: isometric(w, d, 0)
                 };
-
+                
                 ctx.save();
-                ctx.globalAlpha = 0.95;
-
+                ctx.globalAlpha = 0.92;
+                
                 // Front face
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.moveTo(baseX + corners.tfl.x * zoom, baseY + corners.tfl.y * zoom);
-                ctx.lineTo(baseX + corners.tfr.x * zoom, baseY + corners.tfr.y * zoom);
-                ctx.lineTo(baseX + corners.bfr.x * zoom, baseY + corners.bfr.y * zoom);
-                ctx.lineTo(baseX + corners.bfl.x * zoom, baseY + corners.bfl.y * zoom);
+                ctx.moveTo(screen.x + corners.tfl.x * gameState.camera.zoom, screen.y + corners.tfl.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.tfr.x * gameState.camera.zoom, screen.y + corners.tfr.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.bfr.x * gameState.camera.zoom, screen.y + corners.bfr.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.bfl.x * gameState.camera.zoom, screen.y + corners.bfl.y * gameState.camera.zoom);
                 ctx.fill();
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-
-                // Left face (darker)
-                ctx.fillStyle = this.darken(this.color, 0.6);
+                
+                // Left face
+                ctx.fillStyle = darken(this.color, 0.6);
                 ctx.beginPath();
-                ctx.moveTo(baseX + corners.tfl.x * zoom, baseY + corners.tfl.y * zoom);
-                ctx.lineTo(baseX + corners.tbl.x * zoom, baseY + corners.tbl.y * zoom);
-                ctx.lineTo(baseX + corners.bbl.x * zoom, baseY + corners.bbl.y * zoom);
-                ctx.lineTo(baseX + corners.bfl.x * zoom, baseY + corners.bfl.y * zoom);
+                ctx.moveTo(screen.x + corners.tfl.x * gameState.camera.zoom, screen.y + corners.tfl.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.tbl.x * gameState.camera.zoom, screen.y + corners.tbl.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.bbl.x * gameState.camera.zoom, screen.y + corners.bbl.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.bfl.x * gameState.camera.zoom, screen.y + corners.bfl.y * gameState.camera.zoom);
                 ctx.fill();
-                ctx.stroke();
-
-                // Top face (lighter)
-                ctx.fillStyle = this.lighten(this.color, 0.15);
+                
+                // Top face
+                ctx.fillStyle = lighten(this.color, 0.2);
                 ctx.beginPath();
-                ctx.moveTo(baseX + corners.tfl.x * zoom, baseY + corners.tfl.y * zoom);
-                ctx.lineTo(baseX + corners.tfr.x * zoom, baseY + corners.tfr.y * zoom);
-                ctx.lineTo(baseX + corners.tbr.x * zoom, baseY + corners.tbr.y * zoom);
-                ctx.lineTo(baseX + corners.tbl.x * zoom, baseY + corners.tbl.y * zoom);
+                ctx.moveTo(screen.x + corners.tfl.x * gameState.camera.zoom, screen.y + corners.tfl.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.tfr.x * gameState.camera.zoom, screen.y + corners.tfr.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.tbr.x * gameState.camera.zoom, screen.y + corners.tbr.y * gameState.camera.zoom);
+                ctx.lineTo(screen.x + corners.tbl.x * gameState.camera.zoom, screen.y + corners.tbl.y * gameState.camera.zoom);
                 ctx.fill();
-                ctx.stroke();
-
-                // Windows/details based on type
-                if (this.type === BUILDING_TYPES.RESIDENTIAL || this.type === BUILDING_TYPES.COMMERCIAL || this.type === BUILDING_TYPES.OFFICE || this.type === BUILDING_TYPES.APARTMENT) {
-                    const windowColor = this.type === BUILDING_TYPES.OFFICE ? '#FFE6B3' : '#FFE000';
-                    const windows = Math.ceil(this.height * 1.5);
+                
+                // Windows
+                if ([0, 1, 3, 4].includes(this.type)) {
+                    const windowColor = this.type === 3 ? '#FFE6B3' : '#FFE000';
+                    const windows = Math.ceil(this.height * 1.2);
+                    ctx.fillStyle = windowColor;
                     for (let i = 0; i < windows; i++) {
                         const row = Math.floor(i / 3);
                         const col = i % 3;
-                        const wX = baseX + (corners.tfl.x + (corners.tfr.x - corners.tfl.x) * (col + 1) / 4) * zoom;
-                        const wY = baseY + (corners.tfl.y + (corners.bfl.y - corners.tfl.y) * (row + 1) / (windows + 1)) * zoom;
-                        
-                        ctx.fillStyle = windowColor;
-                        ctx.fillRect(wX - 2 * zoom, wY - 2 * zoom, 4 * zoom, 4 * zoom);
-                        ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-                        ctx.lineWidth = 0.5;
-                        ctx.strokeRect(wX - 2 * zoom, wY - 2 * zoom, 4 * zoom, 4 * zoom);
+                        const wX = screen.x + (corners.tfl.x + (corners.tfr.x - corners.tfl.x) * (col + 1) / 4) * gameState.camera.zoom;
+                        const wY = screen.y + (corners.tfl.y + (corners.bfl.y - corners.tfl.y) * (row + 1) / (windows + 1)) * gameState.camera.zoom;
+                        ctx.fillRect(wX - 2 * gameState.camera.zoom, wY - 2 * gameState.camera.zoom, 4 * gameState.camera.zoom, 4 * gameState.camera.zoom);
                     }
                 }
-
+                
                 ctx.restore();
             }
-
-            darken(color, factor) {
-                const num = parseInt(color.replace('#', ''), 16);
-                const r = Math.max(0, Math.floor(((num >> 16) & 255) * factor));
-                const g = Math.max(0, Math.floor(((num >> 8) & 255) * factor));
-                const b = Math.max(0, Math.floor((num & 255) * factor));
-                return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
-            }
-
-            lighten(color, factor) {
-                const num = parseInt(color.replace('#', ''), 16);
-                const r = Math.min(255, Math.floor(((num >> 16) & 255) * (1 + factor)));
-                const g = Math.min(255, Math.floor(((num >> 8) & 255) * (1 + factor)));
-                const b = Math.min(255, Math.floor((num & 255) * (1 + factor)));
-                return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
-            }
         }
-
+        
+        // ============ ROAD CLASS ============
         class Road {
-            constructor(gridX, gridY) {
-                this.gridX = gridX;
-                this.gridY = gridY;
-                const hash = pseudoHash(gridX, gridY, 100);
-                this.type = Math.floor(hash * 3);
+            constructor(gx, gy) {
+                this.gx = gx;
+                this.gy = gy;
+                this.type = Math.floor(noise2D(gx, gy, 100) * 3);
             }
-
+            
             getColor() {
                 const colors = ['#4A4A4A', '#9A8860', '#B0B0A8'];
                 return colors[this.type];
             }
-
-            draw(ctx, camX, camY, zoom) {
-                const worldPos = getWorldCoords(this.gridX, this.gridY);
-                const screenX = (worldPos.x - camX) * zoom + canvas.width / 2;
-                const screenY = (worldPos.y - camY) * zoom + canvas.height / 2;
+            
+            draw(ctx) {
+                const world = gridToWorld(this.gx, this.gy);
+                const screen = worldToScreen(world.x, world.y);
+                const z = 0;
                 
-                // Draw road as isometric square
-                const size = GRID_SIZE * 0.9 * zoom;
-                const angle = Math.PI / 6;
-                
-                // Road corners in isometric
                 const corners = [
-                    { x: -GRID_SIZE / 2, y: -GRID_SIZE / 2 },
-                    { x: GRID_SIZE / 2, y: -GRID_SIZE / 2 },
-                    { x: GRID_SIZE / 2, y: GRID_SIZE / 2 },
-                    { x: -GRID_SIZE / 2, y: GRID_SIZE / 2 }
+                    isometric(-CONFIG.GRID_SIZE / 2, -CONFIG.GRID_SIZE / 2, z),
+                    isometric(CONFIG.GRID_SIZE / 2, -CONFIG.GRID_SIZE / 2, z),
+                    isometric(CONFIG.GRID_SIZE / 2, CONFIG.GRID_SIZE / 2, z),
+                    isometric(-CONFIG.GRID_SIZE / 2, CONFIG.GRID_SIZE / 2, z)
                 ];
                 
                 ctx.save();
                 ctx.fillStyle = this.getColor();
-                ctx.globalAlpha = 0.85;
+                ctx.globalAlpha = 0.9;
                 
                 ctx.beginPath();
                 for (let i = 0; i < corners.length; i++) {
-                    const corner = corners[i];
-                    const isoX = (corner.x - corner.y) * Math.cos(angle);
-                    const isoY = (corner.x + corner.y) * Math.sin(angle);
-                    const screenCornerX = screenX + isoX * zoom;
-                    const screenCornerY = screenY + isoY * zoom;
-                    
-                    if (i === 0) ctx.moveTo(screenCornerX, screenCornerY);
-                    else ctx.lineTo(screenCornerX, screenCornerY);
+                    const c = corners[i];
+                    const x = screen.x + c.x * gameState.camera.zoom;
+                    const y = screen.y + c.y * gameState.camera.zoom;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
                 }
                 ctx.closePath();
                 ctx.fill();
                 
-                // Road markings
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-                
                 ctx.restore();
             }
         }
-
+        
+        // ============ TREE CLASS ============
         class Tree {
-            constructor(gridX, gridY) {
-                this.gridX = gridX;
-                this.gridY = gridY;
-                const hash1 = pseudoHash(gridX, gridY, 200);
-                const hash2 = pseudoHash(gridX, gridY, 201);
-                this.height = 4 + Math.floor(hash1 * 4);
-                this.size = 12 + hash2 * 8;
+            constructor(gx, gy) {
+                this.gx = gx;
+                this.gy = gy;
+                const h1 = noise2D(gx, gy, 200);
+                const h2 = noise2D(gx, gy, 201);
+                this.height = 3 + Math.floor(h1 * 5);
+                this.size = 14 + h2 * 10;
             }
-
-            draw(ctx, camX, camY, zoom) {
-                const worldPos = getWorldCoords(this.gridX, this.gridY);
-                const baseX = (worldPos.x - camX) * zoom + canvas.width / 2;
-                const baseY = (worldPos.y - camY) * zoom + canvas.height / 2;
-
+            
+            draw(ctx) {
+                const world = gridToWorld(this.gx, this.gy);
+                const screen = worldToScreen(world.x, world.y);
+                
                 ctx.save();
                 
                 // Trunk
-                ctx.fillStyle = '#654321';
-                const trunkWidth = 4 * zoom;
-                const trunkHeight = this.height * 3 * zoom;
-                ctx.fillRect(baseX - trunkWidth / 2, baseY - trunkHeight, trunkWidth, trunkHeight);
+                ctx.fillStyle = '#8B6F47';
+                const trunkW = 5 * gameState.camera.zoom;
+                const trunkH = this.height * 3 * gameState.camera.zoom;
+                ctx.fillRect(screen.x - trunkW / 2, screen.y - trunkH, trunkW, trunkH);
                 
-                // Foliage (circular from isometric view)
-                ctx.fillStyle = '#228B22';
-                ctx.globalAlpha = 0.8;
-                const canopyRadius = this.size * zoom;
+                // Foliage
+                ctx.fillStyle = '#2D5A2D';
+                ctx.globalAlpha = 0.85;
+                const canopyR = this.size * gameState.camera.zoom;
                 ctx.beginPath();
-                ctx.arc(baseX, baseY - this.height * 3 * zoom - canopyRadius / 2, canopyRadius, 0, Math.PI * 2);
+                ctx.arc(screen.x, screen.y - this.height * 3 * gameState.camera.zoom - canopyR / 2, canopyR, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Darker foliage layer
-                ctx.fillStyle = '#1a5c1a';
+                // Shadow layer
+                ctx.fillStyle = '#1a3a1a';
                 ctx.globalAlpha = 0.4;
                 ctx.beginPath();
-                ctx.arc(baseX - 3 * zoom, baseY - this.height * 3 * zoom - canopyRadius / 3, canopyRadius * 0.7, 0, Math.PI * 2);
+                ctx.arc(screen.x - 3 * gameState.camera.zoom, screen.y - this.height * 3 * gameState.camera.zoom - canopyR / 3, canopyR * 0.7, 0, Math.PI * 2);
                 ctx.fill();
                 
                 ctx.restore();
             }
         }
-
-        function placeBuilding(worldX, worldY) {
-            const grid = getGridCoords(worldX, worldY);
-            
-            // Generate a city block around click point
-            generateCityBlock(grid.x, grid.y);
-        }
-
-        function generateCityBlock(centerX, centerY) {
-            const blockSize = 15;
+        
+        // ============ PROCEDURAL GENERATION ============
+        function generateCityBlock(centerGx, centerGy) {
+            const blockSize = CONFIG.BLOCK_SIZE;
             const roadMap = new Map();
             const visited = new Set();
+            const queue = [[centerGx, centerGy]];
             
-            // Step 1: Generate roads using wave propagation from center
-            const queue = [[centerX, centerY]];
-            visited.add(`${centerX},${centerY}`);
-            roadMap.set(`${centerX},${centerY}`, true);
+            visited.add(`${centerGx},${centerGy}`);
+            roadMap.set(`${centerGx},${centerGy}`, true);
             
+            // Wave propagation for roads
             while (queue.length > 0) {
                 const [x, y] = queue.shift();
-                
-                // Spread roads to adjacent cells with probability based on distance
-                const distance = Math.hypot(x - centerX, y - centerY);
+                const distance = Math.hypot(x - centerGx, y - centerGy);
                 
                 if (distance > blockSize) continue;
                 
-                // Get noise-based direction preference
-                const noiseValue = pseudoHash(x, y, 10);
+                const noiseValue = noise2D(x, y, 10);
                 const directions = [
-                    { dx: 1, dy: 0, weight: noiseValue > 0.7 ? 1.5 : 1 },      // right
-                    { dx: -1, dy: 0, weight: noiseValue > 0.5 ? 1.5 : 1 },     // left
-                    { dx: 0, dy: 1, weight: noiseValue > 0.3 ? 1.5 : 1 },      // down
-                    { dx: 0, dy: -1, weight: noiseValue > 0.1 ? 1.5 : 1 },     // up
-                    { dx: 1, dy: 1, weight: 0.6 },    // diagonal
-                    { dx: -1, dy: -1, weight: 0.6 },  // diagonal
-                    { dx: 1, dy: -1, weight: 0.6 },   // diagonal
-                    { dx: -1, dy: 1, weight: 0.6 }    // diagonal
+                    { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
+                    { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
+                    { dx: 1, dy: 1 }, { dx: -1, dy: -1 },
+                    { dx: 1, dy: -1 }, { dx: -1, dy: 1 }
                 ];
                 
-                // Sort directions by weight and noise
                 directions.sort((a, b) => {
-                    const noiseA = pseudoHash(x + a.dx, y + a.dy, 20) * a.weight;
-                    const noiseB = pseudoHash(x + b.dx, y + b.dy, 20) * b.weight;
-                    return noiseB - noiseA;
+                    const nA = noise2D(x + a.dx, y + a.dy, 20);
+                    const nB = noise2D(x + b.dx, y + b.dy, 20);
+                    return nB - nA;
                 });
                 
-                // Try to extend roads in preferred directions
                 for (let i = 0; i < Math.min(3, directions.length); i++) {
                     const { dx, dy } = directions[i];
-                    const nx = x + dx;
-                    const ny = y + dy;
+                    const nx = x + dx, ny = y + dy;
                     const key = `${nx},${ny}`;
-                    const newDistance = Math.hypot(nx - centerX, ny - centerY);
+                    const newDist = Math.hypot(nx - centerGx, ny - centerGy);
                     
-                    if (newDistance <= blockSize && !visited.has(key)) {
-                        // Probability to continue road decreases with distance
-                        const continueProbability = 0.85 - (newDistance / blockSize) * 0.3;
-                        const noise = pseudoHash(nx, ny, 15);
-                        
-                        if (noise < continueProbability) {
+                    if (newDist <= blockSize && !visited.has(key)) {
+                        const prob = 0.85 - (newDist / blockSize) * 0.3;
+                        if (noise2D(nx, ny, 15) < prob) {
                             visited.add(key);
                             roadMap.set(key, true);
                             queue.push([nx, ny]);
@@ -446,306 +537,395 @@
                 }
             }
             
-            // Step 2: Place buildings in clusters between roads
-            for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
-                for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
+            // Place buildings
+            for (let x = centerGx - blockSize; x <= centerGx + blockSize; x++) {
+                for (let y = centerGy - blockSize; y <= centerGy + blockSize; y++) {
                     const key = `${x},${y}`;
+                    if (gameState.buildings.has(key) || gameState.roads.has(key) || gameState.trees.has(key)) continue;
                     
-                    if (buildings.has(key) || roads.has(key) || trees.has(key)) {
-                        continue;
-                    }
-                    
-                    const isRoad = roadMap.has(key);
-                    
-                    // Place buildings near roads but not on them
-                    if (!isRoad) {
-                        let roadDistance = 999;
-                        
-                        // Find closest road
+                    if (!roadMap.has(key)) {
+                        let minRoadDist = 999;
                         for (let dx = -3; dx <= 3; dx++) {
                             for (let dy = -3; dy <= 3; dy++) {
                                 if (roadMap.has(`${x + dx},${y + dy}`)) {
-                                    roadDistance = Math.min(roadDistance, Math.hypot(dx, dy));
+                                    minRoadDist = Math.min(minRoadDist, Math.hypot(dx, dy));
                                 }
                             }
                         }
                         
-                        // Build if within 2-3 cells of a road
-                        if (roadDistance > 0 && roadDistance <= 3) {
-                            const rand = pseudoHash(x, y, 50);
-                            if (rand > 0.2) { // 80% chance
-                                buildings.set(key, new Building(x, y));
-                            }
+                        if (minRoadDist > 0 && minRoadDist <= 3 && noise2D(x, y, 50) > 0.15) {
+                            gameState.buildings.set(key, new Building(x, y));
+                            if (gameState.buildings.size > CONFIG.MAX_BUILDINGS) break;
                         }
                     }
                 }
+                if (gameState.buildings.size > CONFIG.MAX_BUILDINGS) break;
             }
             
-            // Step 3: Place trees in remaining empty spaces
-            for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
-                for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
+            // Place trees
+            for (let x = centerGx - blockSize; x <= centerGx + blockSize; x++) {
+                for (let y = centerGy - blockSize; y <= centerGy + blockSize; y++) {
                     const key = `${x},${y}`;
+                    if (gameState.buildings.has(key) || gameState.roads.has(key) || gameState.trees.has(key)) continue;
                     
-                    if (buildings.has(key) || roads.has(key) || trees.has(key)) {
-                        continue;
-                    }
-                    
-                    const rand = pseudoHash(x, y, 100);
-                    if (rand > 0.4) {
-                        trees.set(key, new Tree(x, y));
+                    if (noise2D(x, y, 100) > 0.35) {
+                        gameState.trees.set(key, new Tree(x, y));
                     }
                 }
             }
             
-            // Step 4: Place all roads
+            // Place roads
             roadMap.forEach((_, key) => {
-                if (!roads.has(key)) {
+                if (!gameState.roads.has(key)) {
                     const [x, y] = key.split(',').map(Number);
-                    roads.set(key, new Road(x, y));
+                    gameState.roads.set(key, new Road(x, y));
                 }
             });
             
-            updateCounts();
+            updateUI();
         }
-
-        function removeBuilding(worldX, worldY) {
-            const grid = getGridCoords(worldX, worldY);
+        
+        function clearAll() {
+            gameState.buildings.clear();
+            gameState.roads.clear();
+            gameState.trees.clear();
+            updateUI();
+        }
+        
+        function removeAt(wx, wy) {
+            const grid = worldToGrid(wx, wy);
             const key = `${grid.x},${grid.y}`;
             
-            if (buildings.has(key)) {
-                buildings.delete(key);
-                updateCounts();
-            } else if (roads.has(key)) {
-                roads.delete(key);
-                updateCounts();
-            } else if (trees.has(key)) {
-                trees.delete(key);
-                updateCounts();
-            }
-        }
-
-        function updateCounts() {
-            document.getElementById('buildingCount').textContent = buildings.size + roads.size + trees.size;
-        }
-
-        function screenToWorld(screenX, screenY) {
-            return {
-                x: (screenX - canvas.width / 2) / camera.zoom + camera.x,
-                y: (screenY - canvas.height / 2) / camera.zoom + camera.y
-            };
-        }
-
-        function draw() {
-            // Background
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Grid
-            ctx.strokeStyle = 'rgba(80, 80, 80, 0.2)';
-            ctx.lineWidth = 0.5;
-            const gridStart = Math.floor(camera.x / GRID_SIZE) * GRID_SIZE;
-            const gridEnd = gridStart + canvas.width / camera.zoom + GRID_SIZE;
+            if (gameState.buildings.has(key)) gameState.buildings.delete(key);
+            else if (gameState.roads.has(key)) gameState.roads.delete(key);
+            else if (gameState.trees.has(key)) gameState.trees.delete(key);
             
-            for (let x = gridStart; x < gridEnd; x += GRID_SIZE) {
-                const sx = (x - camera.x) * camera.zoom + canvas.width / 2;
+            updateUI();
+        }
+        
+        // ============ UI UPDATE ============
+        function updateUI() {
+            const total = gameState.buildings.size + gameState.roads.size + gameState.trees.size;
+            document.getElementById('buildingCount').textContent = total;
+            
+            const maxObjects = CONFIG.BLOCK_SIZE * CONFIG.BLOCK_SIZE * 3;
+            const density = Math.round((total / maxObjects) * 100);
+            document.getElementById('density').textContent = density + '%';
+            
+            document.getElementById('zoomLevel').textContent = gameState.camera.zoom.toFixed(1);
+            document.getElementById('camPos').textContent = Math.round(gameState.camera.x) + ',' + Math.round(gameState.camera.y);
+        }
+        
+        // ============ RENDERING ============
+        function render() {
+            // Clear background
+            ctx.fillStyle = '#0a0e27';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid
+            ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)';
+            ctx.lineWidth = 0.5;
+            
+            const gridStart = Math.floor(gameState.camera.x / CONFIG.GRID_SIZE) * CONFIG.GRID_SIZE;
+            for (let x = gridStart; x < gridStart + canvas.width / gameState.camera.zoom + CONFIG.GRID_SIZE; x += CONFIG.GRID_SIZE) {
+                const sx = (x - gameState.camera.x) * gameState.camera.zoom + canvas.width / 2;
                 ctx.beginPath();
                 ctx.moveTo(sx, 0);
                 ctx.lineTo(sx, canvas.height);
                 ctx.stroke();
             }
-
-            const gridYStart = Math.floor(camera.y / GRID_SIZE) * GRID_SIZE;
-            const gridYEnd = gridYStart + canvas.height / camera.zoom + GRID_SIZE;
             
-            for (let y = gridYStart; y < gridYEnd; y += GRID_SIZE) {
-                const sy = (y - camera.y) * camera.zoom + canvas.height / 2;
+            const gridYStart = Math.floor(gameState.camera.y / CONFIG.GRID_SIZE) * CONFIG.GRID_SIZE;
+            for (let y = gridYStart; y < gridYStart + canvas.height / gameState.camera.zoom + CONFIG.GRID_SIZE; y += CONFIG.GRID_SIZE) {
+                const sy = (y - gameState.camera.y) * gameState.camera.zoom + canvas.height / 2;
                 ctx.beginPath();
                 ctx.moveTo(0, sy);
                 ctx.lineTo(canvas.width, sy);
                 ctx.stroke();
             }
-
-            // Draw all structures sorted by depth
-            const allItems = [];
             
-            // Add roads
-            roads.forEach(road => {
-                allItems.push({ type: 'road', obj: road, depth: road.gridX + road.gridY });
-            });
+            // Sort and draw all objects
+            const items = [];
+            gameState.roads.forEach(r => items.push({ depth: r.gx + r.gy, obj: r }));
+            gameState.buildings.forEach(b => items.push({ depth: b.gx + b.gy, obj: b }));
+            gameState.trees.forEach(t => items.push({ depth: t.gx + t.gy, obj: t }));
             
-            // Add buildings
-            buildings.forEach(building => {
-                allItems.push({ type: 'building', obj: building, depth: building.gridX + building.gridY });
-            });
-            
-            // Add trees
-            trees.forEach(tree => {
-                allItems.push({ type: 'tree', obj: tree, depth: tree.gridX + tree.gridY });
-            });
-            
-            allItems.sort((a, b) => a.depth - b.depth);
-            
-            allItems.forEach(item => {
-                item.obj.draw(ctx, camera.x, camera.y, camera.zoom);
-            });
-
-            time += 0.016;
+            items.sort((a, b) => a.depth - b.depth);
+            items.forEach(item => item.obj.draw(ctx));
         }
-
+        
+        // ============ ANIMATION LOOP ============
         function animate() {
-            draw();
+            render();
             
-            frameCount++;
+            // FPS counter
+            perf.frameCount++;
             const now = Date.now();
-            if (now - lastFpsTime >= 1000) {
-                fps = frameCount;
-                document.getElementById('fps').textContent = fps;
-                frameCount = 0;
-                lastFpsTime = now;
+            if (now - perf.lastTime >= 1000) {
+                perf.fps = perf.frameCount;
+                document.getElementById('fps').textContent = perf.fps;
+                perf.frameCount = 0;
+                perf.lastTime = now;
             }
-
+            
             requestAnimationFrame(animate);
         }
-
-        // Touch tracking
-        let touchStart = { x: 0, y: 0 };
-        let lastTouchDistance = 0;
-        let touchStartTime = 0;
-
-        function getClientCoords(touch) {
-            return {
-                x: touch.clientX,
-                y: touch.clientY
-            };
-        }
-
-        function getTouchDistance(touch1, touch2) {
-            const dx = touch1.clientX - touch2.clientX;
-            const dy = touch1.clientY - touch2.clientY;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-
-        // Mouse events
+        
+        // ============ INPUT HANDLERS ============
+        let touchState = { startX: 0, startY: 0, startTime: 0, distance: 0 };
+        
         canvas.addEventListener('mousedown', (e) => {
-            if (e.button === 2) { // Right click
-                const worldPos = screenToWorld(e.clientX, e.clientY);
-                removeBuilding(worldPos.x, worldPos.y);
+            if (e.button === 2) {
+                const world = screenToWorld(e.clientX, e.clientY);
+                removeAt(world.x, world.y);
             } else {
-                isDragging = true;
-                dragStart = { x: e.clientX, y: e.clientY };
+                gameState.isDragging = true;
+                gameState.lastClick = { x: e.clientX, y: e.clientY, time: Date.now() };
             }
         });
-
+        
         canvas.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                const dx = (e.clientX - dragStart.x) / camera.zoom;
-                const dy = (e.clientY - dragStart.y) / camera.zoom;
-                camera.x -= dx;
-                camera.y -= dy;
-                dragStart = { x: e.clientX, y: e.clientY };
+            if (gameState.isDragging) {
+                const dx = (e.clientX - gameState.lastClick.x) / gameState.camera.zoom;
+                const dy = (e.clientY - gameState.lastClick.y) / gameState.camera.zoom;
+                gameState.camera.x -= dx;
+                gameState.camera.y -= dy;
+                gameState.lastClick = { x: e.clientX, y: e.clientY };
             }
         });
-
+        
         canvas.addEventListener('mouseup', () => {
-            isDragging = false;
+            gameState.isDragging = false;
         });
-
+        
         canvas.addEventListener('click', (e) => {
-            if (!isDragging) {
-                const worldPos = screenToWorld(e.clientX, e.clientY);
-                placeBuilding(worldPos.x, worldPos.y);
+            const now = Date.now();
+            if (now - gameState.lastClick.time < 300) {
+                clearAll();
+            } else {
+                const world = screenToWorld(e.clientX, e.clientY);
+                const grid = worldToGrid(world.x, world.y);
+                generateCityBlock(grid.x, grid.y);
             }
+            gameState.lastClick.time = now;
         });
-
+        
         canvas.addEventListener('wheel', (e) => {
             e.preventDefault();
-            const zoomFactor = 1.1;
-            camera.zoom *= e.deltaY > 0 ? 1 / zoomFactor : zoomFactor;
-            camera.zoom = Math.max(0.3, Math.min(3, camera.zoom));
+            const factor = 1.15;
+            gameState.camera.zoom *= e.deltaY > 0 ? 1 / factor : factor;
+            gameState.camera.zoom = Math.max(CONFIG.MIN_ZOOM, Math.min(CONFIG.MAX_ZOOM, gameState.camera.zoom));
         }, { passive: false });
-
-        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-
-        // Touch events
+        
+        canvas.addEventListener('contextmenu', e => e.preventDefault());
+        
+        // Touch support
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            touchStartTime = Date.now();
+            touchState.startTime = Date.now();
             
             if (e.touches.length === 1) {
-                // Single touch: dragging or clicking
-                const touch = e.touches[0];
-                isDragging = true;
-                dragStart = getClientCoords(touch);
-                touchStart = dragStart;
+                gameState.isDragging = true;
+                touchState.startX = e.touches[0].clientX;
+                touchState.startY = e.touches[0].clientY;
             } else if (e.touches.length === 2) {
-                // Two fingers: zoom
-                isDragging = false;
-                lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+                gameState.isDragging = false;
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                touchState.distance = Math.sqrt(dx * dx + dy * dy);
             }
         }, { passive: false });
-
+        
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
             
             if (e.touches.length === 1) {
-                // Single touch drag
-                const touch = e.touches[0];
-                const dx = (touch.clientX - dragStart.x) / camera.zoom;
-                const dy = (touch.clientY - dragStart.y) / camera.zoom;
-                camera.x -= dx;
-                camera.y -= dy;
-                dragStart = getClientCoords(touch);
+                const dx = (e.touches[0].clientX - touchState.startX) / gameState.camera.zoom;
+                const dy = (e.touches[0].clientY - touchState.startY) / gameState.camera.zoom;
+                gameState.camera.x -= dx;
+                gameState.camera.y -= dy;
+                touchState.startX = e.touches[0].clientX;
+                touchState.startY = e.touches[0].clientY;
             } else if (e.touches.length === 2) {
-                // Two finger zoom
-                const newDistance = getTouchDistance(e.touches[0], e.touches[1]);
-                if (lastTouchDistance > 0) {
-                    const zoomFactor = newDistance / lastTouchDistance;
-                    camera.zoom *= zoomFactor;
-                    camera.zoom = Math.max(0.3, Math.min(3, camera.zoom));
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const newDist = Math.sqrt(dx * dx + dy * dy);
+                if (touchState.distance > 0) {
+                    gameState.camera.zoom *= newDist / touchState.distance;
+                    gameState.camera.zoom = Math.max(CONFIG.MIN_ZOOM, Math.min(CONFIG.MAX_ZOOM, gameState.camera.zoom));
                 }
-                lastTouchDistance = newDistance;
+                touchState.distance = newDist;
             }
         }, { passive: false });
-
+        
         canvas.addEventListener('touchend', (e) => {
             e.preventDefault();
             
             if (e.touches.length === 0) {
-                // Check if it was a tap (short duration, minimal movement)
-                const tapDuration = Date.now() - touchStartTime;
-                const distMoved = Math.hypot(dragStart.x - touchStart.x, dragStart.y - touchStart.y);
-                
-                if (tapDuration < 300 && distMoved < 10) {
-                    // It's a tap, place building
-                    const worldPos = screenToWorld(touchStart.x, touchStart.y);
-                    placeBuilding(worldPos.x, worldPos.y);
+                const duration = Date.now() - touchState.startTime;
+                if (duration < 250) {
+                    const world = screenToWorld(touchState.startX, touchState.startY);
+                    const grid = worldToGrid(world.x, world.y);
+                    generateCityBlock(grid.x, grid.y);
                 }
-                
-                isDragging = false;
-                lastTouchDistance = 0;
+                gameState.isDragging = false;
             }
         }, { passive: false });
-
+        
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
-
-        // Initialize with some buildings
-        for (let x = -3; x <= 3; x++) {
-            for (let y = -3; y <= 3; y++) {
-                if (Math.random() > 0.5) {
-                    buildings.set(`${x},${y}`, new Building(x, y));
-                }
+        
+        // ============ BUTTON EVENTS ============
+        document.getElementById('btnGenerate').addEventListener('click', () => {
+            const grid = worldToGrid(gameState.camera.x, gameState.camera.y);
+            generateCityBlock(grid.x, grid.y);
+            showNotification('City generated!');
+        });
+        
+        document.getElementById('btnClear').addEventListener('click', () => {
+            if (confirm('Clear all objects? This cannot be undone.')) {
+                clearAll();
+                showNotification('Map cleared!');
             }
+        });
+        
+        document.getElementById('btnReset').addEventListener('click', () => {
+            gameState.camera = { x: 0, y: 0, zoom: 1 };
+            showNotification('Camera reset!');
+        });
+        
+        let showGrid = true;
+        document.getElementById('btnToggleGrid').addEventListener('click', (e) => {
+            showGrid = !showGrid;
+            e.target.style.opacity = showGrid ? '1' : '0.5';
+            showNotification(showGrid ? 'Grid ON' : 'Grid OFF');
+        });
+        
+        // ============ NOTIFICATIONS ============
+        function showNotification(msg) {
+            const notif = document.createElement('div');
+            notif.textContent = msg;
+            notif.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(59, 130, 246, 0.9);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                z-index: 3000;
+                pointer-events: none;
+                animation: slideDown 0.4s ease-out;
+                box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+            `;
+            document.body.appendChild(notif);
+            setTimeout(() => {
+                notif.style.animation = 'slideUp 0.4s ease-in';
+                setTimeout(() => notif.remove(), 400);
+            }, 2000);
         }
         
-        // Generate initial city block
-        generateCityBlock(0, 0);
+        // ============ MAP SIZE CALCULATOR ============
+        function calculateMapSize() {
+            const total = gameState.buildings.size + gameState.roads.size + gameState.trees.size;
+            const bytes = total * 100; // Approximate bytes per object
+            if (bytes > 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + 'MB';
+            if (bytes > 1024) return (bytes / 1024).toFixed(1) + 'KB';
+            return bytes + 'B';
+        }
         
-        updateCounts();
-
+        // ============ RENDER WITH GRID TOGGLE ============
+        function render() {
+            // Clear background
+            ctx.fillStyle = '#0a0e27';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid (toggle-able)
+            if (showGrid) {
+                ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)';
+                ctx.lineWidth = 0.5;
+                
+                const gridStart = Math.floor(gameState.camera.x / CONFIG.GRID_SIZE) * CONFIG.GRID_SIZE;
+                for (let x = gridStart; x < gridStart + canvas.width / gameState.camera.zoom + CONFIG.GRID_SIZE; x += CONFIG.GRID_SIZE) {
+                    const sx = (x - gameState.camera.x) * gameState.camera.zoom + canvas.width / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(sx, 0);
+                    ctx.lineTo(sx, canvas.height);
+                    ctx.stroke();
+                }
+                
+                const gridYStart = Math.floor(gameState.camera.y / CONFIG.GRID_SIZE) * CONFIG.GRID_SIZE;
+                for (let y = gridYStart; y < gridYStart + canvas.height / gameState.camera.zoom + CONFIG.GRID_SIZE; y += CONFIG.GRID_SIZE) {
+                    const sy = (y - gameState.camera.y) * gameState.camera.zoom + canvas.height / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(0, sy);
+                    ctx.lineTo(canvas.width, sy);
+                    ctx.stroke();
+                }
+            }
+            
+            // Sort and draw all objects
+            const items = [];
+            gameState.roads.forEach(r => items.push({ depth: r.gx + r.gy, obj: r }));
+            gameState.buildings.forEach(b => items.push({ depth: b.gx + b.gy, obj: b }));
+            gameState.trees.forEach(t => items.push({ depth: t.gx + t.gy, obj: t }));
+            
+            items.sort((a, b) => a.depth - b.depth);
+            items.forEach(item => item.obj.draw(ctx));
+        }
+        
+        // ============ UPDATE UI ============
+        function updateUI() {
+            const total = gameState.buildings.size + gameState.roads.size + gameState.trees.size;
+            document.getElementById('buildingCount').textContent = total;
+            
+            const maxObjects = CONFIG.BLOCK_SIZE * CONFIG.BLOCK_SIZE * 3;
+            const density = Math.round((total / maxObjects) * 100);
+            document.getElementById('density').textContent = density + '%';
+            
+            document.getElementById('zoomLevel').textContent = gameState.camera.zoom.toFixed(1);
+            document.getElementById('camPos').textContent = Math.round(gameState.camera.x) + ',' + Math.round(gameState.camera.y);
+            document.getElementById('mapSize').textContent = calculateMapSize();
+        }
+        
+        // ============ ANIMATION LOOP ============
+        function animate() {
+            render();
+            
+            // FPS counter
+            perf.frameCount++;
+            const now = Date.now();
+            if (now - perf.lastTime >= 1000) {
+                perf.fps = perf.frameCount;
+                document.getElementById('fps').textContent = perf.fps;
+                perf.frameCount = 0;
+                perf.lastTime = now;
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // ============ INITIALIZATION ============
+        generateCityBlock(0, 0);
+        updateUI();
         animate();
+        
+        // Add CSS animations to document
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { opacity: 0; transform: translate(-50%, -60px); }
+                to { opacity: 1; transform: translate(-50%, -50%); }
+            }
+            @keyframes slideUp {
+                from { opacity: 1; transform: translate(-50%, -50%); }
+                to { opacity: 0; transform: translate(-50%, -60px); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
-</body>
-</html>
