@@ -60,12 +60,9 @@
 <body>
     <canvas id="canvas"></canvas>
     <div id="ui">
-        <div>Click to place buildings</div>
+        <div>Click anywhere on the grid to generate city</div>
         <div>Drag to move • Scroll to zoom</div>
         <div style="margin-top: 10px; color: #666;">Right-click to remove</div>
-        <div style="margin-top: 10px; font-size: 10px; color: #555;">
-            6 building types • 3 road types • Trees auto-generate
-        </div>
     </div>
     <div id="info">
         Buildings: <span id="buildingCount">0</span> | FPS: <span id="fps">60</span>
@@ -399,67 +396,49 @@
 
         function placeBuilding(worldX, worldY) {
             const grid = getGridCoords(worldX, worldY);
-            const key = `${grid.x},${grid.y}`;
             
-            // Check for existing structures
-            if (!buildings.has(key) && !roads.has(key) && !trees.has(key)) {
-                buildings.set(key, new Building(grid.x, grid.y));
-                
-                // Auto-generate connecting roads
-                if (Math.random() > 0.6) {
-                    generateConnectingRoads(grid.x, grid.y);
-                }
-                
-                updateCounts();
-            }
+            // Generate a city block around click point
+            generateCityBlock(grid.x, grid.y);
         }
 
-        function generateConnectingRoads(centerX, centerY) {
-            // Find nearby buildings
-            const nearbyBuildings = [];
-            for (let x = centerX - 3; x <= centerX + 3; x++) {
-                for (let y = centerY - 3; y <= centerY + 3; y++) {
-                    if (buildings.has(`${x},${y}`) && !(x === centerX && y === centerY)) {
-                        nearbyBuildings.push({ x, y });
-                    }
-                }
-            }
+        function generateCityBlock(centerX, centerY) {
+            const blockSize = 12; // larger radius for bigger city blocks
+            const roadDensity = 0.18; // more roads
+            const buildingDensity = 0.60; // more buildings
+            const treeDensity = 0.15; // less trees
             
-            // Connect to closest building with roads
-            if (nearbyBuildings.length > 0) {
-                nearbyBuildings.sort((a, b) => 
-                    Math.hypot(a.x - centerX, a.y - centerY) - Math.hypot(b.x - centerX, b.y - centerY)
-                );
-                
-                const target = nearbyBuildings[0];
-                const dx = Math.sign(target.x - centerX);
-                const dy = Math.sign(target.y - centerY);
-                
-                let currentX = centerX + dx;
-                let currentY = centerY + dy;
-                
-                // Create road path
-                while (currentX !== target.x || currentY !== target.y) {
-                    const key = `${currentX},${currentY}`;
-                    if (!buildings.has(key) && !roads.has(key)) {
-                        roads.set(key, new Road(currentX, currentY));
+            // Fill area around click point
+            for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
+                for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
+                    const key = `${x},${y}`;
+                    
+                    // Skip if already occupied
+                    if (buildings.has(key) || roads.has(key) || trees.has(key)) {
+                        continue;
                     }
                     
-                    if (currentX !== target.x) currentX += Math.sign(target.x - currentX);
-                    if (currentY !== target.y) currentY += Math.sign(target.y - currentY);
+                    const rand = pseudoHash(x, y, 42); // deterministic randomness per tile
+                    
+                    // Create main roads in grid pattern (every 3 tiles)
+                    if (x % 3 === 0 || y % 3 === 0) {
+                        roads.set(key, new Road(x, y));
+                    }
+                    // Fill rest with buildings and trees
+                    else if (rand < roadDensity) {
+                        roads.set(key, new Road(x, y));
+                    } else if (rand < roadDensity + buildingDensity) {
+                        // Cluster buildings - don't place next to roads if possible
+                        if ((x - 1) % 3 !== 0 && (y - 1) % 3 !== 0) {
+                            buildings.set(key, new Building(x, y));
+                        }
+                    } else if (rand < roadDensity + buildingDensity + treeDensity) {
+                        // Trees at edges and scattered
+                        trees.set(key, new Tree(x, y));
+                    }
                 }
             }
             
-            // Randomly place trees
-            for (let i = 0; i < 2; i++) {
-                const treeX = centerX + Math.floor((Math.random() - 0.5) * 4);
-                const treeY = centerY + Math.floor((Math.random() - 0.5) * 4);
-                const treeKey = `${treeX},${treeY}`;
-                
-                if (!buildings.has(treeKey) && !roads.has(treeKey) && !trees.has(treeKey)) {
-                    trees.set(treeKey, new Tree(treeX, treeY));
-                }
-            }
+            updateCounts();
         }
 
         function removeBuilding(worldX, worldY) {
@@ -690,10 +669,13 @@
             for (let y = -3; y <= 3; y++) {
                 if (Math.random() > 0.5) {
                     buildings.set(`${x},${y}`, new Building(x, y));
-                    generateConnectingRoads(x, y);
                 }
             }
         }
+        
+        // Generate initial city block
+        generateCityBlock(0, 0);
+        
         updateCounts();
 
         animate();
