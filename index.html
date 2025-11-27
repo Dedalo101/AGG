@@ -216,17 +216,12 @@
             BLOCK_SIZE: 16,
             MAX_ZOOM: 4,
             MIN_ZOOM: 0.25,
-            ISOMETRIC_ANGLE: Math.PI / 6,
             MAX_BUILDINGS: 5000,
             ROAD_WIDTH_RATIO: 0.95
         };
         
         const BUILDING_TYPES = { RESIDENTIAL: 0, COMMERCIAL: 1, INDUSTRIAL: 2, OFFICE: 3, APARTMENT: 4, WAREHOUSE: 5 };
         const ROAD_TYPES = { ASPHALT: 0, COBBLESTONE: 1, CONCRETE: 2 };
-        const BUILDING_COLORS = {
-            0: '#E8A87C', 1: '#D97534', 2: '#C85A2C',
-            3: '#B8634F', 4: '#A0826D', 5: '#9B7653'
-        };
         
         // ============ GAME STATE ============
         const gameState = {
@@ -276,15 +271,6 @@
             };
         }
         
-        // ============ ISOMETRIC PROJECTION ============
-        function isometric(x, y, z = 0) {
-            const angle = CONFIG.ISOMETRIC_ANGLE;
-            return {
-                x: (x - y) * Math.cos(angle),
-                y: (x + y) * Math.sin(angle) - z
-            };
-        }
-        
         // ============ COLOR UTILITIES ============
         function hexToRgb(hex) {
             const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -319,87 +305,36 @@
                 const h2 = noise2D(gx, gy, 2);
                 
                 this.type = Math.floor(h0 * 6);
-                this.color = BUILDING_COLORS[this.type];
                 
-                // Type-specific dimensions
+                // More realistic building dimensions for top-down view
                 const typeProps = [
-                    { h: 3 + Math.floor(h1 * 5), w: 28 + h2 * 10, d: 28 + h2 * 10 },  // RESIDENTIAL
-                    { h: 5 + Math.floor(h1 * 6), w: 35 + h2 * 8, d: 30 + h2 * 8 },    // COMMERCIAL
-                    { h: 2 + Math.floor(h1 * 3), w: 50 + h2 * 15, d: 45 + h2 * 15 },  // INDUSTRIAL
-                    { h: 8 + Math.floor(h1 * 8), w: 32 + h2 * 6, d: 32 + h2 * 6 },    // OFFICE
-                    { h: 6 + Math.floor(h1 * 6), w: 26 + h2 * 8, d: 26 + h2 * 8 },    // APARTMENT
-                    { h: 3 + Math.floor(h1 * 2), w: 55 + h2 * 10, d: 50 + h2 * 10 }   // WAREHOUSE
+                    { w: 30 + h1 * 20, h: 30 + h2 * 20, color: '#D3D3D3' },  // RESIDENTIAL - light gray
+                    { w: 50 + h1 * 30, h: 40 + h2 * 25, color: '#BEBEBE' },  // COMMERCIAL - medium gray
+                    { w: 70 + h1 * 40, h: 50 + h2 * 30, color: '#A9A9A9' },  // INDUSTRIAL - darker gray
+                    { w: 40 + h1 * 20, h: 40 + h2 * 20, color: '#C0C0C0' },  // OFFICE - lighter gray
+                    { w: 35 + h1 * 18, h: 35 + h2 * 18, color: '#D8D8D8' },  // APARTMENT - very light
+                    { w: 80 + h1 * 40, h: 60 + h2 * 35, color: '#A0A0A0' }   // WAREHOUSE - darker
                 ];
                 
                 const props = typeProps[this.type];
-                this.height = props.h;
                 this.width = props.w;
-                this.depth = props.d;
+                this.height = props.h;
+                this.color = props.color;
             }
             
             draw(ctx) {
-                const world = gridToWorld(this.gx, this.gy);
-                const screen = worldToScreen(world.x, world.y);
-                const w = this.width / 2;
-                const d = this.depth / 2;
-                const h = this.height * 8;
+                const screen = worldToScreen(this.gx * CONFIG.GRID_SIZE, this.gy * CONFIG.GRID_SIZE);
+                const w = (this.width / 2) * gameState.camera.zoom;
+                const h = (this.height / 2) * gameState.camera.zoom;
                 
-                const corners = {
-                    tfl: isometric(-w, -d, h),
-                    tfr: isometric(w, -d, h),
-                    tbl: isometric(-w, d, h),
-                    tbr: isometric(w, d, h),
-                    bfl: isometric(-w, -d, 0),
-                    bfr: isometric(w, -d, 0),
-                    bbl: isometric(-w, d, 0),
-                    bbr: isometric(w, d, 0)
-                };
-                
-                ctx.save();
-                ctx.globalAlpha = 0.92;
-                
-                // Front face
+                // Building rectangle
                 ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.moveTo(screen.x + corners.tfl.x * gameState.camera.zoom, screen.y + corners.tfl.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.tfr.x * gameState.camera.zoom, screen.y + corners.tfr.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.bfr.x * gameState.camera.zoom, screen.y + corners.bfr.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.bfl.x * gameState.camera.zoom, screen.y + corners.bfl.y * gameState.camera.zoom);
-                ctx.fill();
+                ctx.fillRect(screen.x - w, screen.y - h, w * 2, h * 2);
                 
-                // Left face
-                ctx.fillStyle = darken(this.color, 0.6);
-                ctx.beginPath();
-                ctx.moveTo(screen.x + corners.tfl.x * gameState.camera.zoom, screen.y + corners.tfl.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.tbl.x * gameState.camera.zoom, screen.y + corners.tbl.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.bbl.x * gameState.camera.zoom, screen.y + corners.bbl.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.bfl.x * gameState.camera.zoom, screen.y + corners.bfl.y * gameState.camera.zoom);
-                ctx.fill();
-                
-                // Top face
-                ctx.fillStyle = lighten(this.color, 0.2);
-                ctx.beginPath();
-                ctx.moveTo(screen.x + corners.tfl.x * gameState.camera.zoom, screen.y + corners.tfl.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.tfr.x * gameState.camera.zoom, screen.y + corners.tfr.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.tbr.x * gameState.camera.zoom, screen.y + corners.tbr.y * gameState.camera.zoom);
-                ctx.lineTo(screen.x + corners.tbl.x * gameState.camera.zoom, screen.y + corners.tbl.y * gameState.camera.zoom);
-                ctx.fill();
-                
-                // Windows
-                if ([0, 1, 3, 4].includes(this.type)) {
-                    const windowColor = this.type === 3 ? '#FFE6B3' : '#FFE000';
-                    const windows = Math.ceil(this.height * 1.2);
-                    ctx.fillStyle = windowColor;
-                    for (let i = 0; i < windows; i++) {
-                        const row = Math.floor(i / 3);
-                        const col = i % 3;
-                        const wX = screen.x + (corners.tfl.x + (corners.tfr.x - corners.tfl.x) * (col + 1) / 4) * gameState.camera.zoom;
-                        const wY = screen.y + (corners.tfl.y + (corners.bfl.y - corners.tfl.y) * (row + 1) / (windows + 1)) * gameState.camera.zoom;
-                        ctx.fillRect(wX - 2 * gameState.camera.zoom, wY - 2 * gameState.camera.zoom, 4 * gameState.camera.zoom, 4 * gameState.camera.zoom);
-                    }
-                }
-                
-                ctx.restore();
+                // Building outline
+                ctx.strokeStyle = '#999999';
+                ctx.lineWidth = 0.5;
+                ctx.strokeRect(screen.x - w, screen.y - h, w * 2, h * 2);
             }
         }
         
@@ -408,42 +343,32 @@
             constructor(gx, gy) {
                 this.gx = gx;
                 this.gy = gy;
-                this.type = Math.floor(noise2D(gx, gy, 100) * 3);
+                const hash = noise2D(gx, gy, 100);
+                this.type = Math.floor(hash * 3);
             }
             
             getColor() {
-                const colors = ['#4A4A4A', '#9A8860', '#B0B0A8'];
+                const colors = ['#808080', '#808080', '#808080']; // All gray roads
                 return colors[this.type];
             }
             
             draw(ctx) {
-                const world = gridToWorld(this.gx, this.gy);
-                const screen = worldToScreen(world.x, world.y);
-                const z = 0;
+                const screen = worldToScreen(this.gx * CONFIG.GRID_SIZE, this.gy * CONFIG.GRID_SIZE);
+                const size = (CONFIG.GRID_SIZE * 0.7) * gameState.camera.zoom;
                 
-                const corners = [
-                    isometric(-CONFIG.GRID_SIZE / 2, -CONFIG.GRID_SIZE / 2, z),
-                    isometric(CONFIG.GRID_SIZE / 2, -CONFIG.GRID_SIZE / 2, z),
-                    isometric(CONFIG.GRID_SIZE / 2, CONFIG.GRID_SIZE / 2, z),
-                    isometric(-CONFIG.GRID_SIZE / 2, CONFIG.GRID_SIZE / 2, z)
-                ];
-                
-                ctx.save();
+                // Road square
                 ctx.fillStyle = this.getColor();
-                ctx.globalAlpha = 0.9;
+                ctx.fillRect(screen.x - size / 2, screen.y - size / 2, size, size);
                 
+                // Road center line
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = gameState.camera.zoom * 0.8;
+                ctx.globalAlpha = 0.3;
                 ctx.beginPath();
-                for (let i = 0; i < corners.length; i++) {
-                    const c = corners[i];
-                    const x = screen.x + c.x * gameState.camera.zoom;
-                    const y = screen.y + c.y * gameState.camera.zoom;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.closePath();
-                ctx.fill();
-                
-                ctx.restore();
+                ctx.moveTo(screen.x - size / 2, screen.y);
+                ctx.lineTo(screen.x + size / 2, screen.y);
+                ctx.stroke();
+                ctx.globalAlpha = 1.0;
             }
         }
         
@@ -454,38 +379,21 @@
                 this.gy = gy;
                 const h1 = noise2D(gx, gy, 200);
                 const h2 = noise2D(gx, gy, 201);
-                this.height = 3 + Math.floor(h1 * 5);
-                this.size = 14 + h2 * 10;
+                this.size = 8 + h2 * 6; // Smaller trees for map view
             }
             
             draw(ctx) {
-                const world = gridToWorld(this.gx, this.gy);
-                const screen = worldToScreen(world.x, world.y);
+                const screen = worldToScreen(this.gx * CONFIG.GRID_SIZE, this.gy * CONFIG.GRID_SIZE);
+                const r = this.size * gameState.camera.zoom;
                 
-                ctx.save();
-                
-                // Trunk
-                ctx.fillStyle = '#8B6F47';
-                const trunkW = 5 * gameState.camera.zoom;
-                const trunkH = this.height * 3 * gameState.camera.zoom;
-                ctx.fillRect(screen.x - trunkW / 2, screen.y - trunkH, trunkW, trunkH);
-                
-                // Foliage
-                ctx.fillStyle = '#2D5A2D';
-                ctx.globalAlpha = 0.85;
-                const canopyR = this.size * gameState.camera.zoom;
+                // Tree as circle (top-down view)
+                ctx.fillStyle = '#6BA745'; // Natural green
+                ctx.globalAlpha = 0.9;
                 ctx.beginPath();
-                ctx.arc(screen.x, screen.y - this.height * 3 * gameState.camera.zoom - canopyR / 2, canopyR, 0, Math.PI * 2);
+                ctx.arc(screen.x, screen.y, r, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Shadow layer
-                ctx.fillStyle = '#1a3a1a';
-                ctx.globalAlpha = 0.4;
-                ctx.beginPath();
-                ctx.arc(screen.x - 3 * gameState.camera.zoom, screen.y - this.height * 3 * gameState.camera.zoom - canopyR / 3, canopyR * 0.7, 0, Math.PI * 2);
-                ctx.fill();
-                
-                ctx.restore();
+                ctx.globalAlpha = 1.0;
             }
         }
         
