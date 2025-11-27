@@ -402,12 +402,11 @@
         }
 
         function generateCityBlock(centerX, centerY) {
-            const blockSize = 12; // larger radius for bigger city blocks
-            const roadDensity = 0.18; // more roads
-            const buildingDensity = 0.60; // more buildings
-            const treeDensity = 0.15; // less trees
+            const blockSize = 15;
             
-            // Fill area around click point
+            // Step 1: Generate organic road network using Perlin-like noise
+            const roadMap = new Map();
+            
             for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
                 for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
                     const key = `${x},${y}`;
@@ -417,26 +416,76 @@
                         continue;
                     }
                     
-                    const rand = pseudoHash(x, y, 42); // deterministic randomness per tile
+                    // Determine if this is a road using perlin-like noise
+                    const n1 = pseudoHash(Math.floor(x / 2), Math.floor(y / 2), 1);
+                    const n2 = pseudoHash(Math.floor(x / 3), Math.floor(y / 3), 2);
+                    const roadValue = (n1 + n2) / 2;
                     
-                    // Create main roads in grid pattern (every 3 tiles)
-                    if (x % 3 === 0 || y % 3 === 0) {
-                        roads.set(key, new Road(x, y));
+                    // Main roads form grid-like pattern
+                    const isMainRoadX = Math.abs((x % 4) - 2) < 1.2;
+                    const isMainRoadY = Math.abs((y % 4) - 2) < 1.2;
+                    
+                    if (isMainRoadX || isMainRoadY || roadValue > 0.75) {
+                        roadMap.set(key, true);
                     }
-                    // Fill rest with buildings and trees
-                    else if (rand < roadDensity) {
-                        roads.set(key, new Road(x, y));
-                    } else if (rand < roadDensity + buildingDensity) {
-                        // Cluster buildings - don't place next to roads if possible
-                        if ((x - 1) % 3 !== 0 && (y - 1) % 3 !== 0) {
+                }
+            }
+            
+            // Step 2: Place buildings in clusters between roads
+            for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
+                for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
+                    const key = `${x},${y}`;
+                    
+                    if (buildings.has(key) || roads.has(key) || trees.has(key)) {
+                        continue;
+                    }
+                    
+                    const isRoad = roadMap.has(key);
+                    
+                    // Check if surrounded by non-roads (good for buildings)
+                    if (!isRoad) {
+                        let adjacentRoads = 0;
+                        for (let dx = -1; dx <= 1; dx++) {
+                            for (let dy = -1; dy <= 1; dy++) {
+                                if (roadMap.has(`${x + dx},${y + dy}`)) {
+                                    adjacentRoads++;
+                                }
+                            }
+                        }
+                        
+                        // Place building if not too isolated and not too surrounded by roads
+                        if (adjacentRoads > 0 && adjacentRoads < 7) {
                             buildings.set(key, new Building(x, y));
                         }
-                    } else if (rand < roadDensity + buildingDensity + treeDensity) {
-                        // Trees at edges and scattered
+                    }
+                }
+            }
+            
+            // Step 3: Place trees in remaining spaces (parks/gardens)
+            for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
+                for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
+                    const key = `${x},${y}`;
+                    
+                    if (buildings.has(key) || roads.has(key) || trees.has(key)) {
+                        continue;
+                    }
+                    
+                    const rand = pseudoHash(x, y, 300);
+                    
+                    // Place trees in empty spaces
+                    if (rand > 0.3) {
                         trees.set(key, new Tree(x, y));
                     }
                 }
             }
+            
+            // Step 4: Place all roads at the end
+            roadMap.forEach((_, key) => {
+                if (!roads.has(key)) {
+                    const [x, y] = key.split(',').map(Number);
+                    roads.set(key, new Road(x, y));
+                }
+            });
             
             updateCounts();
         }
