@@ -324,7 +324,25 @@
             requestAnimationFrame(animate);
         }
 
-        // Events
+        // Touch tracking
+        let touchStart = { x: 0, y: 0 };
+        let lastTouchDistance = 0;
+        let touchStartTime = 0;
+
+        function getClientCoords(touch) {
+            return {
+                x: touch.clientX,
+                y: touch.clientY
+            };
+        }
+
+        function getTouchDistance(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        // Mouse events
         canvas.addEventListener('mousedown', (e) => {
             if (e.button === 2) { // Right click
                 const worldPos = screenToWorld(e.clientX, e.clientY);
@@ -359,12 +377,71 @@
         canvas.addEventListener('wheel', (e) => {
             e.preventDefault();
             const zoomFactor = 1.1;
-            const oldZoom = camera.zoom;
             camera.zoom *= e.deltaY > 0 ? 1 / zoomFactor : zoomFactor;
             camera.zoom = Math.max(0.3, Math.min(3, camera.zoom));
         }, { passive: false });
 
         canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        // Touch events
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchStartTime = Date.now();
+            
+            if (e.touches.length === 1) {
+                // Single touch: dragging or clicking
+                const touch = e.touches[0];
+                isDragging = true;
+                dragStart = getClientCoords(touch);
+                touchStart = dragStart;
+            } else if (e.touches.length === 2) {
+                // Two fingers: zoom
+                isDragging = false;
+                lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            
+            if (e.touches.length === 1) {
+                // Single touch drag
+                const touch = e.touches[0];
+                const dx = (touch.clientX - dragStart.x) / camera.zoom;
+                const dy = (touch.clientY - dragStart.y) / camera.zoom;
+                camera.x -= dx;
+                camera.y -= dy;
+                dragStart = getClientCoords(touch);
+            } else if (e.touches.length === 2) {
+                // Two finger zoom
+                const newDistance = getTouchDistance(e.touches[0], e.touches[1]);
+                if (lastTouchDistance > 0) {
+                    const zoomFactor = newDistance / lastTouchDistance;
+                    camera.zoom *= zoomFactor;
+                    camera.zoom = Math.max(0.3, Math.min(3, camera.zoom));
+                }
+                lastTouchDistance = newDistance;
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            
+            if (e.touches.length === 0) {
+                // Check if it was a tap (short duration, minimal movement)
+                const tapDuration = Date.now() - touchStartTime;
+                const distMoved = Math.hypot(dragStart.x - touchStart.x, dragStart.y - touchStart.y);
+                
+                if (tapDuration < 300 && distMoved < 10) {
+                    // It's a tap, place building
+                    const worldPos = screenToWorld(touchStart.x, touchStart.y);
+                    placeBuilding(worldPos.x, worldPos.y);
+                }
+                
+                isDragging = false;
+                lastTouchDistance = 0;
+            }
+        }, { passive: false });
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
