@@ -494,44 +494,62 @@
             const blockSize = CONFIG.BLOCK_SIZE;
             const roadMap = new Map();
             const visited = new Set();
-            const queue = [[centerGx, centerGy]];
             
+            // Enhanced wave propagation for better road networks
+            const queue = [[centerGx, centerGy, 0]]; // [x, y, distance]
             visited.add(`${centerGx},${centerGy}`);
             roadMap.set(`${centerGx},${centerGy}`, true);
             
-            // Wave propagation for roads
-            while (queue.length > 0) {
-                const [x, y] = queue.shift();
-                const distance = Math.hypot(x - centerGx, y - centerGy);
+            let queueIndex = 0;
+            
+            while (queueIndex < queue.length) {
+                const [x, y, distance] = queue[queueIndex++];
                 
                 if (distance > blockSize) continue;
                 
+                // Multi-directional preference with noise
                 const noiseValue = noise2D(x, y, 10);
-                const directions = [
-                    { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
-                    { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
-                    { dx: 1, dy: 1 }, { dx: -1, dy: -1 },
-                    { dx: 1, dy: -1 }, { dx: -1, dy: 1 }
-                ];
+                const directions = [];
                 
+                // Cardinal directions (higher priority)
+                directions.push({ dx: 1, dy: 0, weight: 2 });
+                directions.push({ dx: -1, dy: 0, weight: 2 });
+                directions.push({ dx: 0, dy: 1, weight: 2 });
+                directions.push({ dx: 0, dy: -1, weight: 2 });
+                
+                // Diagonal directions (secondary)
+                directions.push({ dx: 1, dy: 1, weight: 1.2 });
+                directions.push({ dx: -1, dy: -1, weight: 1.2 });
+                directions.push({ dx: 1, dy: -1, weight: 1.2 });
+                directions.push({ dx: -1, dy: 1, weight: 1.2 });
+                
+                // Sort by noise-weighted preference
                 directions.sort((a, b) => {
-                    const nA = noise2D(x + a.dx, y + a.dy, 20);
-                    const nB = noise2D(x + b.dx, y + b.dy, 20);
-                    return nB - nA;
+                    const noiseA = (noise2D(x + a.dx, y + a.dy, 20) * a.weight);
+                    const noiseB = (noise2D(x + b.dx, y + b.dy, 20) * b.weight);
+                    return noiseB - noiseA;
                 });
                 
-                for (let i = 0; i < Math.min(3, directions.length); i++) {
-                    const { dx, dy } = directions[i];
-                    const nx = x + dx, ny = y + dy;
+                // Attempt to branch in preferred directions
+                const maxBranches = Math.max(2, Math.floor(noise2D(x, y, 30) * 4));
+                
+                for (let i = 0; i < Math.min(maxBranches, directions.length); i++) {
+                    const { dx, dy, weight } = directions[i];
+                    const nx = x + dx;
+                    const ny = y + dy;
                     const key = `${nx},${ny}`;
-                    const newDist = Math.hypot(nx - centerGx, ny - centerGy);
+                    const newDistance = Math.hypot(nx - centerGx, ny - centerGy);
                     
-                    if (newDist <= blockSize && !visited.has(key)) {
-                        const prob = 0.85 - (newDist / blockSize) * 0.3;
-                        if (noise2D(nx, ny, 15) < prob) {
+                    if (newDistance <= blockSize && !visited.has(key)) {
+                        // Distance-based decay: roads are more likely closer to center
+                        const decay = 0.85 - (newDistance / blockSize) * 0.35;
+                        const noiseThreshold = noise2D(nx, ny, 15);
+                        const weightFactor = (weight - 1) * 0.2 + 1; // 1.0 to 1.2
+                        
+                        if (noiseThreshold < decay * weightFactor) {
                             visited.add(key);
                             roadMap.set(key, true);
-                            queue.push([nx, ny]);
+                            queue.push([nx, ny, newDistance]);
                         }
                     }
                 }
