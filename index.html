@@ -29,16 +29,28 @@
         #loading.show { opacity: 1; pointer-events: all; }
     </style>
 </head> 
-<body> 
+<body>
     <canvas id="canvas"></canvas>
     
     <div id="ui">
-        <div>Click anywhere to generate city</div>
-        <div>Drag to move • Scroll to zoom</div>
-        <div style="margin-top: 10px; color: #666;">Right-click to remove</div>
+        <div class="title">🏙 City Generator Pro</div>
+        <div class="control">Click: Generate City Block</div>
+        <div class="control">Drag: Pan Camera</div>
+        <div class="control">Scroll: Zoom</div>
+        <div class="control">Right-click: Remove</div>
+        <div class="control">Double-click: Clear All</div>
+        <div class="stat" style="margin-top: 12px;">Objects: <strong id="buildingCount">0</strong></div>
+        <div class="stat">Density: <strong id="density">0%</strong></div>
     </div>
-    <div id="info">
-        Objects: <span id="buildingCount">0</span> | FPS: <span id="fps">60</span>
+    
+    <div id="stats">
+        <div>FPS: <span id="fps">60</span></div>
+        <div>Zoom: <span id="zoomLevel">1.0</span>x</div>
+        <div>Pos: <span id="camPos">0,0</span></div>
+    </div>
+    
+    <div id="loading">
+        <div>Generating city...</div>
     </div>
 
     <script>
