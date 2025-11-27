@@ -403,30 +403,60 @@
 
         function generateCityBlock(centerX, centerY) {
             const blockSize = 15;
-            
-            // Step 1: Generate organic road network using Perlin-like noise
             const roadMap = new Map();
+            const visited = new Set();
             
-            for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
-                for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
-                    const key = `${x},${y}`;
+            // Step 1: Generate roads using wave propagation from center
+            const queue = [[centerX, centerY]];
+            visited.add(`${centerX},${centerY}`);
+            roadMap.set(`${centerX},${centerY}`, true);
+            
+            while (queue.length > 0) {
+                const [x, y] = queue.shift();
+                
+                // Spread roads to adjacent cells with probability based on distance
+                const distance = Math.hypot(x - centerX, y - centerY);
+                
+                if (distance > blockSize) continue;
+                
+                // Get noise-based direction preference
+                const noiseValue = pseudoHash(x, y, 10);
+                const directions = [
+                    { dx: 1, dy: 0, weight: noiseValue > 0.7 ? 1.5 : 1 },      // right
+                    { dx: -1, dy: 0, weight: noiseValue > 0.5 ? 1.5 : 1 },     // left
+                    { dx: 0, dy: 1, weight: noiseValue > 0.3 ? 1.5 : 1 },      // down
+                    { dx: 0, dy: -1, weight: noiseValue > 0.1 ? 1.5 : 1 },     // up
+                    { dx: 1, dy: 1, weight: 0.6 },    // diagonal
+                    { dx: -1, dy: -1, weight: 0.6 },  // diagonal
+                    { dx: 1, dy: -1, weight: 0.6 },   // diagonal
+                    { dx: -1, dy: 1, weight: 0.6 }    // diagonal
+                ];
+                
+                // Sort directions by weight and noise
+                directions.sort((a, b) => {
+                    const noiseA = pseudoHash(x + a.dx, y + a.dy, 20) * a.weight;
+                    const noiseB = pseudoHash(x + b.dx, y + b.dy, 20) * b.weight;
+                    return noiseB - noiseA;
+                });
+                
+                // Try to extend roads in preferred directions
+                for (let i = 0; i < Math.min(3, directions.length); i++) {
+                    const { dx, dy } = directions[i];
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    const key = `${nx},${ny}`;
+                    const newDistance = Math.hypot(nx - centerX, ny - centerY);
                     
-                    // Skip if already occupied
-                    if (buildings.has(key) || roads.has(key) || trees.has(key)) {
-                        continue;
-                    }
-                    
-                    // Determine if this is a road using perlin-like noise
-                    const n1 = pseudoHash(Math.floor(x / 2), Math.floor(y / 2), 1);
-                    const n2 = pseudoHash(Math.floor(x / 3), Math.floor(y / 3), 2);
-                    const roadValue = (n1 + n2) / 2;
-                    
-                    // Main roads form grid-like pattern
-                    const isMainRoadX = Math.abs((x % 4) - 2) < 1.2;
-                    const isMainRoadY = Math.abs((y % 4) - 2) < 1.2;
-                    
-                    if (isMainRoadX || isMainRoadY || roadValue > 0.75) {
-                        roadMap.set(key, true);
+                    if (newDistance <= blockSize && !visited.has(key)) {
+                        // Probability to continue road decreases with distance
+                        const continueProbability = 0.85 - (newDistance / blockSize) * 0.3;
+                        const noise = pseudoHash(nx, ny, 15);
+                        
+                        if (noise < continueProbability) {
+                            visited.add(key);
+                            roadMap.set(key, true);
+                            queue.push([nx, ny]);
+                        }
                     }
                 }
             }
@@ -442,26 +472,31 @@
                     
                     const isRoad = roadMap.has(key);
                     
-                    // Check if surrounded by non-roads (good for buildings)
+                    // Place buildings near roads but not on them
                     if (!isRoad) {
-                        let adjacentRoads = 0;
-                        for (let dx = -1; dx <= 1; dx++) {
-                            for (let dy = -1; dy <= 1; dy++) {
+                        let roadDistance = 999;
+                        
+                        // Find closest road
+                        for (let dx = -3; dx <= 3; dx++) {
+                            for (let dy = -3; dy <= 3; dy++) {
                                 if (roadMap.has(`${x + dx},${y + dy}`)) {
-                                    adjacentRoads++;
+                                    roadDistance = Math.min(roadDistance, Math.hypot(dx, dy));
                                 }
                             }
                         }
                         
-                        // Place building if not too isolated and not too surrounded by roads
-                        if (adjacentRoads > 0 && adjacentRoads < 7) {
-                            buildings.set(key, new Building(x, y));
+                        // Build if within 2-3 cells of a road
+                        if (roadDistance > 0 && roadDistance <= 3) {
+                            const rand = pseudoHash(x, y, 50);
+                            if (rand > 0.2) { // 80% chance
+                                buildings.set(key, new Building(x, y));
+                            }
                         }
                     }
                 }
             }
             
-            // Step 3: Place trees in remaining spaces (parks/gardens)
+            // Step 3: Place trees in remaining empty spaces
             for (let x = centerX - blockSize; x <= centerX + blockSize; x++) {
                 for (let y = centerY - blockSize; y <= centerY + blockSize; y++) {
                     const key = `${x},${y}`;
@@ -470,16 +505,14 @@
                         continue;
                     }
                     
-                    const rand = pseudoHash(x, y, 300);
-                    
-                    // Place trees in empty spaces
-                    if (rand > 0.3) {
+                    const rand = pseudoHash(x, y, 100);
+                    if (rand > 0.4) {
                         trees.set(key, new Tree(x, y));
                     }
                 }
             }
             
-            // Step 4: Place all roads at the end
+            // Step 4: Place all roads
             roadMap.forEach((_, key) => {
                 if (!roads.has(key)) {
                     const [x, y] = key.split(',').map(Number);
