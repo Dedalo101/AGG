@@ -884,15 +884,11 @@
         
         // ============ INITIALIZATION ============
         // Generate initial city at multiple centers to fill screen
-        generateCityBlock(0, 0);
-        generateCityBlock(15, 0);
-        generateCityBlock(-15, 0);
-        generateCityBlock(0, 15);
-        generateCityBlock(0, -15);
-        generateCityBlock(15, 15);
-        generateCityBlock(-15, -15);
-        generateCityBlock(15, -15);
-        generateCityBlock(-15, 15);
+        for (let x = -45; x <= 45; x += 30) {
+            for (let y = -45; y <= 45; y += 30) {
+                generateCityBlock(x, y);
+            }
+        }
         
         updateUI();
         animate();
